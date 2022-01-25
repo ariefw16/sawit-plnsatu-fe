@@ -7,56 +7,122 @@ import {
   SxProps,
   Theme,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { useLocation, Link } from "react-router-dom";
+import { MenuType } from "../../../types/menu.type";
+import { Box } from "@mui/system";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonIcon from "@mui/icons-material/Person";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function MenuApp() {
-  const sxList: SxProps<Theme> = {
-    mx: 2, // selected and (selected + hover) states
-    "&& .Mui-selected, && .Mui-selected:hover": {
-      bgcolor: (theme: Theme) => theme.palette.secondary.light,
-      "&, & .MuiListItemIcon-root": {
-        color: (theme: Theme) => theme.palette.secondary.main,
-      },
-    },
-    // hover states
-    "& .MuiListItemButton-root:hover": {
-      bgcolor: (theme: Theme) => theme.palette.secondary.light,
-      "&, & .MuiListItemIcon-root": {
-        color: (theme: Theme) => theme.palette.secondary.main,
-      },
-    },
-  };
+  const { pathname } = useLocation();
+
   return (
     <>
       <List sx={sxList}>
         <ListSubheader>App Menu</ListSubheader>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItemButton key={text} sx={{ borderRadius: 3, p: 1 }}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{ fontSize: 14, fontWeight: "bold" }}
-              primary={text}
-            />
-          </ListItemButton>
-        ))}
+        {menu
+          .filter((x) => x.section === "app")
+          .map((menu) => (
+            <ListItemButton
+              key={menu.to}
+              sx={{ borderRadius: 3, p: 1 }}
+              selected={menu.to === pathname}
+              component={Link}
+              to={menu.to}
+            >
+              <ListItemIcon>{menu.icon}</ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ fontSize: 14, fontWeight: "bold" }}
+                primary={menu.label}
+              />
+            </ListItemButton>
+          ))}
       </List>
-      <ListSubheader>Administrator</ListSubheader>
       <List sx={sxList}>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItemButton key={text} sx={{ borderRadius: 3, p: 1 }}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{ fontSize: 14, fontWeight: "bold" }}
-              primary={text}
-            />
-          </ListItemButton>
-        ))}
+        <ListSubheader>Administrator</ListSubheader>
+        {menu
+          .filter((x) => x.section === "admin")
+          .map((x) => (
+            <ListItemButton
+              key={x.to}
+              sx={{ borderRadius: 3, p: 1 }}
+              selected={x.to === pathname}
+              component={Link}
+              to={x.to}
+            >
+              <ListItemIcon>{x.icon}</ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ fontSize: 14, fontWeight: "bold" }}
+                primary={x.label}
+              />
+            </ListItemButton>
+          ))}
+      </List>
+      <Box sx={{ flexGrow: 1 }} />
+      <List sx={sxList}>
+        {menu
+          .filter((x) => x.section === "foot-extra")
+          .map((x) => (
+            <ListItemButton
+              key={x.to}
+              sx={{ borderRadius: 3, p: 1 }}
+              selected={x.to === pathname}
+              component={Link}
+              to={x.to}
+            >
+              <ListItemIcon>{x.icon}</ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ fontSize: 14, fontWeight: "bold" }}
+                primary={x.label}
+              />
+            </ListItemButton>
+          ))}
       </List>
     </>
   );
 }
+
+const sxList: SxProps<Theme> = {
+  mx: 2,
+  "&& .Mui-selected, && .Mui-selected:hover": {
+    bgcolor: (theme: Theme) => theme.palette.secondary.light,
+    "&, & .MuiListItemIcon-root": {
+      color: (theme: Theme) => theme.palette.secondary.main,
+    },
+  },
+  "& .MuiListItemButton-root:hover": {
+    bgcolor: (theme: Theme) => theme.palette.secondary.light,
+    "&, & .MuiListItemIcon-root": {
+      color: (theme: Theme) => theme.palette.secondary.main,
+    },
+  },
+};
+
+const menu: MenuType[] = [
+  {
+    label: "Dashboard",
+    to: "/",
+    section: "app",
+    icon: <DashboardIcon />,
+  },
+  {
+    label: "User",
+    to: "/user",
+    section: "admin",
+    icon: <PersonIcon />,
+  },
+  {
+    label: "Unit",
+    to: "/unit",
+    section: "admin",
+    icon: <ApartmentIcon />,
+  },
+  {
+    label: "Logout",
+    to: "/logout",
+    section: "foot-extra",
+    icon: <LogoutIcon />,
+  },
+];
