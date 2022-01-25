@@ -1,5 +1,17 @@
-import { Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  InputAdornment,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
 import TitleBar from "../../components/ui/TitleBar";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function UnitPage() {
   return (
@@ -15,6 +27,54 @@ export default function UnitPage() {
           </Typography>
         </Button>
       </TitleBar>
+      <Paper sx={{ width: 1, p: 2 }} variant="outlined">
+        <Grid container rowSpacing={2} columnSpacing={{ sm: 2 }}>
+          <Grid item sm={12}>
+            <TextField
+              fullWidth
+              placeholder="Search By Name"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item sm={5}>
+            <TextField
+              fullWidth
+              placeholder="Search By Parent"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item sm={5}>
+            <TextField
+              fullWidth
+              placeholder="Search By STI Unit"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+        </Grid>
+      </Paper>
+      <Table>
+        <TableHead>
+          <TableRow></TableRow>
+        </TableHead>
+      </Table>
     </>
   );
 }
