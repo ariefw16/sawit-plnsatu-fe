@@ -47,7 +47,7 @@ export default function ToolbarApp() {
         >
           <SettingsIcon color="inherit" />
         </Button>
-        <ButtonUser bgcolor="whitesmoke" width={200} />
+        <ButtonUser bgcolor="inherit" width={200} />
       </Box>
     </Toolbar>
   );
