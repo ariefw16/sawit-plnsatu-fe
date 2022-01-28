@@ -1,5 +1,8 @@
 import { Box, CssBaseline, AppBar, Toolbar, Drawer } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { hideToast } from "../../store/toast.store";
+import AppToast from "../ui/AppToast";
 import ButtonUser from "./parts/ButtonUser";
 import MenuApp from "./parts/MenuApp";
 import ToolbarApp from "./parts/ToolbarApp";
@@ -7,8 +10,19 @@ import ToolbarApp from "./parts/ToolbarApp";
 export default function AppLayout() {
   const drawerWidth = 240;
   const appbarHeight = 70;
+  const toast = useAppSelector((state) => state.toast);
+  const dispatch = useAppDispatch();
+  const handleToastClose = () => {
+    dispatch(hideToast());
+  };
   return (
     <Box sx={{ display: "flex" }}>
+      <AppToast
+        handleClose={handleToastClose}
+        message={toast.message}
+        type={toast.type}
+        open={toast.open || false}
+      />
       <CssBaseline />
       <AppBar
         position="fixed"

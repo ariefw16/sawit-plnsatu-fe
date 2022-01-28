@@ -75,7 +75,7 @@ export default function UnitTable(props: { unit: Unit[]; rowCount: number }) {
       </TableHead>
       <TableBody>
         {unit.length < 1 && (
-          <TableRow>
+          <TableRow key={0}>
             <TableCell colSpan={4} align="center">
               <Typography variant="caption" sx={{ fontStyle: "italic" }}>
                 No Data to show

@@ -9,8 +9,8 @@ export interface UnitType {
 }
 
 export interface FetchReturnType {
-  unit?: UnitType;
-  units?: UnitType[];
+  unit: UnitType;
+  units: UnitType[];
   totalRow?: number;
 }
 
@@ -18,4 +18,10 @@ export interface UnitFetchParams extends CommonParams {
   name?: string;
   parentId?: number;
   stiUnitId?: number;
+}
+
+export interface UnitState {
+  unit: UnitType;
+  units: UnitType[];
+  totalRow?: number;
 }

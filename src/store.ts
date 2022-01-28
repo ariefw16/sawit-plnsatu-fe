@@ -1,8 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { toastSlice } from "./store/toast.store";
+import { unitSlice } from "./store/unit.store";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    unit: unitSlice.reducer,
+    toast: toastSlice.reducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

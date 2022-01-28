@@ -15,3 +15,9 @@ export interface CommonParams {
   limit: number;
   q?: string;
 }
+
+export interface ToastType {
+  message: string;
+  type: "success" | "info" | "error" | "warning";
+  open?: boolean;
+}

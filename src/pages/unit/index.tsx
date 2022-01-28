@@ -6,32 +6,26 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleBar from "../../components/ui/TitleBar";
 import UnitSearchBox from "../../components/ui/unit/SearchBox";
 import UnitTable from "../../components/ui/unit/UnitTable";
-import { UnitType as Unit } from "../../types/Unit.type";
+import { fetchUnit } from "../../services/unit.service";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { showToast } from "../../store/toast.store";
 
 export default function UnitPage() {
-  const unit: Unit[] = [
-    { id: 1, name: "tes1" },
-    { id: 2, name: "tes2" },
-    { id: 3, name: "tes2" },
-    { id: 4, name: "tes2" },
-    { id: 5, name: "tes2" },
-    { id: 6, name: "tes2" },
-    { id: 7, name: "tes2" },
-    { id: 8, name: "tes2" },
-    { id: 9, name: "tes2" },
-    { id: 10, name: "tes2" },
-    { id: 11, name: "tes2" },
-    { id: 12, name: "tes2" },
-    { id: 13, name: "tes2" },
-    { id: 14, name: "tes2" },
-    { id: 15, name: "tes2" },
-    { id: 16, name: "tes2" },
-  ];
+  const unit = useAppSelector((state) => state.unit.units);
+  const dispatch = useAppDispatch();
   const [rowsPerPage, setRowPerpage] = useState(10);
+
+  useEffect(() => {
+    dispatch(fetchUnit({ limit: rowsPerPage }))
+      .unwrap()
+      .catch((e) => {
+        dispatch(showToast({ message: e.errorMessage, type: "error" }));
+      });
+  }, [rowsPerPage]);
 
   return (
     <>
