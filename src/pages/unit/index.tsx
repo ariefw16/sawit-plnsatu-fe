@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import DeleteDialog from "../../components/ui/DeleteDialog";
 import TitleBar from "../../components/ui/TitleBar";
 import UnitCreateDialog from "../../components/ui/unit/CreateDialog";
 import UnitSearchBox from "../../components/ui/unit/SearchBox";
@@ -20,8 +21,15 @@ export default function UnitPage() {
   const totalRow = useAppSelector((state) => state.unit.totalRow);
   const dispatch = useAppDispatch();
   const [rowsPerPage, setRowPerpage] = useState(10);
-  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showDialog, setShowDialog] = useState<{
+    create: boolean;
+    delete: boolean;
+  }>({ create: false, delete: false });
   const [isLoading, setIsLoading] = useState(true);
+  const [singleDelete, setSingleDelete] = useState<{
+    id: number;
+    name: string;
+  }>({ id: 0, name: "" });
 
   useEffect(() => {
     dispatch(fetchUnit({ limit: rowsPerPage }))
@@ -37,6 +45,10 @@ export default function UnitPage() {
   const handleRowPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRowPerpage(parseInt(e.target.value));
   };
+  const handleDeleteButton = (data: { id: number; name: string }) => {
+    setSingleDelete(data);
+    setShowDialog({ delete: true, create: false });
+  };
 
   return (
     <>
@@ -46,7 +58,7 @@ export default function UnitPage() {
         buttonCreateText="Create new Unit"
         createType="dialog"
         handleCreateDialog={() => {
-          setShowCreateDialog(true);
+          setShowDialog((x) => ({ ...x, create: true }));
         }}
       >
         <Button variant="outlined" sx={{ mx: 1 }}>
@@ -83,7 +95,12 @@ export default function UnitPage() {
             </Box>
           </Grid>
           <Grid item sm={12}>
-            <UnitTable unit={unit} rowCount={rowsPerPage} loading={isLoading} />
+            <UnitTable
+              unit={unit}
+              rowCount={rowsPerPage}
+              loading={isLoading}
+              handleDeleteButton={handleDeleteButton}
+            />
           </Grid>
           <Grid item sm={12} sx={{ px: 2 }}>
             <TablePagination
@@ -99,9 +116,19 @@ export default function UnitPage() {
         </Grid>
       </Paper>
       <UnitCreateDialog
-        open={showCreateDialog}
+        open={showDialog.create}
         handleClose={() => {
-          setShowCreateDialog(false);
+          setShowDialog((x) => ({ ...x, create: false }));
+        }}
+      />
+      <DeleteDialog
+        open={showDialog.delete}
+        data={singleDelete}
+        handleClose={() => {
+          setShowDialog({ delete: false, create: false });
+        }}
+        handleDelete={() => {
+          setShowDialog({ delete: false, create: false });
         }}
       />
     </>

@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { hideToast } from "../../store/toast.store";
 import AppToast from "../ui/AppToast";
+import DeleteDialog from "../ui/DeleteDialog";
 import ButtonUser from "./parts/ButtonUser";
 import MenuApp from "./parts/MenuApp";
 import ToolbarApp from "./parts/ToolbarApp";

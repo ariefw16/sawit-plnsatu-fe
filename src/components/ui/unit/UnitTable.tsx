@@ -9,7 +9,6 @@ import {
   Tooltip,
   IconButton,
   CircularProgress,
-  LinearProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
@@ -24,15 +23,12 @@ export default function UnitTable(props: {
   unit: Unit[];
   rowCount: number;
   loading: boolean;
+  handleDeleteButton: any;
 }) {
-  const { unit, rowCount, loading } = props;
+  const { unit, rowCount, loading, handleDeleteButton } = props;
   const navigate = useNavigate();
   const [numSelected, setNumSelected] = useState(0);
   const [selected, setSelected] = useState<number[]>([]);
-  const [singleSelected, setSingleSelected] = useState<{
-    name: string;
-    id: number;
-  }>({ name: "", id: 0 });
 
   const onSelectAllClick = () => {
     const ids = unit.map((x) => (x.id !== undefined ? x.id : 0));
@@ -136,10 +132,7 @@ export default function UnitTable(props: {
                   <IconButton
                     color="error"
                     onClick={() => {
-                      setSingleSelected({
-                        id: x?.id || 0,
-                        name: x?.name || "",
-                      });
+                      handleDeleteButton({ id: x.id, name: x.name });
                     }}
                   >
                     <DeleteForeverIcon />
