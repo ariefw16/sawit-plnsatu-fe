@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -9,7 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { createUnit } from "../../../services/unit.service";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { showToast } from "../../../store/toast.store";
 import { UnitCreateType } from "../../../types/Unit.type";
 
@@ -20,10 +21,13 @@ export default function UnitCreateDialog(props: {
   const { open, handleClose } = props;
   const [data, setData] = useState<UnitCreateType>({
     name: "",
-    parent: 0,
-    parentName: "",
+    parentId: 0,
+    parent: undefined,
   });
   const dispatch = useAppDispatch();
+  const units = useAppSelector((state) =>
+    state.unit.units.map((x) => ({ id: x.id, name: x.name }))
+  );
 
   const handlerDataChange = (data: UnitCreateType) => {
     setData((x) => ({ ...x, ...data }));
@@ -43,7 +47,7 @@ export default function UnitCreateDialog(props: {
       });
   };
   const resetData = () => {
-    setData({ name: "", parent: 0, parentName: "" });
+    setData({ name: "", parentId: 0, parent: undefined });
   };
 
   return (
@@ -62,13 +66,18 @@ export default function UnitCreateDialog(props: {
             />
           </Grid>
           <Grid item sm={12}>
-            <TextField
-              fullWidth
-              label="Parent Unit"
-              value={data.parentName}
-              onChange={(e) => {
-                handlerDataChange({ parentName: e.target.value });
+            <Autocomplete
+              options={units}
+              getOptionLabel={(x) => x.name!}
+              renderInput={(params) => (
+                <TextField {...params} label="Parent Unit" />
+              )}
+              onChange={(ev, val) => {
+                handlerDataChange({
+                  parent: { id: val?.id!, name: val?.name! },
+                });
               }}
+              isOptionEqualToValue={(opt, val) => opt.id === val.id}
             />
           </Grid>
         </Grid>

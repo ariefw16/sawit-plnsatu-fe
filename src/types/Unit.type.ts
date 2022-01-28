@@ -28,6 +28,6 @@ export interface UnitState {
 
 export interface UnitCreateType {
   name?: string;
-  parent?: number;
-  parentName?: string; //testing only
+  parentId?: number;
+  parent?: { id: number; name: string };
 }

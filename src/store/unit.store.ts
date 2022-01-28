@@ -20,5 +20,6 @@ export const unitSlice = createSlice({
       })
       .addCase(createUnit.fulfilled, (state, { payload }) => {
         state.units.unshift(payload);
+        state.totalRow!++;
       }),
 });

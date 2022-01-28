@@ -8,6 +8,8 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,8 +20,12 @@ import { StyledTableCell } from "../StyledTableCell";
 import { HeadCell } from "../../../types/CommonParams.type";
 import { useState } from "react";
 
-export default function UnitTable(props: { unit: Unit[]; rowCount: number }) {
-  const { unit, rowCount } = props;
+export default function UnitTable(props: {
+  unit: Unit[];
+  rowCount: number;
+  loading: boolean;
+}) {
+  const { unit, rowCount, loading } = props;
   const navigate = useNavigate();
   const [numSelected, setNumSelected] = useState(0);
   const [selected, setSelected] = useState<number[]>([]);
@@ -73,67 +79,77 @@ export default function UnitTable(props: { unit: Unit[]; rowCount: number }) {
           <StyledTableCell>Action </StyledTableCell>
         </TableRow>
       </TableHead>
-      <TableBody>
-        {unit.length < 1 && (
-          <TableRow key={0}>
+      {loading ? (
+        <TableBody>
+          <TableRow>
             <TableCell colSpan={4} align="center">
-              <Typography variant="caption" sx={{ fontStyle: "italic" }}>
-                No Data to show
-              </Typography>
+              <CircularProgress />
             </TableCell>
           </TableRow>
-        )}
-        {unit.map((x) => (
-          <TableRow key={x.id}>
-            <TableCell sx={{ width: "5%" }} padding="checkbox">
-              <Checkbox
-                color="primary"
-                checked={isSelected(x.id!)}
-                onChange={() => handleChangeCheckbox(x.id!)}
-                inputProps={{
-                  "aria-labelledby": x.name,
-                }}
-              />
-            </TableCell>
-            <TableCell sx={{ width: "40%" }} padding="checkbox">
-              {x.name}
-            </TableCell>
-            <TableCell sx={{ width: "40%" }} padding="checkbox">
-              {x.parent?.name || "-"}
-            </TableCell>
-            <TableCell sx={{ width: "15%" }} padding="checkbox">
-              <Tooltip title="Quick View">
-                <IconButton
+        </TableBody>
+      ) : (
+        <TableBody>
+          {unit.length < 1 && (
+            <TableRow key={0}>
+              <TableCell colSpan={4} align="center">
+                <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                  No Data to show
+                </Typography>
+              </TableCell>
+            </TableRow>
+          )}
+          {unit.map((x) => (
+            <TableRow key={x.id}>
+              <TableCell sx={{ width: "5%" }} padding="checkbox">
+                <Checkbox
                   color="primary"
-                  onClick={() => {
-                    navigate(`unit/${x.id}`);
+                  checked={isSelected(x.id!)}
+                  onChange={() => handleChangeCheckbox(x.id!)}
+                  inputProps={{
+                    "aria-labelledby": x.name,
                   }}
-                >
-                  <ManageSearchIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Edit">
-                <IconButton color="warning">
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  color="error"
-                  onClick={() => {
-                    setSingleSelected({
-                      id: x?.id || 0,
-                      name: x?.name || "",
-                    });
-                  }}
-                >
-                  <DeleteForeverIcon />
-                </IconButton>
-              </Tooltip>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
+                />
+              </TableCell>
+              <TableCell sx={{ width: "40%" }} padding="checkbox">
+                {x.name}
+              </TableCell>
+              <TableCell sx={{ width: "40%" }} padding="checkbox">
+                {x.parent?.name || "-"}
+              </TableCell>
+              <TableCell sx={{ width: "15%" }} padding="checkbox">
+                <Tooltip title="Quick View">
+                  <IconButton
+                    color="primary"
+                    onClick={() => {
+                      navigate(`unit/${x.id}`);
+                    }}
+                  >
+                    <ManageSearchIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Edit">
+                  <IconButton color="warning">
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton
+                    color="error"
+                    onClick={() => {
+                      setSingleSelected({
+                        id: x?.id || 0,
+                        name: x?.name || "",
+                      });
+                    }}
+                  >
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      )}
     </Table>
   );
 }

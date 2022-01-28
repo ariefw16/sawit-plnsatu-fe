@@ -21,12 +21,16 @@ export default function UnitPage() {
   const dispatch = useAppDispatch();
   const [rowsPerPage, setRowPerpage] = useState(10);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     dispatch(fetchUnit({ limit: rowsPerPage }))
       .unwrap()
       .catch((e) => {
         dispatch(showToast({ message: e.errorMessage, type: "error" }));
+      })
+      .then(() => {
+        setIsLoading(false);
       });
   }, [rowsPerPage]);
 
@@ -79,7 +83,7 @@ export default function UnitPage() {
             </Box>
           </Grid>
           <Grid item sm={12}>
-            <UnitTable unit={unit} rowCount={rowsPerPage} />
+            <UnitTable unit={unit} rowCount={rowsPerPage} loading={isLoading} />
           </Grid>
           <Grid item sm={12} sx={{ px: 2 }}>
             <TablePagination
