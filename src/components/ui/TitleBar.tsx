@@ -1,14 +1,26 @@
 import { Grid, Typography, Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { ReactChild } from "react";
+import { Link } from "react-router-dom";
 
 export default function TitleBar(props: {
   title: string;
   subtitle?: string;
   buttonCreateText?: string;
   children?: ReactChild;
+  handleCreateDialog?: any;
+  redirectCreate?: any;
+  createType: "redirect" | "dialog";
 }) {
-  const { title, subtitle = "", children, buttonCreateText } = props;
+  const {
+    title,
+    subtitle = "",
+    children,
+    buttonCreateText,
+    createType,
+    handleCreateDialog,
+    redirectCreate,
+  } = props;
   return (
     <Grid container sx={{ p: 1 }}>
       <Grid item md={8}>
@@ -34,11 +46,30 @@ export default function TitleBar(props: {
             mt: 1,
           }}
         >
-          <Button variant="contained" sx={{ mx: 1 }} startIcon={<AddIcon />}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-              {buttonCreateText}
-            </Typography>
-          </Button>
+          {createType === "dialog" ? (
+            <Button
+              variant="contained"
+              sx={{ mx: 1 }}
+              startIcon={<AddIcon />}
+              onClick={handleCreateDialog}
+            >
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {buttonCreateText}
+              </Typography>
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ mx: 1 }}
+              startIcon={<AddIcon />}
+              component={Link}
+              to={redirectCreate}
+            >
+              <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                {buttonCreateText}
+              </Typography>
+            </Button>
+          )}
           {children}
         </Box>
       </Grid>

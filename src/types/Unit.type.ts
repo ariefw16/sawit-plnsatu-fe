@@ -25,3 +25,9 @@ export interface UnitState {
   units: UnitType[];
   totalRow?: number;
 }
+
+export interface UnitCreateType {
+  name?: string;
+  parent?: number;
+  parentName?: string; //testing only
+}

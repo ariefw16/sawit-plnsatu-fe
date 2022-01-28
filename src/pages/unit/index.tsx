@@ -6,8 +6,9 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TitleBar from "../../components/ui/TitleBar";
+import UnitCreateDialog from "../../components/ui/unit/CreateDialog";
 import UnitSearchBox from "../../components/ui/unit/SearchBox";
 import UnitTable from "../../components/ui/unit/UnitTable";
 import { fetchUnit } from "../../services/unit.service";
@@ -16,8 +17,10 @@ import { showToast } from "../../store/toast.store";
 
 export default function UnitPage() {
   const unit = useAppSelector((state) => state.unit.units);
+  const totalRow = useAppSelector((state) => state.unit.totalRow);
   const dispatch = useAppDispatch();
   const [rowsPerPage, setRowPerpage] = useState(10);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUnit({ limit: rowsPerPage }))
@@ -27,12 +30,20 @@ export default function UnitPage() {
       });
   }, [rowsPerPage]);
 
+  const handleRowPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRowPerpage(parseInt(e.target.value));
+  };
+
   return (
     <>
       <TitleBar
         title="Unit Management"
         subtitle="You can manage all unit available in this application"
         buttonCreateText="Create new Unit"
+        createType="dialog"
+        handleCreateDialog={() => {
+          setShowCreateDialog(true);
+        }}
       >
         <Button variant="outlined" sx={{ mx: 1 }}>
           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
@@ -40,6 +51,7 @@ export default function UnitPage() {
           </Typography>
         </Button>
       </TitleBar>
+
       <UnitSearchBox />
       <Paper sx={{ py: 2, my: 3 }} variant="outlined">
         <Grid container rowSpacing={2}>
@@ -52,7 +64,7 @@ export default function UnitPage() {
                   justifyContent: "center",
                 }}
               >
-                Showing x data
+                Showing {totalRow} data
               </Box>
               <Box sx={{ flexGrow: 1 }} />
               <TablePagination
@@ -62,6 +74,7 @@ export default function UnitPage() {
                 page={0}
                 component="div"
                 onPageChange={() => {}}
+                onRowsPerPageChange={handleRowPerPageChange}
               />
             </Box>
           </Grid>
@@ -76,10 +89,17 @@ export default function UnitPage() {
               page={0}
               component="div"
               onPageChange={() => {}}
+              onRowsPerPageChange={handleRowPerPageChange}
             />
           </Grid>
         </Grid>
       </Paper>
+      <UnitCreateDialog
+        open={showCreateDialog}
+        handleClose={() => {
+          setShowCreateDialog(false);
+        }}
+      />
     </>
   );
 }
