@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUnit } from "../services/unit.service";
+import { createUnit, fetchUnit } from "../services/unit.service";
 import { UnitState } from "../types/Unit.type";
 
 const initialState: UnitState = {
@@ -13,8 +13,12 @@ export const unitSlice = createSlice({
   name: "unit",
   reducers: {},
   extraReducers: (builder) =>
-    builder.addCase(fetchUnit.fulfilled, (state, { payload }) => {
-      state.units = payload.units;
-      state.totalRow = payload.totalRow;
-    }),
+    builder
+      .addCase(fetchUnit.fulfilled, (state, { payload }) => {
+        state.units = payload.units;
+        state.totalRow = payload.totalRow;
+      })
+      .addCase(createUnit.fulfilled, (state, { payload }) => {
+        state.units.unshift(payload);
+      }),
 });

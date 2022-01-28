@@ -8,6 +8,9 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { createUnit } from "../../../services/unit.service";
+import { useAppDispatch } from "../../../store";
+import { showToast } from "../../../store/toast.store";
 import { UnitCreateType } from "../../../types/Unit.type";
 
 export default function UnitCreateDialog(props: {
@@ -20,11 +23,28 @@ export default function UnitCreateDialog(props: {
     parent: 0,
     parentName: "",
   });
+  const dispatch = useAppDispatch();
 
   const handlerDataChange = (data: UnitCreateType) => {
     setData((x) => ({ ...x, ...data }));
   };
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    dispatch(createUnit(data))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          showToast({ message: "Unit created success!", type: "success" })
+        );
+        resetData();
+        handleClose();
+      })
+      .catch((e) => {
+        dispatch(showToast({ message: e.errorMessage, type: "error" }));
+      });
+  };
+  const resetData = () => {
+    setData({ name: "", parent: 0, parentName: "" });
+  };
 
   return (
     <Dialog open={open} fullWidth maxWidth="sm">
