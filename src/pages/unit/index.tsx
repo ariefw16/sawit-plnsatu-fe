@@ -10,7 +10,7 @@ import { useState } from "react";
 import TitleBar from "../../components/ui/TitleBar";
 import UnitSearchBox from "../../components/ui/unit/SearchBox";
 import UnitTable from "../../components/ui/unit/UnitTable";
-import { Unit } from "../../types/Unit.type";
+import { UnitType as Unit } from "../../types/Unit.type";
 
 export default function UnitPage() {
   const unit: Unit[] = [

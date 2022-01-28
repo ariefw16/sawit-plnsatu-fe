@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
-import { Unit } from "../../../types/Unit.type";
+import { UnitType as Unit } from "../../../types/Unit.type";
 import { StyledTableCell } from "../StyledTableCell";
 import { HeadCell } from "../../../types/CommonParams.type";
 import { useState } from "react";
