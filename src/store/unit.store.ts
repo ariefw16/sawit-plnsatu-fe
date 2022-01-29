@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createUnit, fetchUnit } from "../services/unit.service";
+import { createUnit, deleteUnit, fetchUnit } from "../services/unit.service";
 import { UnitState } from "../types/Unit.type";
 
 const initialState: UnitState = {
@@ -21,5 +21,12 @@ export const unitSlice = createSlice({
       .addCase(createUnit.fulfilled, (state, { payload }) => {
         state.units.unshift(payload);
         state.totalRow!++;
+      })
+      .addCase(deleteUnit.fulfilled, (state, { payload }) => {
+        if (payload.response.affected > 0) {
+          const idx = state.units.findIndex((x) => x.id === payload.id);
+          state.units.splice(idx);
+          state.totalRow!--;
+        }
       }),
 });

@@ -12,7 +12,7 @@ import TitleBar from "../../components/ui/TitleBar";
 import UnitCreateDialog from "../../components/ui/unit/CreateDialog";
 import UnitSearchBox from "../../components/ui/unit/SearchBox";
 import UnitTable from "../../components/ui/unit/UnitTable";
-import { fetchUnit } from "../../services/unit.service";
+import { deleteUnit, fetchUnit } from "../../services/unit.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
 
@@ -49,6 +49,19 @@ export default function UnitPage() {
     setSingleDelete(data);
     setShowDialog({ delete: true, create: false });
   };
+  const handleDeleteData = () => {
+    dispatch(deleteUnit({ id: singleDelete.id }))
+      .unwrap()
+      .then(() => {
+        setShowDialog({ delete: false, create: false });
+        dispatch(
+          showToast({ message: "Data deletion success!", type: "success" })
+        );
+      })
+      .catch((e) => {
+        dispatch(showToast({ message: e.errorMessage, type: "error" }));
+      });
+  };
 
   return (
     <>
@@ -80,7 +93,9 @@ export default function UnitPage() {
                   justifyContent: "center",
                 }}
               >
-                Showing {totalRow} data
+                <Typography variant="caption" sx={{ fontSize: 14 }}>
+                  Showing {totalRow} data
+                </Typography>
               </Box>
               <Box sx={{ flexGrow: 1 }} />
               <TablePagination
@@ -127,9 +142,7 @@ export default function UnitPage() {
         handleClose={() => {
           setShowDialog({ delete: false, create: false });
         }}
-        handleDelete={() => {
-          setShowDialog({ delete: false, create: false });
-        }}
+        handleDelete={handleDeleteData}
       />
     </>
   );
