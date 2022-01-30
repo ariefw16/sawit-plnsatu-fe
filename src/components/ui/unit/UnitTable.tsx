@@ -117,7 +117,7 @@ export default function UnitTable(props: {
                   <IconButton
                     color="primary"
                     onClick={() => {
-                      navigate(`unit/${x.id}`);
+                      navigate(`/unit/${x.id}`);
                     }}
                   >
                     <ManageSearchIcon />
