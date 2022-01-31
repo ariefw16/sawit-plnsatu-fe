@@ -48,3 +48,16 @@ export const deleteUnit = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const fetchSingleUnit = createAsyncThunk<
+  UnitType,
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("unit/singleFetch", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`unit?id=${id}`);
+    return response.data[0][0];
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

@@ -21,7 +21,7 @@ export interface UnitFetchParams extends CommonParams {
 }
 
 export interface UnitState {
-  unit: UnitType;
+  selectedUnit: UnitType;
   units: UnitType[];
   totalRow?: number;
 }
