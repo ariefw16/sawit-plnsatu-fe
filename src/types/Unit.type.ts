@@ -31,3 +31,10 @@ export interface UnitCreateType {
   parentId?: number;
   parent?: { id: number; name: string };
 }
+
+export interface UnitUpdateType {
+  id: number;
+  name?: string;
+  parentId?: number;
+  parent?: { id: number; name: string };
+}

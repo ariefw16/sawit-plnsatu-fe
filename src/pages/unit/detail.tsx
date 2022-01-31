@@ -11,10 +11,10 @@ import DeleteDialog from "../../components/ui/DeleteDialog";
 import FormTitleBar from "../../components/ui/FormTitleBar";
 import UnitFormEdit from "../../components/ui/unit/FormEdit";
 import UnitFormView from "../../components/ui/unit/FormView";
-import { fetchSingleUnit } from "../../services/unit.service";
+import { fetchSingleUnit, updateUnit } from "../../services/unit.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
-import { UnitType } from "../../types/Unit.type";
+import { UnitType, UnitUpdateType } from "../../types/Unit.type";
 
 export default function UnitDetailPage() {
   const navigate = useNavigate();
@@ -51,7 +51,30 @@ export default function UnitDetailPage() {
   const cancelEditHandler = () => {
     setIsView(true);
   };
-  const submitEditHandler = () => {};
+  const submitEditHandler = () => {
+    setOpenBackdrop(true);
+    const params: UnitUpdateType = {
+      name: unitState.name,
+      parent: unitState.parent
+        ? { id: unitState.parent?.id!, name: unitState.parent?.name! }
+        : undefined,
+      id: parseInt(id!),
+    };
+    dispatch(updateUnit(params))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          showToast({ message: "Unit update success!", type: "success" })
+        );
+        setIsView(true);
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      })
+      .finally(() => {
+        setOpenBackdrop(false);
+      });
+  };
   const changeUnitStateHandler = (unit: Partial<UnitType>) => {
     setUnitState((x) => ({ ...x, ...unit }));
   };

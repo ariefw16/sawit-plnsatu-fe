@@ -35,8 +35,8 @@ export default function UnitFormEdit(props: {
         </Grid>
         <Grid item sm={12}>
           <Autocomplete
-            options={units}
-            getOptionLabel={(x) => x.name!}
+            options={units.filter((x) => x.id !== unit.id)}
+            getOptionLabel={(x) => x.name! || ""}
             renderInput={(params) => (
               <TextField {...params} label="Parent Unit" />
             )}
@@ -46,7 +46,7 @@ export default function UnitFormEdit(props: {
               });
             }}
             isOptionEqualToValue={(opt, val) => opt.id === val.id}
-            defaultValue={{ id: unit.parent?.id, name: unit.parent?.name }}
+            value={{ id: unit.parent?.id, name: unit.parent?.name }}
           />
         </Grid>
       </Grid>

@@ -6,6 +6,7 @@ import {
   UnitCreateType,
   UnitFetchParams,
   UnitType,
+  UnitUpdateType,
 } from "../types/Unit.type";
 import { handleErrorAxios } from "./common.service";
 
@@ -57,6 +58,26 @@ export const fetchSingleUnit = createAsyncThunk<
   try {
     const response = await axios.get(`unit?id=${id}`);
     return response.data[0][0];
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const updateUnit = createAsyncThunk<
+  UnitType,
+  UnitUpdateType,
+  { rejectValue: ValidationErrors }
+>("unit/update", async (params, { rejectWithValue }) => {
+  try {
+    if (
+      (params.parent &&
+        (!("id" in params.parent) || params.parent.id === undefined)) ||
+      !params.parent
+    ) {
+      params.parent = undefined;
+    }
+    const response = await axios.patch(`unit/${params.id}`, params);
+    return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }

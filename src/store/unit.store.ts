@@ -4,6 +4,7 @@ import {
   deleteUnit,
   fetchSingleUnit,
   fetchUnit,
+  updateUnit,
 } from "../services/unit.service";
 import { UnitState } from "../types/Unit.type";
 
@@ -35,6 +36,9 @@ export const unitSlice = createSlice({
         }
       })
       .addCase(fetchSingleUnit.fulfilled, (state, { payload }) => {
+        state.selectedUnit = payload;
+      })
+      .addCase(updateUnit.fulfilled, (state, { payload }) => {
         state.selectedUnit = payload;
       }),
 });
