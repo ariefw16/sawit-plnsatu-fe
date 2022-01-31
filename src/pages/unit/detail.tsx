@@ -9,10 +9,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteDialog from "../../components/ui/DeleteDialog";
 import FormTitleBar from "../../components/ui/FormTitleBar";
+import UnitFormEdit from "../../components/ui/unit/FormEdit";
 import UnitFormView from "../../components/ui/unit/FormView";
 import { fetchSingleUnit } from "../../services/unit.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
+import { UnitType } from "../../types/Unit.type";
 
 export default function UnitDetailPage() {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ export default function UnitDetailPage() {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [isView, setIsView] = useState(true);
+  const [unitState, setUnitState] = useState<UnitType>({});
 
   useEffect(() => {
     setOpenBackdrop(true);
@@ -33,7 +36,25 @@ export default function UnitDetailPage() {
       .finally(() => {
         setOpenBackdrop(false);
       });
-  }, [id]);
+  }, []);
+
+  const backButtonHandler = () => {
+    navigate(-1);
+  };
+  const updateButtonHandler = () => {
+    setUnitState(Object.assign({}, unit));
+    setIsView(false);
+  };
+  const deleteButtonHandler = () => {
+    setDeleteDialog(true);
+  };
+  const cancelEditHandler = () => {
+    setIsView(true);
+  };
+  const submitEditHandler = () => {};
+  const changeUnitStateHandler = (unit: Partial<UnitType>) => {
+    setUnitState((x) => ({ ...x, ...unit }));
+  };
 
   return (
     <>
@@ -45,19 +66,11 @@ export default function UnitDetailPage() {
       </Backdrop>
       <FormTitleBar
         breadcrumbs={[{ to: "/unit", label: "Unit" }, { label: "Detail Unit" }]}
-        handlerBackButton={() => {
-          navigate(-1);
-        }}
-        handlerDeleteButton={() => {
-          setDeleteDialog(true);
-        }}
-        handlerUpdateButton={() => {
-          setIsView(false);
-        }}
-        handlerCancelEditButton={() => {
-          setIsView(true);
-        }}
-        handlerSubmitEdit={() => {}}
+        handlerBackButton={backButtonHandler}
+        handlerDeleteButton={deleteButtonHandler}
+        handlerUpdateButton={updateButtonHandler}
+        handlerCancelEditButton={cancelEditHandler}
+        handlerSubmitEdit={submitEditHandler}
         isView={isView}
       />
       <DeleteDialog
@@ -68,7 +81,14 @@ export default function UnitDetailPage() {
         handleDelete={() => {}}
         data={{ id: unit.id!, name: unit.name! }}
       />
-      {isView ? <UnitFormView unit={unit} /> : <></>}
+      {isView ? (
+        <UnitFormView unit={unit} />
+      ) : (
+        <UnitFormEdit
+          unit={unitState}
+          handleOnchange={changeUnitStateHandler}
+        />
+      )}
     </>
   );
 }
