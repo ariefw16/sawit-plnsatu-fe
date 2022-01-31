@@ -10,12 +10,18 @@ export default function FormTitleBar(props: {
   handlerBackButton: any;
   handlerDeleteButton: any;
   handlerUpdateButton: any;
+  handlerCancelEditButton: any;
+  handlerSubmitEdit: any;
+  isView: boolean;
 }) {
   const {
     breadcrumbs,
     handlerBackButton,
     handlerDeleteButton,
     handlerUpdateButton,
+    isView,
+    handlerCancelEditButton,
+    handlerSubmitEdit,
   } = props;
   return (
     <Box sx={{ display: "flex", flexDirection: "row", my: 2 }}>
@@ -71,27 +77,52 @@ export default function FormTitleBar(props: {
         </Breadcrumbs>
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      <Box>
-        <Button
-          size="large"
-          variant="outlined"
-          color="error"
-          sx={{ fontWeight: "bold", mr: 2 }}
-          startIcon={<DeleteOutlineIcon />}
-          onClick={handlerDeleteButton}
-        >
-          Delete
-        </Button>
-        <Button
-          size="large"
-          variant="contained"
-          sx={{ fontWeight: "bold" }}
-          startIcon={<EditIcon />}
-          onClick={handlerUpdateButton}
-        >
-          Update Data
-        </Button>
-      </Box>
+      {isView ? (
+        <Box>
+          <Button
+            size="large"
+            variant="outlined"
+            color="error"
+            sx={{ fontWeight: "bold", mr: 2 }}
+            startIcon={<DeleteOutlineIcon />}
+            onClick={handlerDeleteButton}
+          >
+            Delete
+          </Button>
+          <Button
+            size="large"
+            variant="contained"
+            sx={{ fontWeight: "bold" }}
+            startIcon={<EditIcon />}
+            onClick={handlerUpdateButton}
+          >
+            Update Data
+          </Button>
+        </Box>
+      ) : (
+        <Box>
+          <Button
+            size="large"
+            variant="outlined"
+            color="warning"
+            sx={{ fontWeight: "bold", mr: 2 }}
+            startIcon={<DeleteOutlineIcon />}
+            onClick={handlerCancelEditButton}
+          >
+            Cancel
+          </Button>
+          <Button
+            size="large"
+            variant="contained"
+            sx={{ fontWeight: "bold", color: "white" }}
+            startIcon={<EditIcon />}
+            onClick={handlerSubmitEdit}
+            color="secondary"
+          >
+            Save Update
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }
