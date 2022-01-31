@@ -123,11 +123,6 @@ export default function UnitTable(props: {
                     <ManageSearchIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Edit">
-                  <IconButton color="warning">
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
                 <Tooltip title="Delete">
                   <IconButton
                     color="error"
