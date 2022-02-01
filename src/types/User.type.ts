@@ -30,3 +30,14 @@ export interface UserCreateType {
   email?: string;
   unit?: { id: number; name: string };
 }
+
+export interface UserUpdateType {
+  id?: number;
+  name?: string;
+  username?: string;
+  nik?: string;
+  password?: string;
+  email?: string;
+  unit?: { id: number; name: string };
+  role?: { id: number; name: string };
+}

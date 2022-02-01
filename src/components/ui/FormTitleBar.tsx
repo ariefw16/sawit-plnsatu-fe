@@ -4,6 +4,8 @@ import { Link as RouterLink } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import SaveIcon from "@mui/icons-material/Save";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function FormTitleBar(props: {
   breadcrumbs: { to?: string; label: string }[];
@@ -13,6 +15,7 @@ export default function FormTitleBar(props: {
   handlerCancelEditButton: any;
   handlerSubmitEdit: any;
   isView: boolean;
+  title: string;
 }) {
   const {
     breadcrumbs,
@@ -22,6 +25,7 @@ export default function FormTitleBar(props: {
     isView,
     handlerCancelEditButton,
     handlerSubmitEdit,
+    title,
   } = props;
   return (
     <Box sx={{ display: "flex", flexDirection: "row", my: 2 }}>
@@ -40,7 +44,7 @@ export default function FormTitleBar(props: {
         </Button>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", px: 2 }}>
-        <Typography variant="h5">Unit Details</Typography>
+        <Typography variant="h5">{title}</Typography>
         <Breadcrumbs
           separator={<NavigateNextIcon fontSize="small" />}
           aria-label="breadcrumb"
@@ -106,7 +110,7 @@ export default function FormTitleBar(props: {
             variant="outlined"
             color="warning"
             sx={{ fontWeight: "bold", mr: 2 }}
-            startIcon={<DeleteOutlineIcon />}
+            startIcon={<ClearIcon />}
             onClick={handlerCancelEditButton}
           >
             Cancel
@@ -115,7 +119,7 @@ export default function FormTitleBar(props: {
             size="large"
             variant="contained"
             sx={{ fontWeight: "bold", color: "white" }}
-            startIcon={<EditIcon />}
+            startIcon={<SaveIcon />}
             onClick={handlerSubmitEdit}
             color="secondary"
           >

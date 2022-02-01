@@ -49,3 +49,16 @@ export const deleteUser = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const fetchSingleUser = createAsyncThunk<
+  UserType,
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("user/singleFetch", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`users?id=${id}`);
+    return response.data[0][0];
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
