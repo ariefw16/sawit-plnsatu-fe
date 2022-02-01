@@ -1,7 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { CommonParams, ValidationErrors } from "../types/CommonParams.type";
-import { FetchUserReturnType } from "../types/User.type";
+import {
+  FetchUserReturnType,
+  UserCreateType,
+  UserType,
+} from "../types/User.type";
 import { handleErrorAxios } from "./common.service";
 
 export const fetchUser = createAsyncThunk<
@@ -10,11 +14,24 @@ export const fetchUser = createAsyncThunk<
   { rejectValue: ValidationErrors }
 >("user/fetch", async (params, { rejectWithValue }) => {
   try {
-    const { page = 0, limit, q } = params;
+    const { page = 0, limit, q = "" } = params;
     const response = await axios.get(
       `users?page=${page}&limit=${limit}&q=${q}`
     );
     return { users: response.data[0], totalRow: response.data[1] };
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const createUser = createAsyncThunk<
+  UserType,
+  UserCreateType,
+  { rejectValue: ValidationErrors }
+>("user/create", async (params, { rejectWithValue }) => {
+  try {
+    const response = await axios.post("users", params);
+    return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }

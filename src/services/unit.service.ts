@@ -15,9 +15,9 @@ export const fetchUnit = createAsyncThunk<
   UnitFetchParams,
   { rejectValue: ValidationErrors }
 >("unit/fetch", async (params, { rejectWithValue }) => {
-  const { page = 0, limit, name, parentId, q, stiUnitId } = params;
+  const { page = 0, limit, name, q = "" } = params;
   try {
-    const response = await axios.get(`unit?page=${page}&limit=${limit}`);
+    const response = await axios.get(`unit?page=${page}&limit=${limit}&q=${q}`);
     return { unit: {}, units: response.data[0], totalRow: response.data[1] };
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);

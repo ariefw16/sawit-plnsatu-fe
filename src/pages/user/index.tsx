@@ -9,16 +9,12 @@ import {
 import React, { useEffect, useState } from "react";
 import DeleteDialog from "../../components/ui/DeleteDialog";
 import TitleBar from "../../components/ui/TitleBar";
-import UnitCreateDialog from "../../components/ui/unit/CreateDialog";
-import UnitSearchBox from "../../components/ui/unit/SearchBox";
-import UnitTable from "../../components/ui/unit/UnitTable";
 import CreateUserDialog from "../../components/ui/user/CreateUserDialog";
 import UserSearchBox from "../../components/ui/user/UserSearchBox";
 import UserTable from "../../components/ui/user/UserTable";
 import { fetchUser } from "../../services/user.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
-import unit from "../unit";
 
 export default function UserPage() {
   const dispatch = useAppDispatch();
@@ -90,7 +86,7 @@ export default function UserPage() {
               <TablePagination
                 rowsPerPageOptions={[10, 25, 50, 100]}
                 rowsPerPage={rowsPerPage}
-                count={unit.length}
+                count={user.length}
                 page={0}
                 component="div"
                 onPageChange={() => {}}
@@ -110,7 +106,7 @@ export default function UserPage() {
             <TablePagination
               rowsPerPageOptions={[10, 25, 50, 100]}
               rowsPerPage={rowsPerPage}
-              count={unit.length}
+              count={user.length}
               page={0}
               component="div"
               onPageChange={() => {}}

@@ -5,6 +5,7 @@ export interface UserType {
   name?: string;
   username?: string;
   nik?: string;
+  email?: string;
   password?: string;
   unit?: UnitType;
 }
@@ -19,4 +20,13 @@ export interface FetchUserReturnType {
   selectedUser: UserType;
   users: UserType[];
   totalRow?: number;
+}
+
+export interface UserCreateType {
+  name?: string;
+  username?: string;
+  nik?: string;
+  password?: string;
+  email?: string;
+  unit?: { id: number; name: string };
 }

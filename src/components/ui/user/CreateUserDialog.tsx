@@ -8,38 +8,42 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createUnit } from "../../../services/unit.service";
+import { createUser } from "../../../services/user.service";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { showToast } from "../../../store/toast.store";
 import { UnitCreateType } from "../../../types/Unit.type";
+import { UserCreateType } from "../../../types/User.type";
 
 export default function CreateUserDialog(props: {
   open: boolean;
   handleClose: any;
 }) {
   const { open, handleClose } = props;
-  const [data, setData] = useState<UnitCreateType>({
+  const [data, setData] = useState<UserCreateType>({
     name: "",
-    parentId: 0,
-    parent: undefined,
+    nik: "",
+    password: "",
+    username: "",
+    email: "",
+    unit: undefined,
   });
   const dispatch = useAppDispatch();
   const units = useAppSelector((state) =>
     state.unit.units.map((x) => ({ id: x.id, name: x.name }))
   );
 
-  const handlerDataChange = (data: UnitCreateType) => {
+  const handlerDataChange = (data: UserCreateType) => {
     setData((x) => ({ ...x, ...data }));
   };
   const handleSubmit = () => {
-    dispatch(createUnit(data))
+    dispatch(createUser(data))
       .unwrap()
       .then(() => {
         dispatch(
-          showToast({ message: "Unit created success!", type: "success" })
+          showToast({ message: "User created success!", type: "success" })
         );
-        resetData();
         handleClose();
       })
       .catch((e) => {
@@ -47,34 +51,78 @@ export default function CreateUserDialog(props: {
       });
   };
   const resetData = () => {
-    setData({ name: "", parentId: 0, parent: undefined });
+    setData({ name: "", nik: "", password: "", username: "", unit: undefined });
   };
 
+  useEffect(() => {
+    resetData();
+  }, []);
+
   return (
-    <Dialog open={open} fullWidth maxWidth="sm">
-      <DialogTitle>Create new Unit</DialogTitle>
+    <Dialog open={open} fullWidth maxWidth="md">
+      <DialogTitle>Create new User</DialogTitle>
       <DialogContent dividers>
-        <Grid container rowSpacing={1}>
-          <Grid item sm={12}>
+        <Grid container rowSpacing={1} columnSpacing={1}>
+          <Grid item sm={6}>
             <TextField
               fullWidth
-              label="Unit Name"
+              label="Employee Name"
               value={data.name}
               onChange={(e) => {
                 handlerDataChange({ name: e.target.value });
               }}
             />
           </Grid>
-          <Grid item sm={12}>
+          <Grid item sm={6}>
+            <TextField
+              fullWidth
+              label="NIK"
+              value={data.nik}
+              onChange={(e) => {
+                handlerDataChange({ nik: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item sm={7}>
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              value={data.email}
+              onChange={(e) => {
+                handlerDataChange({ email: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <TextField
+              fullWidth
+              label="Username"
+              value={data.username}
+              onChange={(e) => {
+                handlerDataChange({ username: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item sm={6}>
+            <TextField
+              fullWidth
+              label="Password"
+              value={data.password}
+              type="password"
+              onChange={(e) => {
+                handlerDataChange({ password: e.target.value });
+              }}
+            />
+          </Grid>
+          <Grid item sm={7}>
             <Autocomplete
               options={units}
               getOptionLabel={(x) => x.name!}
-              renderInput={(params) => (
-                <TextField {...params} label="Parent Unit" />
-              )}
+              renderInput={(params) => <TextField {...params} label="Unit" />}
               onChange={(ev, val) => {
                 handlerDataChange({
-                  parent: { id: val?.id!, name: val?.name! },
+                  unit: { id: val?.id!, name: val?.name! },
                 });
               }}
               isOptionEqualToValue={(opt, val) => opt.id === val.id}

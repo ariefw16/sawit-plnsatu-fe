@@ -106,16 +106,16 @@ export default function UserTable(props: {
                   }}
                 />
               </TableCell>
-              <TableCell sx={{ width: "40%" }} padding="checkbox">
+              <TableCell sx={{ width: "25%" }} padding="checkbox">
                 {x.name}
               </TableCell>
-              <TableCell sx={{ width: "40%" }} padding="checkbox">
+              <TableCell sx={{ width: "15%" }} padding="checkbox">
                 {x.nik}
               </TableCell>
-              <TableCell sx={{ width: "40%" }} padding="checkbox">
+              <TableCell sx={{ width: "20%" }} padding="checkbox">
                 {x.username}
               </TableCell>
-              <TableCell sx={{ width: "40%" }} padding="checkbox">
+              <TableCell sx={{ width: "20%" }} padding="checkbox">
                 {x.unit?.name}
               </TableCell>
               <TableCell sx={{ width: "15%" }} padding="checkbox">

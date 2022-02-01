@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUser } from "../services/user.service";
+import { createUser, fetchUser } from "../services/user.service";
 import { UserState } from "../types/User.type";
 
 const initialState: UserState = {
@@ -13,9 +13,14 @@ export const userSlice = createSlice({
   reducers: {},
   name: "user",
   extraReducers: (builder) => {
-    builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
-      state.users = payload.users;
-      state.totalRow = payload.totalRow;
-    });
+    builder
+      .addCase(fetchUser.fulfilled, (state, { payload }) => {
+        state.users = payload.users;
+        state.totalRow = payload.totalRow;
+      })
+      .addCase(createUser.fulfilled, (state, { payload }) => {
+        state.users.unshift(payload);
+        state.totalRow!++;
+      });
   },
 });
