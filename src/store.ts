@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { toastSlice } from "./store/toast.store";
 import { unitSlice } from "./store/unit.store";
+import { userSlice } from "./store/user.store";
 
 export const store = configureStore({
   reducer: {
-    unit: unitSlice.reducer,
     toast: toastSlice.reducer,
+    unit: unitSlice.reducer,
+    user: userSlice.reducer,
   },
 });
 

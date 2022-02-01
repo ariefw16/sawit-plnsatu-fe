@@ -17,20 +17,21 @@ import { UnitType as Unit } from "../../../types/Unit.type";
 import { StyledTableCell } from "../StyledTableCell";
 import { HeadCell } from "../../../types/CommonParams.type";
 import { useState } from "react";
+import { UserType } from "../../../types/User.type";
 
-export default function UnitTable(props: {
-  unit: Unit[];
+export default function UserTable(props: {
+  user: UserType[];
   rowCount: number;
   loading: boolean;
   handleDeleteButton: any;
 }) {
-  const { unit, rowCount, loading, handleDeleteButton } = props;
+  const { user, rowCount, loading, handleDeleteButton } = props;
   const navigate = useNavigate();
   const [numSelected, setNumSelected] = useState(0);
   const [selected, setSelected] = useState<number[]>([]);
 
   const onSelectAllClick = () => {
-    const ids = unit.map((x) => (x.id !== undefined ? x.id : 0));
+    const ids = user.map((x) => (x.id !== undefined ? x.id : 0));
     if (selected.length === ids.length) {
       setSelected([]);
       setNumSelected(0);
@@ -77,23 +78,23 @@ export default function UnitTable(props: {
       {loading ? (
         <TableBody>
           <TableRow>
-            <TableCell colSpan={4} align="center">
+            <TableCell colSpan={6} align="center">
               <CircularProgress />
             </TableCell>
           </TableRow>
         </TableBody>
       ) : (
         <TableBody>
-          {unit.length < 1 && (
+          {user.length < 1 && (
             <TableRow key={0}>
-              <TableCell colSpan={4} align="center">
+              <TableCell colSpan={6} align="center">
                 <Typography variant="caption" sx={{ fontStyle: "italic" }}>
                   No Data to show
                 </Typography>
               </TableCell>
             </TableRow>
           )}
-          {unit.map((x) => (
+          {user.map((x) => (
             <TableRow key={x.id}>
               <TableCell sx={{ width: "5%" }} padding="checkbox">
                 <Checkbox
@@ -109,14 +110,20 @@ export default function UnitTable(props: {
                 {x.name}
               </TableCell>
               <TableCell sx={{ width: "40%" }} padding="checkbox">
-                {x.parent?.name || "-"}
+                {x.nik}
+              </TableCell>
+              <TableCell sx={{ width: "40%" }} padding="checkbox">
+                {x.username}
+              </TableCell>
+              <TableCell sx={{ width: "40%" }} padding="checkbox">
+                {x.unit?.name}
               </TableCell>
               <TableCell sx={{ width: "15%" }} padding="checkbox">
                 <Tooltip title="Quick View">
                   <IconButton
                     color="primary"
                     onClick={() => {
-                      navigate(`/unit/${x.id}`);
+                      navigate(`/user/${x.id}`);
                     }}
                   >
                     <ManageSearchIcon />
@@ -141,7 +148,7 @@ export default function UnitTable(props: {
   );
 }
 
-const headCells: readonly HeadCell<Unit>[] = [
+const headCells: readonly HeadCell<UserType>[] = [
   {
     id: "name",
     numeric: false,
@@ -149,9 +156,21 @@ const headCells: readonly HeadCell<Unit>[] = [
     label: "Name",
   },
   {
-    id: "parent",
+    id: "nik",
     numeric: false,
     disablePadding: true,
-    label: "Parent",
+    label: "NIK",
+  },
+  {
+    id: "username",
+    numeric: false,
+    disablePadding: true,
+    label: "Username",
+  },
+  {
+    id: "unit",
+    numeric: false,
+    disablePadding: true,
+    label: "Unit",
   },
 ];
