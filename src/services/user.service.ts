@@ -36,3 +36,16 @@ export const createUser = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const deleteUser = createAsyncThunk<
+  any,
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("user/delete", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.delete(`users/${id}`);
+    return id;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

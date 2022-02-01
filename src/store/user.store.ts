@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createUser, fetchUser } from "../services/user.service";
+import { createUser, deleteUser, fetchUser } from "../services/user.service";
 import { UserState } from "../types/User.type";
 
 const initialState: UserState = {
@@ -21,6 +21,12 @@ export const userSlice = createSlice({
       .addCase(createUser.fulfilled, (state, { payload }) => {
         state.users.unshift(payload);
         state.totalRow!++;
+      })
+      .addCase(deleteUser.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        const idx = state.users.findIndex((x) => x.id === payload);
+        state.users.splice(idx);
+        state.totalRow!--;
       });
   },
 });

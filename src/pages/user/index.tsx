@@ -12,7 +12,7 @@ import TitleBar from "../../components/ui/TitleBar";
 import CreateUserDialog from "../../components/ui/user/CreateUserDialog";
 import UserSearchBox from "../../components/ui/user/UserSearchBox";
 import UserTable from "../../components/ui/user/UserTable";
-import { fetchUser } from "../../services/user.service";
+import { deleteUser, fetchUser } from "../../services/user.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
 
@@ -46,8 +46,24 @@ export default function UserPage() {
   const handleRowPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(e.target.value));
   };
-  const handleDeleteData = () => {};
-  const handleDeleteButton = () => {};
+  const handleDeleteData = () => {
+    dispatch(deleteUser({ id: singleDelete.id }))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          showToast({ type: "success", message: "User deletion success" })
+        );
+        setShowDialog({ create: false, delete: false });
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
+  };
+  const handleDeleteButton = (props: { id: number; name: string }) => {
+    const { id, name } = props;
+    setShowDialog({ create: false, delete: true });
+    setSingleDelete({ id, name });
+  };
 
   return (
     <>

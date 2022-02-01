@@ -5,6 +5,7 @@ import DashboardPage from "./pages/dashboard";
 import UnitPage from "./pages/unit";
 import UnitDetailPage from "./pages/unit/detail";
 import UserPage from "./pages/user";
+import DetailUserPage from "./pages/user/detail";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/" element={<AppLayout />}>
         <Route index element={<DashboardPage />} />
         <Route path="/user" element={<UserPage />} />
+        <Route path="/user/:id" element={<DetailUserPage />} />
         <Route path="/unit" element={<UnitPage />} />
         <Route path="/unit/:id" element={<UnitDetailPage />} />
       </Route>
