@@ -7,6 +7,10 @@ import {
   Autocomplete,
   DialogActions,
   Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { createUnit } from "../../../services/unit.service";
@@ -28,6 +32,7 @@ export default function CreateUserDialog(props: {
     username: "",
     email: "",
     unit: undefined,
+    role: "user",
   });
   const dispatch = useAppDispatch();
   const units = useAppSelector((state) =>
@@ -51,7 +56,14 @@ export default function CreateUserDialog(props: {
       });
   };
   const resetData = () => {
-    setData({ name: "", nik: "", password: "", username: "", unit: undefined });
+    setData({
+      name: "",
+      nik: "",
+      password: "",
+      username: "",
+      unit: undefined,
+      role: "user",
+    });
   };
 
   useEffect(() => {
@@ -115,7 +127,7 @@ export default function CreateUserDialog(props: {
               }}
             />
           </Grid>
-          <Grid item sm={7}>
+          <Grid item sm={5}>
             <Autocomplete
               options={units}
               getOptionLabel={(x) => x.name!}
@@ -127,6 +139,24 @@ export default function CreateUserDialog(props: {
               }}
               isOptionEqualToValue={(opt, val) => opt.id === val.id}
             />
+          </Grid>
+          <Grid item sm={4}>
+            <FormControl fullWidth>
+              <InputLabel id="user-role-label">User Role</InputLabel>
+              <Select
+                value={data.role}
+                label="User Role"
+                id="user-role-label"
+                onChange={(e) => {
+                  handlerDataChange({ role: e.target.value });
+                }}
+              >
+                <MenuItem value="superuser">SuperUser</MenuItem>
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="adminUnit">Admin Unit</MenuItem>
+                <MenuItem value="user">User / Pegawai</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
       </DialogContent>

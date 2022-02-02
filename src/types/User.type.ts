@@ -29,6 +29,7 @@ export interface UserCreateType {
   password?: string;
   email?: string;
   unit?: { id: number; name: string };
+  role?: string;
 }
 
 export interface UserUpdateType {
