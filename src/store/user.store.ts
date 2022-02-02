@@ -4,6 +4,7 @@ import {
   deleteUser,
   fetchSingleUser,
   fetchUser,
+  updateUser,
 } from "../services/user.service";
 import { UserState } from "../types/User.type";
 
@@ -34,6 +35,11 @@ export const userSlice = createSlice({
       })
       .addCase(fetchSingleUser.fulfilled, (state, { payload }) => {
         state.selectedUser = payload;
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.selectedUser = payload;
+        const idx = state.users.findIndex((x) => x.id === payload.id);
+        state.users[idx] = payload;
       });
   },
 });

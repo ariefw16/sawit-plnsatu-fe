@@ -5,6 +5,7 @@ import {
   FetchUserReturnType,
   UserCreateType,
   UserType,
+  UserUpdateType,
 } from "../types/User.type";
 import { handleErrorAxios } from "./common.service";
 
@@ -58,6 +59,20 @@ export const fetchSingleUser = createAsyncThunk<
   try {
     const response = await axios.get(`users?id=${id}`);
     return response.data[0][0];
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const updateUser = createAsyncThunk<
+  UserType,
+  UserUpdateType,
+  { rejectValue: ValidationErrors }
+>("user/update", async (params, { rejectWithValue }) => {
+  try {
+    const { id, ...restParams } = params;
+    const response = await axios.patch(`users/${id}`, restParams);
+    return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }

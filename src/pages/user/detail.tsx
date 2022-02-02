@@ -5,7 +5,7 @@ import DeleteDialog from "../../components/ui/DeleteDialog";
 import FormTitleBar from "../../components/ui/FormTitleBar";
 import UserFormEdit from "../../components/ui/user/FormEdit";
 import UserFormView from "../../components/ui/user/FormView";
-import { fetchSingleUser } from "../../services/user.service";
+import { fetchSingleUser, updateUser } from "../../services/user.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
 import { UserType, UserUpdateType } from "../../types/User.type";
@@ -54,9 +54,30 @@ export default function DetailUserPage() {
   const deleteButtonHandler = () => {
     setDeleteDialog(true);
   };
-  const SubmitEditHandler = () => {};
+  const SubmitEditHandler = () => {
+    setOpenBackdrop(true);
+    dispatch(updateUser(userData))
+      .unwrap()
+      .then(() => {
+        setIsView(true);
+        dispatch(
+          showToast({
+            type: "success",
+            message: `update user ${user.name} success`,
+          })
+        );
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      })
+      .finally(() => {
+        setOpenBackdrop(false);
+      });
+  };
   const deleteDataHandler = () => {};
-  const onchangeDataHandler = () => {};
+  const onchangeDataHandler = (user: UserUpdateType) => {
+    setUserData((x) => ({ ...x, ...user }));
+  };
 
   return (
     <>
