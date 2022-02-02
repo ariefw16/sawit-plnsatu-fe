@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/layout/appLayout";
 import DashboardPage from "./pages/dashboard";
+import SharingSchedulePage from "./pages/schedule";
 import UnitPage from "./pages/unit";
 import UnitDetailPage from "./pages/unit/detail";
 import UserPage from "./pages/user";
@@ -16,6 +17,7 @@ function App() {
         <Route path="/user/:id" element={<DetailUserPage />} />
         <Route path="/unit" element={<UnitPage />} />
         <Route path="/unit/:id" element={<UnitDetailPage />} />
+        <Route path="/schedule" element={<SharingSchedulePage />} />
       </Route>
     </Routes>
   );

@@ -14,6 +14,9 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AlarmIcon from "@mui/icons-material/Alarm";
+import FeedIcon from "@mui/icons-material/Feed";
+import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 
 export default function MenuApp() {
   const { pathname } = useLocation();
@@ -124,5 +127,23 @@ const menu: MenuType[] = [
     to: "/logout",
     section: "foot-extra",
     icon: <LogoutIcon />,
+  },
+  {
+    label: "Checkin Article",
+    to: "/available-article",
+    section: "app",
+    icon: <SendToMobileIcon />,
+  },
+  {
+    label: "Sharing Schedule",
+    to: "/schedule",
+    section: "app",
+    icon: <AlarmIcon />,
+  },
+  {
+    label: "Articles",
+    to: "/article",
+    section: "app",
+    icon: <FeedIcon />,
   },
 ];
