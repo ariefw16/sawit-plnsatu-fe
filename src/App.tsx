@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/layout/appLayout";
+import ArticlesPage from "./pages/articles";
+import CheckinAvailablePage from "./pages/checkin-available";
 import DashboardPage from "./pages/dashboard";
 import SharingSchedulePage from "./pages/schedule";
 import UnitPage from "./pages/unit";
@@ -18,6 +20,8 @@ function App() {
         <Route path="/unit" element={<UnitPage />} />
         <Route path="/unit/:id" element={<UnitDetailPage />} />
         <Route path="/schedule" element={<SharingSchedulePage />} />
+        <Route path="/available-article" element={<CheckinAvailablePage />} />
+        <Route path="/article" element={<ArticlesPage />} />
       </Route>
     </Routes>
   );

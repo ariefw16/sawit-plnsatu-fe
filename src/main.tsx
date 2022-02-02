@@ -27,14 +27,14 @@ const theme = createTheme({
 axios.defaults.baseURL = "http://localhost:3000/";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </ThemeProvider>,
+  // </React.StrictMode>,
   document.getElementById("root")
 );
