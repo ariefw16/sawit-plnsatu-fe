@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ValidationErrors } from "../types/CommonParams.type";
+import { CommonParams, ValidationErrors } from "../types/CommonParams.type";
 import { ScheduleCreateType, ScheduleType } from "../types/Schedule.type";
 import { handleErrorAxios } from "./common.service";
 
@@ -12,6 +12,21 @@ export const createSchedule = createAsyncThunk<
   try {
     const response = await axios.post("share-schedule", params);
     return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const fetchSchedules = createAsyncThunk<
+  ScheduleType[],
+  { month: number; year: number },
+  { rejectValue: ValidationErrors }
+>("schedule/fetch", async ({ month, year }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(
+      `share-schedule?month=${month}&year=${year}`
+    );
+    return response.data[0];
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createSchedule } from "../services/schedule.service";
+import { createSchedule, fetchSchedules } from "../services/schedule.service";
 import { ScheduleState } from "../types/Schedule.type";
 
 const initialState: ScheduleState = {
@@ -12,7 +12,11 @@ export const scheduleSlice = createSlice({
   name: "schedule",
   reducers: {},
   extraReducers: (builder) =>
-    builder.addCase(createSchedule.fulfilled, (state, { payload }) => {
-      state.schedules.unshift(payload);
-    }),
+    builder
+      .addCase(createSchedule.fulfilled, (state, { payload }) => {
+        state.schedules.unshift(payload);
+      })
+      .addCase(fetchSchedules.fulfilled, (state, { payload }) => {
+        state.schedules = payload;
+      }),
 });
