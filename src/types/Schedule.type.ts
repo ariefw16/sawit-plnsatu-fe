@@ -12,8 +12,9 @@ export interface ScheduleState {
   selectedSchedule: ScheduleType;
 }
 
-export interface ScheduleCreate {
+export interface ScheduleCreateType {
   name?: string;
   unit?: UnitType | { id: number; name: string };
-  schedule_date?: Date;
+  schedule_date?: Date | null;
+  createdById?: number;
 }

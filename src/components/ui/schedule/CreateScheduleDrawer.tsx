@@ -18,6 +18,9 @@ import DatePicker from "@mui/lab/DatePicker";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchUnit } from "../../../services/unit.service";
+import { createSchedule } from "../../../services/schedule.service";
+import { ScheduleCreateType } from "../../../types/Schedule.type";
+import { showToast } from "../../../store/toast.store";
 
 export default function CreateScheduleDrawer(props: {
   open: boolean;
@@ -28,18 +31,29 @@ export default function CreateScheduleDrawer(props: {
   const units = useAppSelector((state) =>
     state.unit.units.map((x) => ({ id: x.id, name: x.name }))
   );
-  const [value, setValue] = useState<{
-    schedule_date: Date | null;
-    name: string;
-    unit?: { id: number; name: string };
-  }>({ schedule_date: null, name: "", unit: undefined });
+  const [value, setValue] = useState<ScheduleCreateType>({
+    schedule_date: null,
+    name: "",
+    unit: undefined,
+    createdById: 4,
+  });
 
   useEffect(() => {
     if (units.length < 1) dispatch(fetchUnit({ limit: 0 }));
   }, []);
 
   const createScheduleHandler = () => {
-    console.log(value);
+    dispatch(createSchedule(value))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          showToast({ type: "success", message: "Schedule creation success!" })
+        );
+        handleToggle();
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
   };
 
   return (
