@@ -19,8 +19,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { useEffect, useState } from "react";
 import { fetchUnit } from "../../../services/unit.service";
-import { ScheduleType } from "../../../types/Schedule.type";
+import { ScheduleUpdateType } from "../../../types/Schedule.type";
 import moment from "moment";
+import { updateSchedule } from "../../../services/schedule.service";
+import { showToast } from "../../../store/toast.store";
 
 export default function DetailScheduleDrawer(props: {
   open: boolean;
@@ -31,12 +33,34 @@ export default function DetailScheduleDrawer(props: {
   const units = useAppSelector((state) => state.unit.units);
   const schedule = useAppSelector((state) => state.schedule.selectedSchedule);
   const dispatch = useAppDispatch();
-  const [data, setData] = useState<ScheduleType>({});
+  const [data, setData] = useState<ScheduleUpdateType>({});
   const [isView, setIsView] = useState(true);
 
   useEffect(() => {
     if (units.length < 1) dispatch(fetchUnit({ limit: 0 }));
   }, []);
+
+  const closeHandler = () => {
+    setIsView(true);
+    handleToggle();
+  };
+  const updateButtonHandler = () => {
+    setData(Object.assign({}, schedule));
+    setIsView(false);
+  };
+  const saveDataHandler = () => {
+    dispatch(updateSchedule(data))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          showToast({ type: "success", message: "Update Schedule success!" })
+        );
+        setIsView(true);
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
+  };
 
   const ViewButton = () => {
     return (
@@ -54,7 +78,7 @@ export default function DetailScheduleDrawer(props: {
           color="secondary"
           sx={{ fontWeight: "bold", ml: 2 }}
           startIcon={<EditIcon />}
-          onClick={() => {}}
+          onClick={updateButtonHandler}
         >
           Update Schedule
         </Button>
@@ -63,7 +87,7 @@ export default function DetailScheduleDrawer(props: {
           color="error"
           variant="outlined"
           sx={{ fontWeight: "bold" }}
-          onClick={handleToggle}
+          onClick={closeHandler}
         >
           Delete Schedule
         </Button>
@@ -87,7 +111,7 @@ export default function DetailScheduleDrawer(props: {
           color="primary"
           sx={{ fontWeight: "bold", ml: 2 }}
           startIcon={<SaveIcon />}
-          onClick={() => {}}
+          onClick={saveDataHandler}
         >
           Save Schedule
         </Button>
@@ -96,7 +120,9 @@ export default function DetailScheduleDrawer(props: {
           color="warning"
           variant="outlined"
           sx={{ fontWeight: "bold" }}
-          onClick={handleToggle}
+          onClick={() => {
+            setIsView(true);
+          }}
         >
           Cancel
         </Button>
@@ -108,7 +134,7 @@ export default function DetailScheduleDrawer(props: {
     <Drawer
       anchor={"right"}
       open={open}
-      onClose={handleToggle}
+      onClose={closeHandler}
       sx={{
         "& .MuiDrawer-paper": {
           boxSizing: "border-box",
@@ -126,20 +152,38 @@ export default function DetailScheduleDrawer(props: {
       <Divider />
       <Grid container sx={{ px: 4, pt: 4 }} rowSpacing={2} columnSpacing={1}>
         <Grid item sm={12}>
-          <TextField
-            label="Theme / Topic"
-            fullWidth
-            variant="filled"
-            value={schedule.name}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <TopicIcon />
-                </InputAdornment>
-              ),
-            }}
-            onChange={(e) => {}}
-          />
+          {isView ? (
+            <TextField
+              label="Theme / Topic"
+              fullWidth
+              value={schedule.name}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <TopicIcon />
+                  </InputAdornment>
+                ),
+              }}
+              inputProps={{ readOnly: true }}
+              variant="filled"
+            />
+          ) : (
+            <TextField
+              label="Theme / Topic"
+              fullWidth
+              value={data.name}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <TopicIcon />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setData((x) => ({ ...x, name: e.target.value }));
+              }}
+            />
+          )}
         </Grid>
         <Grid item sm={8}>
           {isView ? (
@@ -157,8 +201,12 @@ export default function DetailScheduleDrawer(props: {
               renderInput={(params) => (
                 <TextField {...params} label="Unit" fullWidth />
               )}
-              onChange={(ev, val) => {}}
+              onChange={(ev, val) => {
+                setData((x) => ({ ...x, unit: val || undefined }));
+              }}
               isOptionEqualToValue={(opt, val) => opt.id === val.id}
+              value={{ id: data.unit?.id, name: data.unit?.name }}
+              disableClearable
             />
           )}
         </Grid>
@@ -175,8 +223,13 @@ export default function DetailScheduleDrawer(props: {
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <DatePicker
                 label="Tanggal Sharing"
-                value={"2022-02-02"}
-                onChange={(newValue) => {}}
+                value={data.schedule_date}
+                onChange={(newValue) => {
+                  setData((x) => ({
+                    ...x,
+                    schedule_date: newValue || new Date(),
+                  }));
+                }}
                 renderInput={(params) => <TextField {...params} fullWidth />}
               />
             </LocalizationProvider>

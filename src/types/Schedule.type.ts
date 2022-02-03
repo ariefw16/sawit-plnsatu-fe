@@ -5,6 +5,7 @@ export interface ScheduleType {
   name?: string;
   unit?: UnitType | { id: number; name: string };
   schedule_date?: Date;
+  createdById?: number;
 }
 
 export interface ScheduleState {
@@ -17,4 +18,12 @@ export interface ScheduleCreateType {
   unit?: UnitType | { id: number; name: string };
   schedule_date?: Date | null;
   createdById?: number;
+}
+
+export interface ScheduleUpdateType {
+  name?: string;
+  unit?: UnitType | { id: number; name: string };
+  schedule_date?: Date | null;
+  createdById?: number;
+  id?: number;
 }
