@@ -21,8 +21,12 @@ import { useEffect, useState } from "react";
 import { fetchUnit } from "../../../services/unit.service";
 import { ScheduleUpdateType } from "../../../types/Schedule.type";
 import moment from "moment";
-import { updateSchedule } from "../../../services/schedule.service";
+import {
+  deleteSchedule,
+  updateSchedule,
+} from "../../../services/schedule.service";
 import { showToast } from "../../../store/toast.store";
+import DeleteDialog from "../DeleteDialog";
 
 export default function DetailScheduleDrawer(props: {
   open: boolean;
@@ -35,6 +39,7 @@ export default function DetailScheduleDrawer(props: {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<ScheduleUpdateType>({});
   const [isView, setIsView] = useState(true);
+  const [showDelete, setShowDelete] = useState(false);
 
   useEffect(() => {
     if (units.length < 1) dispatch(fetchUnit({ limit: 0 }));
@@ -56,6 +61,20 @@ export default function DetailScheduleDrawer(props: {
           showToast({ type: "success", message: "Update Schedule success!" })
         );
         setIsView(true);
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
+  };
+  const deleteScheduleHandler = () => {
+    dispatch(deleteSchedule({ id: schedule.id! }))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          showToast({ type: "success", message: "Delete schedule success!" })
+        );
+        handleToggle();
+        setShowDelete(false);
       })
       .catch((e) => {
         dispatch(showToast({ type: "error", message: e.errorMessage }));
@@ -87,7 +106,9 @@ export default function DetailScheduleDrawer(props: {
           color="error"
           variant="outlined"
           sx={{ fontWeight: "bold" }}
-          onClick={closeHandler}
+          onClick={() => {
+            setShowDelete(true);
+          }}
         >
           Delete Schedule
         </Button>
@@ -131,112 +152,122 @@ export default function DetailScheduleDrawer(props: {
   };
 
   return (
-    <Drawer
-      anchor={"right"}
-      open={open}
-      onClose={closeHandler}
-      sx={{
-        "& .MuiDrawer-paper": {
-          boxSizing: "border-box",
-          width: 600,
-          borderBottomLeftRadius: 8,
-          borderTopLeftRadius: 8,
-        },
-      }}
-    >
-      <Box sx={{ px: 4, py: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 700 }}>
-          Detail Schedule
-        </Typography>
-      </Box>
-      <Divider />
-      <Grid container sx={{ px: 4, pt: 4 }} rowSpacing={2} columnSpacing={1}>
-        <Grid item sm={12}>
-          {isView ? (
-            <TextField
-              label="Theme / Topic"
-              fullWidth
-              value={schedule.name}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <TopicIcon />
-                  </InputAdornment>
-                ),
-              }}
-              inputProps={{ readOnly: true }}
-              variant="filled"
-            />
-          ) : (
-            <TextField
-              label="Theme / Topic"
-              fullWidth
-              value={data.name}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <TopicIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                setData((x) => ({ ...x, name: e.target.value }));
-              }}
-            />
-          )}
-        </Grid>
-        <Grid item sm={8}>
-          {isView ? (
-            <TextField
-              label="Unit Scheduled"
-              fullWidth
-              variant="filled"
-              value={schedule.unit?.name}
-              inputProps={{ readOnly: true }}
-            />
-          ) : (
-            <Autocomplete
-              options={units}
-              getOptionLabel={(x) => x.name!}
-              renderInput={(params) => (
-                <TextField {...params} label="Unit" fullWidth />
-              )}
-              onChange={(ev, val) => {
-                setData((x) => ({ ...x, unit: val || undefined }));
-              }}
-              isOptionEqualToValue={(opt, val) => opt.id === val.id}
-              value={{ id: data.unit?.id, name: data.unit?.name }}
-              disableClearable
-            />
-          )}
-        </Grid>
-        <Grid item sm={6}>
-          {isView ? (
-            <TextField
-              label="Date Scheduled"
-              fullWidth
-              variant="filled"
-              value={moment(schedule.schedule_date).format("D MMMM Y")}
-              inputProps={{ readOnly: true }}
-            />
-          ) : (
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <DatePicker
-                label="Tanggal Sharing"
-                value={data.schedule_date}
-                onChange={(newValue) => {
-                  setData((x) => ({
-                    ...x,
-                    schedule_date: newValue || new Date(),
-                  }));
+    <>
+      <Drawer
+        anchor={"right"}
+        open={open}
+        onClose={closeHandler}
+        sx={{
+          "& .MuiDrawer-paper": {
+            boxSizing: "border-box",
+            width: 600,
+            borderBottomLeftRadius: 8,
+            borderTopLeftRadius: 8,
+          },
+        }}
+      >
+        <Box sx={{ px: 4, py: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            Detail Schedule
+          </Typography>
+        </Box>
+        <Divider />
+        <Grid container sx={{ px: 4, pt: 4 }} rowSpacing={2} columnSpacing={1}>
+          <Grid item sm={12}>
+            {isView ? (
+              <TextField
+                label="Theme / Topic"
+                fullWidth
+                value={schedule.name}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <TopicIcon />
+                    </InputAdornment>
+                  ),
                 }}
-                renderInput={(params) => <TextField {...params} fullWidth />}
+                inputProps={{ readOnly: true }}
+                variant="filled"
               />
-            </LocalizationProvider>
-          )}
+            ) : (
+              <TextField
+                label="Theme / Topic"
+                fullWidth
+                value={data.name}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <TopicIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setData((x) => ({ ...x, name: e.target.value }));
+                }}
+              />
+            )}
+          </Grid>
+          <Grid item sm={8}>
+            {isView ? (
+              <TextField
+                label="Unit Scheduled"
+                fullWidth
+                variant="filled"
+                value={schedule.unit?.name}
+                inputProps={{ readOnly: true }}
+              />
+            ) : (
+              <Autocomplete
+                options={units}
+                getOptionLabel={(x) => x.name!}
+                renderInput={(params) => (
+                  <TextField {...params} label="Unit" fullWidth />
+                )}
+                onChange={(ev, val) => {
+                  setData((x) => ({ ...x, unit: val || undefined }));
+                }}
+                isOptionEqualToValue={(opt, val) => opt.id === val.id}
+                value={{ id: data.unit?.id, name: data.unit?.name }}
+                disableClearable
+              />
+            )}
+          </Grid>
+          <Grid item sm={6}>
+            {isView ? (
+              <TextField
+                label="Date Scheduled"
+                fullWidth
+                variant="filled"
+                value={moment(schedule.schedule_date).format("D MMMM Y")}
+                inputProps={{ readOnly: true }}
+              />
+            ) : (
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                  label="Tanggal Sharing"
+                  value={data.schedule_date}
+                  onChange={(newValue) => {
+                    setData((x) => ({
+                      ...x,
+                      schedule_date: newValue || new Date(),
+                    }));
+                  }}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
+                />
+              </LocalizationProvider>
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-      {isView ? <ViewButton /> : <UpdateButton />}
-    </Drawer>
+        {isView ? <ViewButton /> : <UpdateButton />}
+      </Drawer>
+      <DeleteDialog
+        data={{ id: schedule.id!, name: schedule.name! }}
+        open={showDelete}
+        handleClose={() => {
+          setShowDelete(false);
+        }}
+        handleDelete={deleteScheduleHandler}
+      />
+    </>
   );
 }

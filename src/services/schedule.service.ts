@@ -49,3 +49,16 @@ export const updateSchedule = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const deleteSchedule = createAsyncThunk<
+  { id: number },
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("schedule/delete", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.delete(`share-schedule/${id}`);
+    return id;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
