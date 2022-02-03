@@ -10,7 +10,12 @@ const initialState: ScheduleState = {
 export const scheduleSlice = createSlice({
   initialState,
   name: "schedule",
-  reducers: {},
+  reducers: {
+    setSelectedSchedule: (state, { payload }) => {
+      const idx = state.schedules.findIndex((x) => x.id === payload.id);
+      state.selectedSchedule = state.schedules[idx];
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(createSchedule.fulfilled, (state, { payload }) => {
@@ -20,3 +25,5 @@ export const scheduleSlice = createSlice({
         state.schedules = payload;
       }),
 });
+
+export const { setSelectedSchedule } = scheduleSlice.actions;

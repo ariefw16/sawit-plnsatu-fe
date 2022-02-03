@@ -8,9 +8,13 @@ import CreateScheduleDrawer from "../../components/ui/schedule/CreateScheduleDra
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchSchedules } from "../../services/schedule.service";
 import { showToast } from "../../store/toast.store";
+import DetailScheduleDrawer from "../../components/ui/schedule/DetailScheduleDrawer";
+import { setSelectedSchedule } from "../../store/schedule.store";
 
 export default function SharingSchedulePage() {
   const [createDialog, setCreateDialog] = useState(false);
+  const [detailDrawer, setDetailDrawer] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
   const localizer = momentLocalizer(moment);
   const dispatch = useAppDispatch();
   const schedules = useAppSelector((state) =>
@@ -19,6 +23,7 @@ export default function SharingSchedulePage() {
       end: moment(x.schedule_date),
       title: x.name,
       allDay: true,
+      id: x.id,
     }))
   );
 
@@ -54,6 +59,10 @@ export default function SharingSchedulePage() {
           endAccessor="end"
           style={{ height: 500 }}
           views={["month"]}
+          onSelectEvent={(e) => {
+            setDetailDrawer(true);
+            dispatch(setSelectedSchedule({ id: e.id }));
+          }}
         />
       </Paper>
       <CreateScheduleDrawer
@@ -61,6 +70,13 @@ export default function SharingSchedulePage() {
         handleToggle={() => {
           setCreateDialog((x) => !x);
         }}
+      />
+      <DetailScheduleDrawer
+        open={detailDrawer}
+        handleToggle={() => {
+          setDetailDrawer((x) => !x);
+        }}
+        id={selectedId}
       />
     </>
   );
