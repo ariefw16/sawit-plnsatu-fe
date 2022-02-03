@@ -4,6 +4,7 @@ import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { Paper } from "@mui/material";
+import CreateScheduleDrawer from "../../components/ui/schedule/CreateScheduleDrawer";
 
 export default function SharingSchedulePage() {
   const [createDialog, setCreateDialog] = useState(false);
@@ -30,8 +31,15 @@ export default function SharingSchedulePage() {
           startAccessor="start"
           endAccessor="end"
           style={{ height: 500 }}
+          views={["month"]}
         />
       </Paper>
+      <CreateScheduleDrawer
+        open={createDialog}
+        handleToggle={() => {
+          setCreateDialog((x) => !x);
+        }}
+      />
     </>
   );
 }
