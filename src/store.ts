@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { articleSlice } from "./store/article.store";
 import { scheduleSlice } from "./store/schedule.store";
 import { toastSlice } from "./store/toast.store";
 import { unitSlice } from "./store/unit.store";
@@ -11,6 +12,7 @@ export const store = configureStore({
     unit: unitSlice.reducer,
     user: userSlice.reducer,
     schedule: scheduleSlice.reducer,
+    article: articleSlice.reducer,
   },
 });
 
