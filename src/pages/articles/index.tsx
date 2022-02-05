@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { Paper, Grid, Box, Typography, TablePagination } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ArticleTable from "../../components/ui/articles/ArticleTable";
 import ArticleSearchBox from "../../components/ui/articles/SearchBox";
 import TitleBar from "../../components/ui/TitleBar";
@@ -11,6 +12,7 @@ export default function ArticlesPage() {
   const articles = useAppSelector((state) => state.article.articles);
   const totalRow = useAppSelector((state) => state.article.totalRow!);
   const [loading, setLoading] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     setLoading(true);
@@ -24,6 +26,10 @@ export default function ArticlesPage() {
       });
   }, []);
 
+  const handleRowPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(e.target.value));
+  };
+
   return (
     <>
       <TitleBar
@@ -34,12 +40,54 @@ export default function ArticlesPage() {
         buttonCreateText="Create New Article"
       />
       <ArticleSearchBox />
-      <ArticleTable
-        articles={articles}
-        loading={loading}
-        rowCount={totalRow}
-        handleDeleteButton={() => {}}
-      />
+      <Paper sx={{ py: 2, my: 3 }} variant="outlined">
+        <Grid container rowSpacing={2}>
+          <Grid item sm={12} sx={{ px: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="caption" sx={{ fontSize: 14 }}>
+                  Showing {totalRow} data
+                </Typography>
+              </Box>
+              <Box sx={{ flexGrow: 1 }} />
+              <TablePagination
+                rowsPerPageOptions={[10, 25, 50, 100]}
+                rowsPerPage={rowsPerPage}
+                count={articles.length}
+                page={0}
+                component="div"
+                onPageChange={() => {}}
+                onRowsPerPageChange={handleRowPerPageChange}
+              />
+            </Box>
+          </Grid>
+          <Grid item sm={12}>
+            <ArticleTable
+              articles={articles}
+              loading={loading}
+              rowCount={totalRow}
+              handleDeleteButton={() => {}}
+            />
+          </Grid>
+          <Grid item sm={12} sx={{ px: 2 }}>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 50, 100]}
+              rowsPerPage={rowsPerPage}
+              count={articles.length}
+              page={0}
+              component="div"
+              onPageChange={() => {}}
+              onRowsPerPageChange={handleRowPerPageChange}
+            />
+          </Grid>
+        </Grid>
+      </Paper>
     </>
   );
 }
