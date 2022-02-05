@@ -31,7 +31,10 @@ export default function MenuApp() {
             <ListItemButton
               key={menu.to}
               sx={{ borderRadius: 3, p: 1 }}
-              selected={menu.to === pathname}
+              selected={
+                (menu.to !== "/" && pathname.includes(menu.to)) ||
+                (menu.to === "/" && pathname === menu.to)
+              }
               component={Link}
               to={menu.to}
             >
