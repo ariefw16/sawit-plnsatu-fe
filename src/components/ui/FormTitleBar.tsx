@@ -83,20 +83,10 @@ export default function FormTitleBar(props: {
     <Box>
       <Button
         size="large"
-        variant="outlined"
-        color="warning"
-        sx={{ fontWeight: "bold", mr: 2 }}
-        startIcon={<ClearIcon />}
-        onClick={handlerCancelEditButton}
-      >
-        Cancel
-      </Button>
-      <Button
-        size="large"
         variant="contained"
         sx={{ fontWeight: "bold", color: "white" }}
         startIcon={<SaveIcon />}
-        onClick={handlerSubmitEdit}
+        onClick={handlerCreateButton}
         color="secondary"
       >
         Save Update
