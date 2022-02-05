@@ -107,6 +107,7 @@ export default function DetailUserPage() {
         handlerDeleteButton={deleteButtonHandler}
         handlerSubmitEdit={SubmitEditHandler}
         title="User Detail"
+        viewMode="detail"
       />
       {isView ? (
         <UserFormView user={user} />

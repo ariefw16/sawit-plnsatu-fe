@@ -96,6 +96,7 @@ export default function UnitDetailPage() {
         handlerSubmitEdit={submitEditHandler}
         isView={isView}
         title="Unit Details"
+        viewMode="detail"
       />
       <DeleteDialog
         open={deleteDialog}

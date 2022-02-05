@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/layout/appLayout";
 import ArticlesPage from "./pages/articles";
+import ArticleCreatePage from "./pages/articles/create";
 import ArticleDetailPage from "./pages/articles/detail";
 import CheckinAvailablePage from "./pages/checkin-available";
 import DashboardPage from "./pages/dashboard";
@@ -23,6 +24,7 @@ function App() {
         <Route path="/schedule" element={<SharingSchedulePage />} />
         <Route path="/available-article" element={<CheckinAvailablePage />} />
         <Route path="/article" element={<ArticlesPage />} />
+        <Route path="/article/create" element={<ArticleCreatePage />} />
         <Route path="/article/:id" element={<ArticleDetailPage />} />
       </Route>
     </Routes>
