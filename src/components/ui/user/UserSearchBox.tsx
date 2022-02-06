@@ -4,7 +4,8 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { useEffect } from "react";
 import { fetchUnit } from "../../../services/unit.service";
 
-export default function UserSearchBox() {
+export default function UserSearchBox(props: { handleSearch?: any }) {
+  const { handleSearch } = props;
   const dispatch = useAppDispatch();
   const unit = useAppSelector((state) => state.unit.units);
   useEffect(() => {
@@ -16,6 +17,9 @@ export default function UserSearchBox() {
       <Grid container rowSpacing={2} columnSpacing={{ sm: 2 }}>
         <Grid item sm={6}>
           <TextField
+            onChange={(e) => {
+              handleSearch({ q: e.target.value });
+            }}
             fullWidth
             placeholder="Search By Name / Username / NIK"
             InputProps={{

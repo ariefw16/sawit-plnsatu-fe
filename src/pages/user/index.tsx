@@ -15,6 +15,7 @@ import UserTable from "../../components/ui/user/UserTable";
 import { deleteUser, fetchUser } from "../../services/user.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
+import { UserSearchType } from "../../types/User.type";
 
 export default function UserPage() {
   const dispatch = useAppDispatch();
@@ -30,10 +31,11 @@ export default function UserPage() {
     id: number;
     name: string;
   }>({ id: 0, name: "" });
+  const [qSearch, setQSearch] = useState<UserSearchType>({});
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(fetchUser({ limit: rowsPerPage }))
+    dispatch(fetchUser({ limit: rowsPerPage, q: qSearch.q }))
       .unwrap()
       .catch((e) => {
         dispatch(showToast({ type: "error", message: e.errorMessage }));
@@ -41,7 +43,7 @@ export default function UserPage() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [rowsPerPage]);
+  }, [rowsPerPage, qSearch]);
 
   const handleRowPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(e.target.value));
@@ -64,6 +66,9 @@ export default function UserPage() {
     setShowDialog({ create: false, delete: true });
     setSingleDelete({ id, name });
   };
+  const searchHandler = (params: UserSearchType) => {
+    setQSearch((x) => ({ ...x, ...params }));
+  };
 
   return (
     <>
@@ -82,7 +87,7 @@ export default function UserPage() {
           </Typography>
         </Button>
       </TitleBar>
-      <UserSearchBox />
+      <UserSearchBox handleSearch={searchHandler} />
       <Paper sx={{ py: 2, my: 3 }} variant="outlined">
         <Grid container rowSpacing={2}>
           <Grid item sm={12} sx={{ px: 2 }}>

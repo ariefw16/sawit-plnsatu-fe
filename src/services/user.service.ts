@@ -4,6 +4,7 @@ import { CommonParams, ValidationErrors } from "../types/CommonParams.type";
 import {
   FetchUserReturnType,
   UserCreateType,
+  UserSearchType,
   UserType,
   UserUpdateType,
 } from "../types/User.type";
@@ -11,13 +12,13 @@ import { handleErrorAxios } from "./common.service";
 
 export const fetchUser = createAsyncThunk<
   FetchUserReturnType,
-  CommonParams,
+  UserSearchType,
   { rejectValue: ValidationErrors }
 >("user/fetch", async (params, { rejectWithValue }) => {
   try {
-    const { page = 0, limit, q = "" } = params;
+    const { page = 0, limit, q = "", unitId = "" } = params;
     const response = await axios.get(
-      `users?page=${page}&limit=${limit}&q=${q}`
+      `users?page=${page}&limit=${limit}&q=${q}&unitId=${unitId}`
     );
     return { users: response.data[0], totalRow: response.data[1] };
   } catch (error) {

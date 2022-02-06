@@ -1,3 +1,4 @@
+import { CommonParams } from "./CommonParams.type";
 import { UnitType } from "./Unit.type";
 
 export interface UserType {
@@ -41,4 +42,9 @@ export interface UserUpdateType {
   email?: string;
   unit?: { id: number; name: string };
   role?: { id: number; name: string };
+}
+
+export interface UserSearchType extends Partial<CommonParams> {
+  q?: string;
+  unitId?: number;
 }
