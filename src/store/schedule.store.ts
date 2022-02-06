@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createSchedule,
   deleteSchedule,
+  fetchScheduleByDate,
   fetchSchedules,
   updateSchedule,
 } from "../services/schedule.service";
@@ -19,6 +20,9 @@ export const scheduleSlice = createSlice({
     setSelectedSchedule: (state, { payload }) => {
       const idx = state.schedules.findIndex((x) => x.id === payload.id);
       state.selectedSchedule = state.schedules[idx];
+    },
+    resetSelectedSchedule: (state) => {
+      state.selectedSchedule = {};
     },
   },
   extraReducers: (builder) =>
@@ -42,7 +46,11 @@ export const scheduleSlice = createSlice({
           };
         const idx = state.schedules.findIndex((x) => x.id === payload.id);
         state.schedules.splice(idx);
+      })
+      .addCase(fetchScheduleByDate.fulfilled, (state, { payload }) => {
+        state.selectedSchedule = payload || {};
       }),
 });
 
-export const { setSelectedSchedule } = scheduleSlice.actions;
+export const { setSelectedSchedule, resetSelectedSchedule } =
+  scheduleSlice.actions;

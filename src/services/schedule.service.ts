@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { CommonParams, ValidationErrors } from "../types/CommonParams.type";
+import { ValidationErrors } from "../types/CommonParams.type";
 import {
   ScheduleCreateType,
   ScheduleType,
   ScheduleUpdateType,
 } from "../types/Schedule.type";
 import { handleErrorAxios } from "./common.service";
+import moment from "moment";
 
 export const createSchedule = createAsyncThunk<
   ScheduleType,
@@ -58,6 +59,23 @@ export const deleteSchedule = createAsyncThunk<
   try {
     const response = await axios.delete(`share-schedule/${id}`);
     return id;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const fetchScheduleByDate = createAsyncThunk<
+  ScheduleType,
+  { schedule_date: Date },
+  { rejectValue: ValidationErrors }
+>("schedule/fetchByDate", async ({ schedule_date }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(
+      `share-schedule?schedule_date=${moment(schedule_date).format(
+        "YYYY-MM-DD"
+      )}`
+    );
+    return response.data[0][0];
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }
