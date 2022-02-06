@@ -16,6 +16,7 @@ import { deleteUser, fetchUser } from "../../services/user.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
 import { UserSearchType } from "../../types/User.type";
+import { useDebounce } from "use-debounce";
 
 export default function UserPage() {
   const dispatch = useAppDispatch();
@@ -32,10 +33,11 @@ export default function UserPage() {
     name: string;
   }>({ id: 0, name: "" });
   const [qSearch, setQSearch] = useState<UserSearchType>({});
+  const [searchVals] = useDebounce(qSearch, 1000);
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(fetchUser({ limit: rowsPerPage, q: qSearch.q }))
+    dispatch(fetchUser({ limit: rowsPerPage, q: searchVals.q }))
       .unwrap()
       .catch((e) => {
         dispatch(showToast({ type: "error", message: e.errorMessage }));
@@ -43,7 +45,7 @@ export default function UserPage() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [rowsPerPage, qSearch]);
+  }, [rowsPerPage, searchVals]);
 
   const handleRowPerPageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(e.target.value));
