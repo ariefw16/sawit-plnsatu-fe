@@ -1,4 +1,10 @@
-import { Paper, Grid, TextField, InputAdornment } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  TextField,
+  InputAdornment,
+  Autocomplete,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { useEffect } from "react";
@@ -32,16 +38,16 @@ export default function UserSearchBox(props: { handleSearch?: any }) {
           />
         </Grid>
         <Grid item sm={4}>
-          <TextField
-            fullWidth
-            placeholder="Search By Unit"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
+          <Autocomplete
+            options={unit}
+            getOptionLabel={(x) => x.name!}
+            renderInput={(params) => <TextField {...params} label="Unit" />}
+            onChange={(ev, val) => {
+              handleSearch({
+                unitId: val?.id!,
+              });
             }}
+            isOptionEqualToValue={(opt, val) => opt.id === val.id}
           />
         </Grid>
       </Grid>

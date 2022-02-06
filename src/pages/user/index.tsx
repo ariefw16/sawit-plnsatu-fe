@@ -37,7 +37,13 @@ export default function UserPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(fetchUser({ limit: rowsPerPage, q: searchVals.q }))
+    dispatch(
+      fetchUser({
+        limit: rowsPerPage,
+        q: searchVals.q,
+        unitId: searchVals.unitId,
+      })
+    )
       .unwrap()
       .catch((e) => {
         dispatch(showToast({ type: "error", message: e.errorMessage }));
