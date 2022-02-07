@@ -27,12 +27,15 @@ import {
 } from "../../../services/schedule.service";
 import { showToast } from "../../../store/toast.store";
 import DeleteDialog from "../DeleteDialog";
+import SendIcon from "@mui/icons-material/Send";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailScheduleDrawer(props: {
   open: boolean;
   handleToggle: any;
   id: number;
 }) {
+  const navigate = useNavigate();
   const { open, handleToggle, id } = props;
   const units = useAppSelector((state) => state.unit.units);
   const schedule = useAppSelector((state) => state.schedule.selectedSchedule);
@@ -94,12 +97,27 @@ export default function DetailScheduleDrawer(props: {
       >
         <Button
           variant="contained"
+          color="primary"
+          sx={{ fontWeight: "bold", ml: 2 }}
+          startIcon={<SendIcon />}
+          onClick={() => {
+            navigate(
+              `/article/create/${moment(schedule.schedule_date).format(
+                "YYYY-MM-DD"
+              )}`
+            );
+          }}
+        >
+          Create Article
+        </Button>
+        <Button
+          variant="contained"
           color="secondary"
           sx={{ fontWeight: "bold", ml: 2 }}
           startIcon={<EditIcon />}
           onClick={updateButtonHandler}
         >
-          Update Schedule
+          Update
         </Button>
         <Button
           startIcon={<DeleteForeverIcon />}
@@ -110,7 +128,7 @@ export default function DetailScheduleDrawer(props: {
             setShowDelete(true);
           }}
         >
-          Delete Schedule
+          Delete
         </Button>
       </Box>
     );

@@ -24,7 +24,8 @@ function App() {
         <Route path="/schedule" element={<SharingSchedulePage />} />
         <Route path="/available-article" element={<CheckinAvailablePage />} />
         <Route path="/article" element={<ArticlesPage />} />
-        <Route path="/article/create" element={<ArticleCreatePage />} />
+        <Route path="/article/create/" element={<ArticleCreatePage />} />
+        <Route path="/article/create/:date" element={<ArticleCreatePage />} />
         <Route path="/article/:id" element={<ArticleDetailPage />} />
       </Route>
     </Routes>

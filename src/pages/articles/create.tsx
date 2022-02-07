@@ -3,23 +3,27 @@ import AdapterMoment from "@mui/lab/AdapterMoment";
 import { Grid, Paper, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormTitleBar from "../../components/ui/FormTitleBar";
 import { fetchScheduleByDate } from "../../services/schedule.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { resetSelectedSchedule } from "../../store/schedule.store";
 import { ArticleType } from "../../types/Article.type";
+import moment from "moment";
 
 export default function ArticleCreatePage() {
+  const { date } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const selectedSchedule = useAppSelector(
     (state) => state.schedule.selectedSchedule
   );
-  const [data, setData] = useState<ArticleType>();
+  const [data, setData] = useState<ArticleType>({
+    article_date: moment(date).toDate(),
+  });
 
   useEffect(() => {
-    dispatch(resetSelectedSchedule());
+    if (!date) dispatch(resetSelectedSchedule());
   }, []);
 
   const backButtonHandler = () => {
@@ -37,7 +41,7 @@ export default function ArticleCreatePage() {
         handlerBackButton={backButtonHandler}
         viewMode="create"
         breadcrumbs={[
-          { label: "Articles Management", to: "article" },
+          { label: "Articles Management", to: "/article" },
           { label: "Create new Article" },
         ]}
         handlerCreateButton={createDataHandler}

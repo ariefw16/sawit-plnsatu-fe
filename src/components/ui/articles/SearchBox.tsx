@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { useEffect } from "react";
 import { fetchUnit } from "../../../services/unit.service";
 import { fetchUser } from "../../../services/user.service";
+import moment from "moment";
 
 export default function ArticleSearchBox() {
   const units = useAppSelector((state) => state.unit.units);
@@ -54,7 +55,7 @@ export default function ArticleSearchBox() {
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <DatePicker
               label="Search By Date"
-              value={Date()}
+              value={moment().toDate()}
               onChange={() => {}}
               renderInput={(params) => <TextField {...params} fullWidth />}
             />
