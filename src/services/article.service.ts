@@ -1,6 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ArticleFetchType, ArticleParamsType } from "../types/Article.type";
+import moment from "moment";
+import {
+  ArticleCreateType,
+  ArticleFetchType,
+  ArticleParamsType,
+  ArticleType,
+} from "../types/Article.type";
 import { ValidationErrors } from "../types/CommonParams.type";
 import { handleErrorAxios } from "./common.service";
 
@@ -29,6 +35,29 @@ export const fetchArticles = createAsyncThunk<
       `share-article?page=${page}&limit=${limit}${query}`
     );
     return { articles: response.data[0], totalRow: response.data[1] };
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const createArticle = createAsyncThunk<
+  ArticleType,
+  ArticleCreateType,
+  { rejectValue: ValidationErrors }
+>("article/create", async (props, { rejectWithValue }) => {
+  try {
+    const params = new FormData();
+    params.append("name", props.name || "");
+    params.append("body", props.body || "");
+    params.append(
+      "article_date",
+      moment(props.article_date).format("YYYY-MM-DD")
+    );
+    params.append("scheduleId", String(props.scheduleId));
+    if (props.docs) params.append("docs", props.docs);
+
+    const response = await axios.post("share-article", params);
+    return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }

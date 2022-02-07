@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchArticles } from "../services/article.service";
+import { createArticle, fetchArticles } from "../services/article.service";
 import { ArticleState } from "../types/Article.type";
 
 const initialState: ArticleState = {
@@ -13,8 +13,12 @@ export const articleSlice = createSlice({
   name: "article",
   reducers: {},
   extraReducers: (builder) =>
-    builder.addCase(fetchArticles.fulfilled, (state, { payload }) => {
-      state.articles = payload.articles;
-      state.totalRow = payload.totalRow;
-    }),
+    builder
+      .addCase(fetchArticles.fulfilled, (state, { payload }) => {
+        state.articles = payload.articles;
+        state.totalRow = payload.totalRow;
+      })
+      .addCase(createArticle.fulfilled, (state, { payload }) => {
+        state.selectedArticle = payload;
+      }),
 });

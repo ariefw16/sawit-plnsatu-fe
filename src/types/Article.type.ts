@@ -9,6 +9,7 @@ export interface ArticleType {
     unit?: { id?: number; name?: string };
   };
   body?: string;
+  docs?: File;
 }
 
 export interface ArticleState {
@@ -33,4 +34,13 @@ export interface ArticleParamsType {
 export interface ArticleFetchType {
   articles: ArticleType[];
   totalRow?: number;
+}
+
+export interface ArticleCreateType {
+  body?: string;
+  unit?: { id?: number; name?: string };
+  article_date?: Date;
+  name?: string;
+  scheduleId?: number;
+  docs?: File;
 }
