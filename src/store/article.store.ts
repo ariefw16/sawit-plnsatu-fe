@@ -3,6 +3,7 @@ import {
   createArticle,
   deleteArticle,
   fetchArticles,
+  fetchSingleArticle,
 } from "../services/article.service";
 import { ArticleState } from "../types/Article.type";
 
@@ -15,7 +16,12 @@ const initialState: ArticleState = {
 export const articleSlice = createSlice({
   initialState,
   name: "article",
-  reducers: {},
+  reducers: {
+    setSelectedArticle(state, { payload }) {
+      const idx = state.articles.findIndex((x) => x.id === payload.id);
+      state.selectedArticle = state.articles[idx];
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(fetchArticles.fulfilled, (state, { payload }) => {
@@ -28,5 +34,10 @@ export const articleSlice = createSlice({
       .addCase(deleteArticle.fulfilled, (state, { payload }) => {
         const idx = state.articles.findIndex((x) => x.id === payload.id);
         state.articles.splice(idx);
+      })
+      .addCase(fetchSingleArticle.fulfilled, (state, { payload }) => {
+        state.selectedArticle = payload;
       }),
 });
+
+export const { setSelectedArticle } = articleSlice.actions;

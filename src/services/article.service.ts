@@ -75,3 +75,16 @@ export const deleteArticle = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const fetchSingleArticle = createAsyncThunk<
+  ArticleType,
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("article/singleFetch", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`share-article?id=${id}`);
+    return response.data[0][0];
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
