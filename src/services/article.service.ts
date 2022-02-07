@@ -62,3 +62,16 @@ export const createArticle = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const deleteArticle = createAsyncThunk<
+  { id: number },
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("article/delete", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.delete(`share-article/${id}`);
+    return { id };
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

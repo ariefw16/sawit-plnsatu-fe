@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createArticle, fetchArticles } from "../services/article.service";
+import {
+  createArticle,
+  deleteArticle,
+  fetchArticles,
+} from "../services/article.service";
 import { ArticleState } from "../types/Article.type";
 
 const initialState: ArticleState = {
@@ -20,5 +24,9 @@ export const articleSlice = createSlice({
       })
       .addCase(createArticle.fulfilled, (state, { payload }) => {
         state.selectedArticle = payload;
+      })
+      .addCase(deleteArticle.fulfilled, (state, { payload }) => {
+        const idx = state.articles.findIndex((x) => x.id === payload.id);
+        state.articles.splice(idx);
       }),
 });
