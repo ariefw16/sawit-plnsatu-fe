@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
 import { toJpeg, toPng } from "html-to-image";
-
 export default function ArticleViewForm() {
   const article = useAppSelector((state) => state.article.selectedArticle);
   const createMarkup = (txt: string) => {
@@ -12,6 +11,11 @@ export default function ArticleViewForm() {
     el.innerHTML = txt;
     return el;
   };
+  useEffect(() => {
+    toPng(divRef.current!, { cacheBust: true }).then((res) => {
+      setDataImage(res);
+    });
+  }, [article]);
 
   const divRef = useRef<HTMLDivElement>(null);
   const [dataImage, setDataImage] = useState("");
@@ -28,7 +32,6 @@ export default function ArticleViewForm() {
           }}
         >
           <Box sx={{ p: 2, width: "60%", height: "600px" }}>
-            <img src={dataImage} width="200px" />
             <div
               style={{ display: "block", width: "600px" }}
               dangerouslySetInnerHTML={{ __html: article.body! }}
