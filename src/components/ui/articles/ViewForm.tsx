@@ -1,12 +1,22 @@
 import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
+import { toJpeg, toPng } from "html-to-image";
 
 export default function ArticleViewForm() {
   const article = useAppSelector((state) => state.article.selectedArticle);
+  const createMarkup = (txt: string) => {
+    const el = document.createElement("div");
+    el.innerHTML = txt;
+    return el;
+  };
+
+  const divRef = useRef<HTMLDivElement>(null);
+  const [dataImage, setDataImage] = useState("");
   const [tabValue, setTabValue] = useState("points");
+
   return (
     <>
       <Paper variant="outlined" sx={{ mt: 4 }}>
@@ -18,7 +28,12 @@ export default function ArticleViewForm() {
           }}
         >
           <Box sx={{ p: 2, width: "60%", height: "600px" }}>
-            PDF Reader here ...
+            <img src={dataImage} width="200px" />
+            <div
+              style={{ display: "block", width: "600px" }}
+              dangerouslySetInnerHTML={{ __html: article.body! }}
+              ref={divRef}
+            ></div>
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ flexGrow: 1, p: 2, height: "600px", width: "35%" }}>
@@ -59,18 +74,6 @@ export default function ArticleViewForm() {
                   variant="filled"
                   fullWidth
                   value="-"
-                  inputProps={{ readOnly: true }}
-                />
-              </Grid>
-              <Grid item sm={12}>
-                <TextField
-                  label="Body"
-                  variant="filled"
-                  fullWidth
-                  multiline
-                  minRows={4}
-                  maxRows={10}
-                  value={article.body || ""}
                   inputProps={{ readOnly: true }}
                 />
               </Grid>

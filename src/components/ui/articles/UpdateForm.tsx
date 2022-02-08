@@ -5,6 +5,8 @@ import moment from "moment";
 import { useState } from "react";
 import { ArticleType } from "../../../types/Article.type";
 import { TabPanel } from "../TabPanel";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
@@ -23,7 +25,12 @@ export default function ArticleUpdateForm(props: {
           }}
         >
           <Box sx={{ p: 2, width: "60%", height: "600px" }}>
-            PDF Reader here ...
+            <ReactQuill
+              value={article.body}
+              onChange={(e) => {
+                handleDataChange({ body: e });
+              }}
+            />
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ flexGrow: 1, p: 2, height: "600px", width: "35%" }}>
@@ -60,15 +67,6 @@ export default function ArticleUpdateForm(props: {
                     inputFormat="DD/MM/YYYY"
                   />
                 </LocalizationProvider>
-                {/* <TextField
-                  label="Share Date"
-                  variant="outlined"
-                  fullWidth
-                  value={
-                    moment(article.article_date).format("ddd, DD MMM YYYY") ||
-                    ""
-                  }
-                /> */}
               </Grid>
               <Grid item sm={12}>
                 <TextField
@@ -86,20 +84,6 @@ export default function ArticleUpdateForm(props: {
                   fullWidth
                   value="-"
                   inputProps={{ readOnly: true }}
-                />
-              </Grid>
-              <Grid item sm={12}>
-                <TextField
-                  label="Body"
-                  variant="outlined"
-                  fullWidth
-                  multiline
-                  minRows={4}
-                  maxRows={10}
-                  value={article.body || ""}
-                  onChange={(e) => {
-                    handleDataChange({ body: e.target.value });
-                  }}
                 />
               </Grid>
             </Grid>
