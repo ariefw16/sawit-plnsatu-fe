@@ -13,6 +13,8 @@ import moment from "moment";
 import { ScheduleType } from "../../types/Schedule.type";
 import { showToast } from "../../store/toast.store";
 import { createArticle } from "../../services/article.service";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export default function ArticleCreatePage() {
   const { date } = useParams();
@@ -125,15 +127,10 @@ export default function ArticleCreatePage() {
                 />
               </Grid>
               <Grid item sm={12}>
-                <TextField
-                  fullWidth
-                  label="Body Article"
-                  multiline
-                  minRows={4}
-                  maxRows={10}
-                  value={data.body}
+                <ReactQuill
+                  value={data.body || ""}
                   onChange={(e) => {
-                    setData((x) => ({ ...x, body: e.target.value }));
+                    setData((x) => ({ ...x, body: e }));
                   }}
                 />
               </Grid>
