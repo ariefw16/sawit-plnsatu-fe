@@ -4,6 +4,7 @@ import {
   deleteArticle,
   fetchArticles,
   fetchSingleArticle,
+  updateArticle,
 } from "../services/article.service";
 import { ArticleState } from "../types/Article.type";
 
@@ -37,6 +38,11 @@ export const articleSlice = createSlice({
       })
       .addCase(fetchSingleArticle.fulfilled, (state, { payload }) => {
         state.selectedArticle = payload;
+      })
+      .addCase(updateArticle.fulfilled, (state, { payload }) => {
+        const idx = state.articles.findIndex((x) => x.id === payload.id);
+        state.selectedArticle = payload;
+        state.articles[idx] = payload;
       }),
 });
 

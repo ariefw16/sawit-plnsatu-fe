@@ -83,7 +83,21 @@ export const fetchSingleArticle = createAsyncThunk<
 >("article/singleFetch", async ({ id }, { rejectWithValue }) => {
   try {
     const response = await axios.get(`share-article?id=${id}`);
-    return response.data[0][0];
+    return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const updateArticle = createAsyncThunk<
+  ArticleType,
+  ArticleType,
+  { rejectValue: ValidationErrors }
+>("article/update", async (props, { rejectWithValue }) => {
+  try {
+    const { id, ...params } = props;
+    const response = await axios.patch(`share-article/${id}`, params);
+    return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }
