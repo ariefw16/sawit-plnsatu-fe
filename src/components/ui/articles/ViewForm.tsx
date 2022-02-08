@@ -1,24 +1,11 @@
 import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
-import { toJpeg, toPng } from "html-to-image";
+
 export default function ArticleViewForm() {
   const article = useAppSelector((state) => state.article.selectedArticle);
-  const createMarkup = (txt: string) => {
-    const el = document.createElement("div");
-    el.innerHTML = txt;
-    return el;
-  };
-  useEffect(() => {
-    toPng(divRef.current!, { cacheBust: true }).then((res) => {
-      setDataImage(res);
-    });
-  }, [article]);
-
-  const divRef = useRef<HTMLDivElement>(null);
-  const [dataImage, setDataImage] = useState("");
   const [tabValue, setTabValue] = useState("points");
 
   return (
@@ -35,7 +22,6 @@ export default function ArticleViewForm() {
             <div
               style={{ display: "block", width: "600px" }}
               dangerouslySetInnerHTML={{ __html: article.body! }}
-              ref={divRef}
             ></div>
           </Box>
           <Divider orientation="vertical" flexItem />
