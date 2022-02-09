@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/layout/appLayout";
+import AuthLayout from "./components/layout/authLayout";
 import ArticlesPage from "./pages/articles";
 import ArticleCreatePage from "./pages/articles/create";
 import ArticleDetailPage from "./pages/articles/detail";
+import Login from "./pages/auth/login";
 import CheckinAvailablePage from "./pages/checkin-available";
 import DashboardPage from "./pages/dashboard";
 import SharingSchedulePage from "./pages/schedule";
@@ -27,6 +28,9 @@ function App() {
         <Route path="/article/create/" element={<ArticleCreatePage />} />
         <Route path="/article/create/:date" element={<ArticleCreatePage />} />
         <Route path="/article/:id" element={<ArticleDetailPage />} />
+      </Route>
+      <Route path="/auth" element={<AuthLayout />}>
+        <Route index element={<Login />} />
       </Route>
     </Routes>
   );

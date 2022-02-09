@@ -1,5 +1,6 @@
 import { Box, CssBaseline, AppBar, Toolbar, Drawer } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import axios from "axios";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { hideToast } from "../../store/toast.store";
 import AppToast from "../ui/AppToast";
@@ -15,6 +16,13 @@ export default function AppLayout() {
   const handleToastClose = () => {
     dispatch(hideToast());
   };
+  const access = useAppSelector((state) => state.auth.access_token);
+  const localAccess = localStorage.getItem("key");
+  if (access === "" && localAccess === null) {
+    return <Navigate to="/auth" replace />;
+  }
+  axios.defaults.headers.common.Authorization = `Bearer ${localAccess}`;
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppToast
