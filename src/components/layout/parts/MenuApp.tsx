@@ -7,7 +7,7 @@ import {
   SxProps,
   Theme,
 } from "@mui/material";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { MenuType } from "../../../types/menu.type";
 import { Box } from "@mui/system";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -17,9 +17,18 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AlarmIcon from "@mui/icons-material/Alarm";
 import FeedIcon from "@mui/icons-material/Feed";
 import SendToMobileIcon from "@mui/icons-material/SendToMobile";
+import { useAppDispatch } from "../../../store";
+import { logout } from "../../../store/auth.store";
 
 export default function MenuApp() {
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("auth");
+  };
 
   return (
     <>
@@ -85,6 +94,13 @@ export default function MenuApp() {
               />
             </ListItemButton>
           ))}
+        <ListItemButton sx={{ borderRadius: 3, p: 1 }} onClick={handleLogout}>
+          <ListItemIcon>{<LogoutIcon />}</ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ fontSize: 14, fontWeight: "bold" }}
+            primary={"Logout"}
+          />
+        </ListItemButton>
       </List>
     </>
   );
@@ -125,12 +141,12 @@ const menu: MenuType[] = [
     section: "admin",
     icon: <ApartmentIcon />,
   },
-  {
-    label: "Logout",
-    to: "/logout",
-    section: "foot-extra",
-    icon: <LogoutIcon />,
-  },
+  // {
+  //   label: "Logout",
+  //   to: "/logout",
+  //   section: "foot-extra",
+  //   icon: <LogoutIcon />,
+  // },
   {
     label: "Checkin Article",
     to: "/available-article",
