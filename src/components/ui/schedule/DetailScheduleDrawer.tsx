@@ -29,6 +29,7 @@ import { showToast } from "../../../store/toast.store";
 import DeleteDialog from "../DeleteDialog";
 import SendIcon from "@mui/icons-material/Send";
 import { useNavigate } from "react-router-dom";
+import ArticleIcon from "@mui/icons-material/Article";
 
 export default function DetailScheduleDrawer(props: {
   open: boolean;
@@ -95,21 +96,35 @@ export default function DetailScheduleDrawer(props: {
           flexDirection: "row-reverse",
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ fontWeight: "bold", ml: 2 }}
-          startIcon={<SendIcon />}
-          onClick={() => {
-            navigate(
-              `/article/create/${moment(schedule.schedule_date).format(
-                "YYYY-MM-DD"
-              )}`
-            );
-          }}
-        >
-          Create Article
-        </Button>
+        {schedule.article ? (
+          <Button
+            variant="contained"
+            color="info"
+            sx={{ fontWeight: "bold", ml: 2 }}
+            startIcon={<ArticleIcon />}
+            onClick={() => {
+              navigate(`/article/${schedule.article?.id}`);
+            }}
+          >
+            Go to Article
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ fontWeight: "bold", ml: 2 }}
+            startIcon={<SendIcon />}
+            onClick={() => {
+              navigate(
+                `/article/create/${moment(schedule.schedule_date).format(
+                  "YYYY-MM-DD"
+                )}`
+              );
+            }}
+          >
+            Create Article
+          </Button>
+        )}
         <Button
           variant="contained"
           color="secondary"
