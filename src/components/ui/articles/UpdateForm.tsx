@@ -81,9 +81,6 @@ export default function ArticleUpdateForm(props: {
                     label="Tanggal Sharing"
                     value={article?.article_date}
                     onChange={(newValue) => {
-                      console.log(
-                        moment(newValue!).format("YYYY-MM-DD").toString()
-                      );
                       handleDataChange({
                         article_date: moment(newValue!)
                           .format("YYYY-MM-DD")

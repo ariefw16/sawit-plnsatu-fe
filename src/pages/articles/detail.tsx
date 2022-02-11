@@ -9,9 +9,11 @@ import {
   fetchSingleArticle,
   updateArticle,
 } from "../../services/article.service";
+import { fetchScheduleByDate } from "../../services/schedule.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
 import { ArticleType } from "../../types/Article.type";
+import { ScheduleType } from "../../types/Schedule.type";
 
 export default function ArticleDetailPage() {
   const navigate = useNavigate();
@@ -25,6 +27,13 @@ export default function ArticleDetailPage() {
   useEffect(() => {
     dispatch(fetchSingleArticle({ id: parseInt(id!) }));
   }, [id]);
+  useEffect(() => {
+    dispatch(fetchScheduleByDate({ schedule_date: data.article_date! })).then(
+      (x) => {
+        data.name = (x.payload as ScheduleType).name;
+      }
+    );
+  }, [data.article_date]);
 
   const backButtonHandler = () => {
     navigate(-1);
