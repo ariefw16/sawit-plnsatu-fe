@@ -80,3 +80,18 @@ export const fetchScheduleByDate = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const fetchAvailableScheduleDate = createAsyncThunk<
+  ScheduleType[],
+  { month: number; year: number },
+  { rejectValue: ValidationErrors }
+>("schedule/available-date", async (params, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(
+      `share-schedule/available-date?month=${params.month}&year=${params.year}`
+    );
+    return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

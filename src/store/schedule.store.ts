@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createSchedule,
   deleteSchedule,
+  fetchAvailableScheduleDate,
   fetchScheduleByDate,
   fetchSchedules,
   updateSchedule,
@@ -11,6 +12,7 @@ import { ScheduleState } from "../types/Schedule.type";
 const initialState: ScheduleState = {
   schedules: [],
   selectedSchedule: {},
+  availableSchedule: [],
 };
 
 export const scheduleSlice = createSlice({
@@ -49,6 +51,9 @@ export const scheduleSlice = createSlice({
       })
       .addCase(fetchScheduleByDate.fulfilled, (state, { payload }) => {
         state.selectedSchedule = payload || {};
+      })
+      .addCase(fetchAvailableScheduleDate.fulfilled, (state, { payload }) => {
+        state.availableSchedule = payload;
       }),
 });
 

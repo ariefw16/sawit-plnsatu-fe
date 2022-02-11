@@ -2,18 +2,47 @@ import { LocalizationProvider, DatePicker } from "@mui/lab";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArticleType } from "../../../types/Article.type";
 import { TabPanel } from "../TabPanel";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { fetchAvailableScheduleDate } from "../../../services/schedule.service";
+import { showToast } from "../../../store/toast.store";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
   handleDataChange: any;
 }) {
   const { article, handleDataChange } = props;
+  const dispatch = useAppDispatch();
+  const availableSchedule = useAppSelector(
+    (state) => state.schedule.availableSchedule
+  );
   const [tabValue, setTabValue] = useState("points");
+
+  useEffect(() => {
+    dispatch(
+      fetchAvailableScheduleDate({
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+      })
+    )
+      .unwrap()
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
+  }, []);
+
+  const getDisableDate = (date: Date) => {
+    if (availableSchedule.length < 1) return false;
+    const availableDate = availableSchedule.map((x) =>
+      moment(x.schedule_date).format("DD-MM-YYYY")
+    );
+    return !availableDate.includes(moment(date).format("DD-MM-YYYY"));
+  };
+
   return (
     <>
       <Paper variant="outlined" sx={{ mt: 4 }}>
@@ -26,7 +55,7 @@ export default function ArticleUpdateForm(props: {
         >
           <Box sx={{ p: 2, width: "60%", height: "600px" }}>
             <ReactQuill
-              value={article.body}
+              value={article.body || ""}
               onChange={(e) => {
                 handleDataChange({ body: e });
               }}
@@ -65,6 +94,7 @@ export default function ArticleUpdateForm(props: {
                       <TextField {...params} fullWidth />
                     )}
                     inputFormat="DD/MM/YYYY"
+                    shouldDisableDate={getDisableDate}
                   />
                 </LocalizationProvider>
               </Grid>

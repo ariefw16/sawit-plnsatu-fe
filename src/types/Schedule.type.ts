@@ -12,6 +12,7 @@ export interface ScheduleType {
 export interface ScheduleState {
   schedules: ScheduleType[];
   selectedSchedule: ScheduleType;
+  availableSchedule: ScheduleType[];
 }
 
 export interface ScheduleCreateType {
