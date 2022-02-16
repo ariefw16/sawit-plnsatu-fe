@@ -31,6 +31,10 @@ export default function ArticleDetailPage() {
     dispatch(fetchScheduleByDate({ schedule_date: data.article_date! })).then(
       (x) => {
         data.name = (x.payload as ScheduleType).name;
+        data.schedule = {
+          id: (x.payload as ScheduleType).id,
+          name: (x.payload as ScheduleType).name,
+        };
       }
     );
   }, [data.article_date]);
