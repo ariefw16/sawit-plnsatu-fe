@@ -27,6 +27,7 @@ export default function ArticleUpdateForm(props: {
       fetchAvailableScheduleDate({
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
+        scheduleId: article.schedule?.id!,
       })
     )
       .unwrap()

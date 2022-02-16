@@ -83,12 +83,12 @@ export const fetchScheduleByDate = createAsyncThunk<
 
 export const fetchAvailableScheduleDate = createAsyncThunk<
   ScheduleType[],
-  { month: number; year: number },
+  { month: number; year: number; scheduleId: number },
   { rejectValue: ValidationErrors }
 >("schedule/available-date", async (params, { rejectWithValue }) => {
   try {
     const response = await axios.get(
-      `share-schedule/available-date?month=${params.month}&year=${params.year}`
+      `share-schedule/available-date?month=${params.month}&year=${params.year}&scheduleId=${params.scheduleId}`
     );
     return response.data;
   } catch (error) {
