@@ -8,6 +8,7 @@ import Login from "./pages/auth/login";
 import CheckinAvailablePage from "./pages/checkin-available";
 import DashboardPage from "./pages/dashboard";
 import SharingSchedulePage from "./pages/schedule";
+import SettingPointPage from "./pages/setting-points";
 import UnitPage from "./pages/unit";
 import UnitDetailPage from "./pages/unit/detail";
 import UserPage from "./pages/user";
@@ -28,6 +29,7 @@ function App() {
         <Route path="/article/create/" element={<ArticleCreatePage />} />
         <Route path="/article/create/:date" element={<ArticleCreatePage />} />
         <Route path="/article/:id" element={<ArticleDetailPage />} />
+        <Route path="/setting-point" element={<SettingPointPage />} />
       </Route>
       <Route path="/auth" element={<AuthLayout />}>
         <Route index element={<Login />} />

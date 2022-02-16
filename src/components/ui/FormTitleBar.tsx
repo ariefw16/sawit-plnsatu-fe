@@ -18,6 +18,7 @@ export default function FormTitleBar(props: {
   viewMode: "detail" | "create";
   isView?: boolean;
   title: string;
+  noBackButton?: boolean;
 }) {
   const {
     breadcrumbs,
@@ -30,6 +31,7 @@ export default function FormTitleBar(props: {
     title,
     viewMode,
     handlerCreateButton,
+    noBackButton = false,
   } = props;
 
   const ViewButtonMode = () => (
@@ -97,18 +99,20 @@ export default function FormTitleBar(props: {
   return (
     <Box sx={{ display: "flex", flexDirection: "row", my: 2 }}>
       <Box>
-        <Button
-          sx={{
-            padding: 1,
-            height: 50,
-            minHeight: 0,
-            minWidth: 0,
-            borderRadius: 3,
-          }}
-          onClick={handlerBackButton}
-        >
-          <ArrowBackIcon />
-        </Button>
+        {noBackButton && (
+          <Button
+            sx={{
+              padding: 1,
+              height: 50,
+              minHeight: 0,
+              minWidth: 0,
+              borderRadius: 3,
+            }}
+            onClick={handlerBackButton}
+          >
+            <ArrowBackIcon />
+          </Button>
+        )}
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", px: 2 }}>
         <Typography variant="h5">{title}</Typography>

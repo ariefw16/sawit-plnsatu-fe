@@ -19,6 +19,7 @@ import FeedIcon from "@mui/icons-material/Feed";
 import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 import { useAppDispatch } from "../../../store";
 import { logout } from "../../../store/auth.store";
+import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 
 export default function MenuApp() {
   const { pathname } = useLocation();
@@ -164,5 +165,11 @@ const menu: MenuType[] = [
     to: "/article",
     section: "app",
     icon: <FeedIcon />,
+  },
+  {
+    label: "Points",
+    to: "/setting-point",
+    section: "admin",
+    icon: <LocalActivityIcon />,
   },
 ];
