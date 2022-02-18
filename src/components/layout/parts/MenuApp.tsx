@@ -167,8 +167,8 @@ const menu: MenuType[] = [
     icon: <FeedIcon />,
   },
   {
-    label: "Points",
-    to: "/setting-point",
+    label: "Settings",
+    to: "/settings",
     section: "admin",
     icon: <LocalActivityIcon />,
   },
