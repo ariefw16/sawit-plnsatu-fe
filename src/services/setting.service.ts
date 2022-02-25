@@ -6,7 +6,7 @@ import { handleErrorAxios } from "./common.service";
 
 export const fetchSetting = createAsyncThunk<
   SettingType[],
-  null,
+  {},
   { rejectValue: ValidationErrors }
 >("setting/fetch", async (payload, { rejectWithValue }) => {
   try {

@@ -1,16 +1,40 @@
 import {
   Card,
   CardContent,
-  CardHeader,
   Divider,
   Grid,
-  Paper,
   TextField,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import FormTitleBar from "../../components/ui/FormTitleBar";
+import { fetchSetting } from "../../services/setting.service";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { showToast } from "../../store/toast.store";
+import { SettingType } from "../../types/Setting.type";
 
 export default function SettingPage() {
+  const dispatch = useAppDispatch();
+  const settings = useAppSelector((state) => state.setting.settings);
+  const [triggerState, setTriggerState] = useState(false);
+  const [data, setData] = useState<SettingType[]>([]);
+
+  useEffect(() => {
+    if (settings.length < 1)
+      dispatch(fetchSetting({}))
+        .unwrap()
+        .catch((e) => {
+          dispatch(showToast({ message: e.errorMessage, type: "error" }));
+        })
+        .then(() => {
+          setTriggerState((x) => !x);
+        });
+  }, []);
+
+  useEffect(() => {
+    setData(settings.map((x) => x));
+  }, [triggerState]);
+
   return (
     <>
       <FormTitleBar
@@ -46,6 +70,10 @@ export default function SettingPage() {
                     variant="outlined"
                     placeholder="Read Article Points"
                     size="small"
+                    value={
+                      data.filter((x) => x.props === "read-point")[0]?.value ||
+                      "0"
+                    }
                   />
                 </Grid>
               </Grid>
@@ -68,6 +96,10 @@ export default function SettingPage() {
                     variant="outlined"
                     placeholder="Quiz Points"
                     size="small"
+                    value={
+                      data.filter((x) => x.props === "quiz-point")[0]?.value ||
+                      "0"
+                    }
                   />
                 </Grid>
               </Grid>

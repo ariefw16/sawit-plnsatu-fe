@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { articleSlice } from "./store/article.store";
 import { authSlice } from "./store/auth.store";
 import { scheduleSlice } from "./store/schedule.store";
+import { settingSlice } from "./store/setting.store";
 import { toastSlice } from "./store/toast.store";
 import { unitSlice } from "./store/unit.store";
 import { userSlice } from "./store/user.store";
@@ -15,6 +16,7 @@ export const store = configureStore({
     schedule: scheduleSlice.reducer,
     article: articleSlice.reducer,
     auth: authSlice.reducer,
+    setting: settingSlice.reducer,
   },
 });
 
