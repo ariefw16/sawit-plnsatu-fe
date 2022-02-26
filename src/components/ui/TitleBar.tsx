@@ -10,7 +10,7 @@ export default function TitleBar(props: {
   children?: ReactChild;
   handleCreateDialog?: any;
   redirectCreate?: any;
-  createType: "redirect" | "dialog";
+  createType: "redirect" | "dialog" | "no";
 }) {
   const {
     title,
@@ -57,7 +57,7 @@ export default function TitleBar(props: {
                 {buttonCreateText}
               </Typography>
             </Button>
-          ) : (
+          ) : createType === "redirect" ? (
             <Button
               variant="contained"
               sx={{ mx: 1 }}
@@ -69,7 +69,7 @@ export default function TitleBar(props: {
                 {buttonCreateText}
               </Typography>
             </Button>
-          )}
+          ) : undefined}
           {children}
         </Box>
       </Grid>
