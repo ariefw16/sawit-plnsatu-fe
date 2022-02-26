@@ -16,3 +16,17 @@ export const fetchSetting = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const saveSetting = createAsyncThunk<
+  SettingType[],
+  SettingType[],
+  { rejectValue: ValidationErrors }
+>("setting/save", async (data, { rejectWithValue }) => {
+  try {
+    const response = await axios.post("setting", { settings: data });
+    if (response.data) return data;
+    else throw new Error("Not Success");
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

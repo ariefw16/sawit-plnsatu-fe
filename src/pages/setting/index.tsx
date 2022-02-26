@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import FormTitleBar from "../../components/ui/FormTitleBar";
-import { fetchSetting } from "../../services/setting.service";
+import { fetchSetting, saveSetting } from "../../services/setting.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { showToast } from "../../store/toast.store";
 import { SettingType } from "../../types/Setting.type";
@@ -47,7 +47,14 @@ export default function SettingPage() {
   };
 
   const saveDataHandler = () => {
-    console.log(data);
+    dispatch(saveSetting(data))
+      .unwrap()
+      .then(() => {
+        dispatch(showToast({ type: "success", message: "Setting Saved!" }));
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
   };
 
   return (
