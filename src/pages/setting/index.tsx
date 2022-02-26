@@ -32,8 +32,23 @@ export default function SettingPage() {
   }, []);
 
   useEffect(() => {
-    setData(settings.map((x) => x));
+    setData(
+      settings.map((x) => ({ id: x.id, props: x.props, value: x.value }))
+    );
   }, [triggerState]);
+
+  const changeDataHandler = (vals: string, props: string) => {
+    setData((x) => {
+      let idx = x.findIndex((x) => x.props === props);
+      if (idx === -1) x.push({ value: vals, props });
+      else x[idx].value = vals;
+      return [...x];
+    });
+  };
+
+  const saveDataHandler = () => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -43,7 +58,7 @@ export default function SettingPage() {
         handlerBackButton={() => {}}
         breadcrumbs={[{ label: "Settings" }]}
         isView={false}
-        handlerCreateButton={() => {}}
+        handlerCreateButton={saveDataHandler}
       />
       <Grid container sx={{ mt: 4 }}>
         <Grid item md={6} sm={12}>
@@ -72,8 +87,11 @@ export default function SettingPage() {
                     size="small"
                     value={
                       data.filter((x) => x.props === "read-point")[0]?.value ||
-                      "0"
+                      ""
                     }
+                    onChange={(e) => {
+                      changeDataHandler(e.target.value, "read-point");
+                    }}
                   />
                 </Grid>
               </Grid>
@@ -98,8 +116,11 @@ export default function SettingPage() {
                     size="small"
                     value={
                       data.filter((x) => x.props === "quiz-point")[0]?.value ||
-                      "0"
+                      ""
                     }
+                    onChange={(e) => {
+                      changeDataHandler(e.target.value, "quiz-point");
+                    }}
                   />
                 </Grid>
               </Grid>
