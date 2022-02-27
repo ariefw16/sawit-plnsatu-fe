@@ -16,6 +16,9 @@ export interface ArticleState {
   articles: ArticleType[];
   selectedArticle: ArticleType;
   totalRow?: number;
+  totalRowCheckin?: number;
+  checkinArticles: ArticleType[];
+  checkinSelected: ArticleType;
 }
 
 export interface ArticleParamsType {
@@ -43,4 +46,10 @@ export interface ArticleCreateType {
   name?: string;
   scheduleId?: number;
   docs?: File;
+}
+
+export interface ArticleCheckinFetch {
+  month?: string;
+  year?: string;
+  status?: "all" | "read" | "unread";
 }

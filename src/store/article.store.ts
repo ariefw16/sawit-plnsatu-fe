@@ -12,6 +12,9 @@ const initialState: ArticleState = {
   articles: [],
   selectedArticle: {},
   totalRow: 0,
+  totalRowCheckin: 0,
+  checkinArticles: [],
+  checkinSelected: {},
 };
 
 export const articleSlice = createSlice({
