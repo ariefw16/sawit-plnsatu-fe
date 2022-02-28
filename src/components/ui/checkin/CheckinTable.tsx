@@ -119,11 +119,11 @@ export default function CheckinTable(props: {
                 )}
               </TableCell>
               <TableCell sx={{ width: "15%" }} padding="checkbox">
-                <Tooltip title="Quick View">
+                <Tooltip title="Read Article">
                   <IconButton
                     color="primary"
                     onClick={() => {
-                      navigate(`/unit/${x.id}`);
+                      navigate(`/available-article/checkin/${x.id}`);
                     }}
                   >
                     <ManageSearchIcon />
