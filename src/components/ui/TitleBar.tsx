@@ -1,7 +1,8 @@
 import { Grid, Typography, Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { ReactChild } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function TitleBar(props: {
   title: string;
@@ -11,6 +12,7 @@ export default function TitleBar(props: {
   handleCreateDialog?: any;
   redirectCreate?: any;
   createType: "redirect" | "dialog" | "no";
+  backButton?: boolean;
 }) {
   const {
     title,
@@ -20,22 +22,45 @@ export default function TitleBar(props: {
     createType,
     handleCreateDialog,
     redirectCreate,
+    backButton = false,
   } = props;
+  const navigate = useNavigate();
   return (
     <Grid container sx={{ p: 1 }}>
       <Grid item md={8}>
-        <Typography
-          variant="h3"
-          sx={{ fontSize: 25, fontWeight: 700, lineHeight: 1.4 }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          sx={{ fontSize: 15, fontWeight: 400, color: "#223354b3" }}
-        >
-          {subtitle}
-        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          {backButton && (
+            <Button
+              sx={{
+                mr: 2,
+                padding: 1,
+                height: 50,
+                minHeight: 0,
+                minWidth: 0,
+                borderRadius: 3,
+              }}
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              <ArrowBackIcon />
+            </Button>
+          )}
+          <Box>
+            <Typography
+              variant="h3"
+              sx={{ fontSize: 25, fontWeight: 700, lineHeight: 1.4 }}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              sx={{ fontSize: 15, fontWeight: 400, color: "#223354b3" }}
+            >
+              {subtitle}
+            </Typography>
+          </Box>
+        </Box>
       </Grid>
       <Grid item md={4}>
         <Box

@@ -38,6 +38,7 @@ export default function CheckinArticlePage() {
         title="Checkin Article"
         subtitle="Read Article & finish Quizzes in this page"
         createType="no"
+        backButton={true}
       />
     </>
   );

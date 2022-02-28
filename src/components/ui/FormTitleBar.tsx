@@ -99,7 +99,7 @@ export default function FormTitleBar(props: {
   return (
     <Box sx={{ display: "flex", flexDirection: "row", my: 2 }}>
       <Box>
-        {noBackButton && (
+        {!noBackButton && (
           <Button
             sx={{
               padding: 1,
