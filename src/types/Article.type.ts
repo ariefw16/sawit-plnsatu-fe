@@ -10,6 +10,7 @@ export interface ArticleType {
   };
   body?: string;
   docs?: File;
+  checkedIn?: boolean;
 }
 
 export interface ArticleState {

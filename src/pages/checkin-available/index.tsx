@@ -66,7 +66,7 @@ export default function CheckinAvailablePage() {
             </Box>
           </Grid>
           <Grid item sm={12}>
-            <CheckinTable />
+            <CheckinTable article={article} rowCount={totalRow!} />
           </Grid>
           <Grid item sm={12} sx={{ px: 2 }}>
             <TablePagination
