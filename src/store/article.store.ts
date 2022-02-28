@@ -6,6 +6,7 @@ import {
   fetchSingleArticle,
   updateArticle,
 } from "../services/article.service";
+import { fetchCheckinAvailable } from "../services/checkin.service";
 import { ArticleState } from "../types/Article.type";
 
 const initialState: ArticleState = {
@@ -46,6 +47,10 @@ export const articleSlice = createSlice({
         const idx = state.articles.findIndex((x) => x.id === payload.id);
         state.selectedArticle = payload;
         state.articles[idx] = payload;
+      })
+      .addCase(fetchCheckinAvailable.fulfilled, (state, { payload }) => {
+        state.checkinArticles = payload.articles!;
+        state.totalRowCheckin = payload.totalRow;
       }),
 });
 

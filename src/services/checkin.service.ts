@@ -1,17 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ArticleCheckinFetch, ArticleType } from "../types/Article.type";
+import {
+  ArticleCheckinFetch,
+  ArticleCheckinReturnFetch,
+} from "../types/Article.type";
 import { ValidationErrors } from "../types/CommonParams.type";
 import { handleErrorAxios } from "./common.service";
 
 export const fetchCheckinAvailable = createAsyncThunk<
-  ArticleType[],
+  ArticleCheckinReturnFetch,
   ArticleCheckinFetch,
   { rejectValue: ValidationErrors }
 >("checkin/fetch", async (params, { rejectWithValue }) => {
   try {
-    const response = await axios.get("");
-    return response.data;
+    const { month, year, limit, page = 0 } = params;
+    const response = await axios.get(
+      `share-article-checkin?month=${month}&year=${year}&limit=${limit}&page=${page}`
+    );
+    return { articles: response.data[0], totalRow: response.data[1] };
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
   }

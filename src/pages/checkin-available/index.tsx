@@ -4,7 +4,9 @@ import CheckinTable from "../../components/ui/checkin/CheckinTable";
 import CheckinListHeader from "../../components/ui/checkin/ListHeader";
 import CheckinSearchBox from "../../components/ui/checkin/SearchBox";
 import TitleBar from "../../components/ui/TitleBar";
+import { fetchCheckinAvailable } from "../../services/checkin.service";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { showToast } from "../../store/toast.store";
 
 export default function CheckinAvailablePage() {
   const dispatch = useAppDispatch();
@@ -12,7 +14,19 @@ export default function CheckinAvailablePage() {
   const totalRow = useAppSelector((state) => state.article.totalRowCheckin);
   const article = useAppSelector((state) => state.article.checkinArticles);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(
+      fetchCheckinAvailable({
+        month: (new Date().getMonth() + 1).toString(),
+        year: new Date().getFullYear().toString(),
+        limit: rowsPerPage,
+      })
+    )
+      .unwrap()
+      .catch((e) => {
+        dispatch(showToast({ message: e.errorMessage, type: "error" }));
+      });
+  }, []);
 
   const handleRowPerPageChange = () => {};
   return (

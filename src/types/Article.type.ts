@@ -52,4 +52,11 @@ export interface ArticleCheckinFetch {
   month?: string;
   year?: string;
   status?: "all" | "read" | "unread";
+  limit?: number;
+  page?: number;
+}
+
+export interface ArticleCheckinReturnFetch {
+  articles?: ArticleType[];
+  totalRow?: number;
 }
