@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import CheckinForm from "../../components/ui/checkin/CheckinForm";
 import TitleBar from "../../components/ui/TitleBar";
 import { fetchSingleArticle } from "../../services/article.service";
 import { fetchScheduleByDate } from "../../services/schedule.service";
@@ -40,6 +41,7 @@ export default function CheckinArticlePage() {
         createType="no"
         backButton={true}
       />
+      <CheckinForm article={article} />
     </>
   );
 }
