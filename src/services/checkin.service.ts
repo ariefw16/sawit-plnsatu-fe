@@ -13,9 +13,9 @@ export const fetchCheckinAvailable = createAsyncThunk<
   { rejectValue: ValidationErrors }
 >("checkin/fetch", async (params, { rejectWithValue }) => {
   try {
-    const { month, year, limit, page = 0 } = params;
+    const { month, year, limit, page = 0, status = "all" } = params;
     const response = await axios.get(
-      `share-article-checkin?month=${month}&year=${year}&limit=${limit}&page=${page}`
+      `share-article-checkin?month=${month}&year=${year}&limit=${limit}&page=${page}&status=${status}`
     );
     return { articles: response.data[0], totalRow: response.data[1] };
   } catch (error) {

@@ -37,7 +37,7 @@ export default function CheckinAvailablePage() {
         createType="no"
       />
       <CheckinListHeader />
-      <CheckinSearchBox />
+      <CheckinSearchBox rowsPerPage={rowsPerPage} />
       <Paper sx={{ py: 2, my: 3 }} variant="outlined">
         <Grid container rowSpacing={2}>
           <Grid item sm={12} sx={{ px: 2 }}>
