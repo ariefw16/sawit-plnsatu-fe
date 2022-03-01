@@ -34,10 +34,9 @@ import ArticleIcon from "@mui/icons-material/Article";
 export default function DetailScheduleDrawer(props: {
   open: boolean;
   handleToggle: any;
-  id: number;
 }) {
   const navigate = useNavigate();
-  const { open, handleToggle, id } = props;
+  const { open, handleToggle } = props;
   const units = useAppSelector((state) => state.unit.units);
   const schedule = useAppSelector((state) => state.schedule.selectedSchedule);
   const dispatch = useAppDispatch();

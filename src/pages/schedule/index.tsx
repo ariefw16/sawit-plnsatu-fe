@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import TitleBar from "../../components/ui/TitleBar";
-import {
-  Calendar,
-  Views,
-  momentLocalizer,
-  stringOrDate,
-} from "react-big-calendar";
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { Paper } from "@mui/material";
@@ -19,7 +14,6 @@ import { setSelectedSchedule } from "../../store/schedule.store";
 export default function SharingSchedulePage() {
   const [createDialog, setCreateDialog] = useState(false);
   const [detailDrawer, setDetailDrawer] = useState(false);
-  const [selectedId, setSelectedId] = useState(0);
   const [monthYear, setMonthYear] = useState<{ month: number; year: number }>({
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
@@ -97,7 +91,6 @@ export default function SharingSchedulePage() {
         handleToggle={() => {
           setDetailDrawer((x) => !x);
         }}
-        id={selectedId}
       />
     </>
   );
