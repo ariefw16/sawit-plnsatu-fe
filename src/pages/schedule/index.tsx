@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import TitleBar from "../../components/ui/TitleBar";
-import { Calendar, Views, momentLocalizer } from "react-big-calendar";
+import {
+  Calendar,
+  Views,
+  momentLocalizer,
+  stringOrDate,
+} from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { Paper } from "@mui/material";
@@ -15,6 +20,10 @@ export default function SharingSchedulePage() {
   const [createDialog, setCreateDialog] = useState(false);
   const [detailDrawer, setDetailDrawer] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
+  const [monthYear, setMonthYear] = useState<{ month: number; year: number }>({
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
+  });
   const localizer = momentLocalizer(moment);
   const dispatch = useAppDispatch();
   const schedules = useAppSelector((state) =>
@@ -30,15 +39,26 @@ export default function SharingSchedulePage() {
   useEffect(() => {
     dispatch(
       fetchSchedules({
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
+        month: monthYear.month,
+        year: monthYear.year,
       })
     )
       .unwrap()
       .catch((e) => {
         dispatch(showToast({ type: "error", message: e.errorMessage }));
       });
-  }, []);
+  }, [monthYear]);
+
+  const rangeChangeHandler = (range: any) => {
+    if ("start" in range) {
+      const data = range.start as Date;
+      let increment = 1;
+      if (data.getDate() > 1) increment++;
+      let month = data.getMonth() + increment;
+      if (month > 12) month = month - 12;
+      setMonthYear({ month, year: data.getFullYear() });
+    }
+  };
 
   return (
     <>
@@ -63,6 +83,7 @@ export default function SharingSchedulePage() {
             setDetailDrawer(true);
             dispatch(setSelectedSchedule({ id: e.id }));
           }}
+          onRangeChange={rangeChangeHandler}
         />
       </Paper>
       <CreateScheduleDrawer
