@@ -13,14 +13,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArticleType } from "../../../types/Article.type";
+import { CheckinArticleType } from "../../../types/Article.type";
 import { HeadCell } from "../../../types/CommonParams.type";
 import { StyledTableCell } from "../StyledTableCell";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import moment from "moment";
 
 export default function CheckinTable(props: {
-  article: ArticleType[];
+  article: CheckinArticleType[];
   rowCount: number;
   loading?: boolean;
 }) {
@@ -143,7 +143,7 @@ export default function CheckinTable(props: {
   );
 }
 
-const headCells: readonly HeadCell<ArticleType>[] = [
+const headCells: readonly HeadCell<CheckinArticleType>[] = [
   {
     id: "name",
     numeric: false,

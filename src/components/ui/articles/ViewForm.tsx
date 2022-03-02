@@ -1,7 +1,21 @@
-import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Divider,
+  Grid,
+  TextField,
+  Tabs,
+  Tab,
+  Table,
+  TableHead,
+  TableRow,
+  TableBody,
+  Chip,
+} from "@mui/material";
 import moment from "moment";
 import { useState } from "react";
 import { useAppSelector } from "../../../store";
+import { StyledTableCellSecondary, StyledTableRow } from "../StyledTableCell";
 import { TabPanel } from "../TabPanel";
 
 export default function ArticleViewForm() {
@@ -81,7 +95,57 @@ export default function ArticleViewForm() {
           <Tab label="Recent Activity" value="activities" />
         </Tabs>
         <TabPanel selector={tabValue} id="points">
-          Points
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCellSecondary>Name</StyledTableCellSecondary>
+                <StyledTableCellSecondary align="right">
+                  NIK
+                </StyledTableCellSecondary>
+                <StyledTableCellSecondary align="right">
+                  Checked In
+                </StyledTableCellSecondary>
+                <StyledTableCellSecondary align="right">
+                  Quizzes
+                </StyledTableCellSecondary>
+                <StyledTableCellSecondary align="right">
+                  Points
+                </StyledTableCellSecondary>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {article.checkins &&
+                article.checkins.map((dt) => (
+                  <StyledTableRow key={dt.id}>
+                    <StyledTableCellSecondary component="th" scope="row">
+                      {dt.user?.name || ""}
+                    </StyledTableCellSecondary>
+                    <StyledTableCellSecondary align="right">
+                      {dt.user?.nik || ""}
+                    </StyledTableCellSecondary>
+                    <StyledTableCellSecondary align="right">
+                      <Chip
+                        label="Checked In"
+                        color="primary"
+                        variant="outlined"
+                        size="small"
+                      />
+                    </StyledTableCellSecondary>
+                    <StyledTableCellSecondary align="right">
+                      <Chip
+                        label="Undone"
+                        color="error"
+                        variant="filled"
+                        size="small"
+                      />
+                    </StyledTableCellSecondary>
+                    <StyledTableCellSecondary align="right">
+                      {dt.points || ""}
+                    </StyledTableCellSecondary>
+                  </StyledTableRow>
+                ))}
+            </TableBody>
+          </Table>
         </TabPanel>
         <TabPanel selector={tabValue} id="activities">
           Recent Activities

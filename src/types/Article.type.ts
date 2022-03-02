@@ -10,7 +10,7 @@ export interface ArticleType {
   };
   body?: string;
   docs?: File;
-  checkedIn?: boolean;
+  checkins?: ArticleCheckinUsersType[];
 }
 
 export interface ArticleState {
@@ -63,5 +63,16 @@ export interface ArticleCheckinReturnFetch {
 }
 
 export interface CheckinArticleType extends ArticleType {
+  checkedIn?: boolean;
   points?: number;
+}
+
+export interface ArticleCheckinUsersType {
+  id?: number;
+  points?: number;
+  user?: {
+    id?: number;
+    name?: string;
+    nik?: string;
+  };
 }
