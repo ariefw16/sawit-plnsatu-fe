@@ -22,7 +22,7 @@ export default function CheckinArticlePage() {
         createType="no"
         backButton={true}
       />
-      <CheckinForm article={article} />
+      <CheckinForm />
     </>
   );
 }

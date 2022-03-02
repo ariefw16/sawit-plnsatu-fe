@@ -18,8 +18,8 @@ export interface ArticleState {
   selectedArticle: ArticleType;
   totalRow?: number;
   totalRowCheckin?: number;
-  checkinArticles: ArticleType[];
-  checkinSelected: ArticleType;
+  checkinArticles: CheckinArticleType[];
+  checkinSelected: CheckinArticleType;
 }
 
 export interface ArticleParamsType {
@@ -60,4 +60,8 @@ export interface ArticleCheckinFetch {
 export interface ArticleCheckinReturnFetch {
   articles?: ArticleType[];
   totalRow?: number;
+}
+
+export interface CheckinArticleType extends ArticleType {
+  points?: number;
 }

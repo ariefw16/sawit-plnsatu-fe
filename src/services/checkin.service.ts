@@ -4,6 +4,7 @@ import {
   ArticleCheckinFetch,
   ArticleCheckinReturnFetch,
   ArticleType,
+  CheckinArticleType,
 } from "../types/Article.type";
 import { ValidationErrors } from "../types/CommonParams.type";
 import { handleErrorAxios } from "./common.service";
@@ -25,7 +26,7 @@ export const fetchCheckinAvailable = createAsyncThunk<
 });
 
 export const fetchCheckinArticle = createAsyncThunk<
-  ArticleType,
+  CheckinArticleType,
   { id: number },
   { rejectValue: ValidationErrors }
 >("checkin/article", async ({ id }, { rejectWithValue }) => {

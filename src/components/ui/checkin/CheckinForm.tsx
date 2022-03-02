@@ -17,8 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { checkinArticle } from "../../../services/checkin.service";
 import { showToast } from "../../../store/toast.store";
 
-export default function CheckinForm(props: { article: ArticleType }) {
-  // const { article } = props;
+export default function CheckinForm() {
   const article = useAppSelector((state) => state.article.checkinSelected);
   const { checkedIn = false } = article;
   const dispatch = useAppDispatch();
@@ -141,6 +140,15 @@ export default function CheckinForm(props: { article: ArticleType }) {
                   variant="filled"
                   fullWidth
                   value="-"
+                  inputProps={{ readOnly: true }}
+                />
+              </Grid>
+              <Grid item sm={12}>
+                <TextField
+                  label="Points"
+                  variant="outlined"
+                  fullWidth
+                  value={article.points || ""}
                   inputProps={{ readOnly: true }}
                 />
               </Grid>
