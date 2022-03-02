@@ -116,7 +116,7 @@ export default function ArticleViewForm() {
             <TableBody>
               {article.checkins &&
                 article.checkins.map((dt) => (
-                  <StyledTableRow key={dt.id}>
+                  <StyledTableRow key={dt.user?.nik}>
                     <StyledTableCellSecondary component="th" scope="row">
                       {dt.user?.name || ""}
                     </StyledTableCellSecondary>
@@ -124,12 +124,21 @@ export default function ArticleViewForm() {
                       {dt.user?.nik || ""}
                     </StyledTableCellSecondary>
                     <StyledTableCellSecondary align="right">
-                      <Chip
-                        label="Checked In"
-                        color="primary"
-                        variant="outlined"
-                        size="small"
-                      />
+                      {dt.checkedIn ? (
+                        <Chip
+                          label="Checked In"
+                          color="success"
+                          variant="outlined"
+                          size="small"
+                        />
+                      ) : (
+                        <Chip
+                          size="small"
+                          variant="filled"
+                          color="error"
+                          label="Not Checked yet"
+                        />
+                      )}
                     </StyledTableCellSecondary>
                     <StyledTableCellSecondary align="right">
                       <Chip

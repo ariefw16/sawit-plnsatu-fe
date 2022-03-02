@@ -75,4 +75,5 @@ export interface ArticleCheckinUsersType {
     name?: string;
     nik?: string;
   };
+  checkedIn?: boolean;
 }
