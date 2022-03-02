@@ -30,7 +30,7 @@ export const fetchCheckinArticle = createAsyncThunk<
   { rejectValue: ValidationErrors }
 >("checkin/article", async ({ id }, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`share-article?id=${id}`);
+    const response = await axios.get(`share-article-checkin?id=${id}`);
     return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);
@@ -43,7 +43,9 @@ export const checkinArticle = createAsyncThunk<
   { rejectValue: ValidationErrors }
 >("checkin/submit", async ({ id }, { rejectWithValue }) => {
   try {
-    const response = await axios.post("share-article-checkin", { id });
+    const response = await axios.post("share-article-checkin", {
+      articleId: id,
+    });
     return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);

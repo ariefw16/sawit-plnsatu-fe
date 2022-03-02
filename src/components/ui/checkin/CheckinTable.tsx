@@ -113,7 +113,12 @@ export default function CheckinTable(props: {
               </TableCell>
               <TableCell sx={{ width: "15%" }} padding="checkbox">
                 {x.checkedIn ? (
-                  <Chip label="Checked In" color="primary" variant="outlined" />
+                  <Chip
+                    label="Checked In"
+                    color="primary"
+                    variant="outlined"
+                    size="small"
+                  />
                 ) : (
                   <Chip label="Not checked yet" color="error" size="small" />
                 )}
