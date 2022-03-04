@@ -1,3 +1,5 @@
+import { ArticleQuizType } from "./Quiz.type";
+
 export interface ArticleType {
   id?: number;
   name?: string;
@@ -11,6 +13,7 @@ export interface ArticleType {
   body?: string;
   docs?: File;
   checkins?: ArticleCheckinUsersType[];
+  quizzes?: ArticleQuizType[];
 }
 
 export interface ArticleState {

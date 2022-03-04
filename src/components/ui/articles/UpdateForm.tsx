@@ -10,6 +10,7 @@ import "react-quill/dist/quill.snow.css";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchAvailableScheduleDate } from "../../../services/schedule.service";
 import { showToast } from "../../../store/toast.store";
+import ArticlePointsTable from "./ArticlePointsTable";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
@@ -129,7 +130,7 @@ export default function ArticleUpdateForm(props: {
           <Tab label="Recent Activity" value="activities" />
         </Tabs>
         <TabPanel selector={tabValue} id="points">
-          Points
+          <ArticlePointsTable />
         </TabPanel>
         <TabPanel selector={tabValue} id="activities">
           Recent Activities

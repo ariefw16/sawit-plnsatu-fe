@@ -1,27 +1,14 @@
-import {
-  Paper,
-  Box,
-  Divider,
-  Grid,
-  TextField,
-  Tabs,
-  Tab,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  Chip,
-} from "@mui/material";
+import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
 import { useState } from "react";
 import { useAppSelector } from "../../../store";
-import { StyledTableCellSecondary, StyledTableRow } from "../StyledTableCell";
 import { TabPanel } from "../TabPanel";
 import ArticlePointsTable from "./ArticlePointsTable";
+import QuizAccordion from "./QuizAccordion";
 
 export default function ArticleViewForm() {
   const article = useAppSelector((state) => state.article.selectedArticle);
-  const [tabValue, setTabValue] = useState("points");
+  const [tabValue, setTabValue] = useState("quiz");
 
   return (
     <>
@@ -92,9 +79,13 @@ export default function ArticleViewForm() {
             setTabValue(vals);
           }}
         >
+          <Tab label="Quiz" value="quiz" />
           <Tab label="Points" value="points" />
           <Tab label="Recent Activity" value="activities" />
         </Tabs>
+        <TabPanel selector={tabValue} id="quiz">
+          <QuizAccordion />
+        </TabPanel>
         <TabPanel selector={tabValue} id="points">
           <ArticlePointsTable />
         </TabPanel>
