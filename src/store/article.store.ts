@@ -5,6 +5,7 @@ import {
   fetchArticles,
   fetchSingleArticle,
   updateArticle,
+  updateQuizShownArticle,
 } from "../services/article.service";
 import {
   checkinArticle,
@@ -61,6 +62,9 @@ export const articleSlice = createSlice({
       })
       .addCase(checkinArticle.fulfilled, (state, { payload }) => {
         state.checkinSelected.checkedIn = true;
+      })
+      .addCase(updateQuizShownArticle.fulfilled, (state, { payload }) => {
+        state.selectedArticle.quiz_shown = payload.quiz_shown;
       }),
 });
 

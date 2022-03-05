@@ -14,6 +14,7 @@ export interface ArticleType {
   docs?: File;
   checkins?: ArticleCheckinUsersType[];
   quizzes?: ArticleQuizType[];
+  quiz_shown?: number;
 }
 
 export interface ArticleState {

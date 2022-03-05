@@ -102,3 +102,18 @@ export const updateArticle = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const updateQuizShownArticle = createAsyncThunk<
+  ArticleType,
+  { id: number; shown: number },
+  { rejectValue: ValidationErrors }
+>("article/questionshown", async ({ id, shown }, { rejectWithValue }) => {
+  try {
+    const response = await axios.patch(`share-article/${id}`, {
+      quiz_shown: shown,
+    });
+    return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

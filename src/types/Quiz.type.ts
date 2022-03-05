@@ -2,7 +2,6 @@ export interface ArticleQuizType {
   id?: number;
   question?: string;
   articleId?: number;
-  correctChoice?: ArticleQuizChoiceType;
   choices?: ArticleQuizChoiceType[];
 }
 
@@ -15,7 +14,6 @@ export interface ArticleQuizChoiceType {
 
 export interface ArticleQuizCreateType {
   question: string;
-  articleId: number;
+  articleId?: number;
   choices?: ArticleQuizChoiceType[];
-  correctChoice?: ArticleQuizChoiceType;
 }
