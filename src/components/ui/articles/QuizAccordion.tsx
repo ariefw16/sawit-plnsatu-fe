@@ -21,9 +21,11 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { updateQuizShownArticle } from "../../../services/article.service";
+import { deleteQuestion } from "../../../services/quiz.service";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { showToast } from "../../../store/toast.store";
 import { ArticleQuizType } from "../../../types/Quiz.type";
+import DeleteDialog from "../DeleteDialog";
 import CreateQuizDialog from "./CreateQuizDialog";
 
 export default function QuizAccordion() {
@@ -31,6 +33,11 @@ export default function QuizAccordion() {
   const article = useAppSelector((state) => state.article.selectedArticle);
   const [shown, setShown] = useState(0);
   const [create, setCreate] = useState(false);
+  const [deletion, setDeletion] = useState(false);
+  const [deletionData, setDeletionData] = useState<{
+    id: number;
+    name: string;
+  }>({ id: 0, name: "" });
   const [update, setUpdate] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState<ArticleQuizType>({});
 
@@ -52,6 +59,21 @@ export default function QuizAccordion() {
   };
   const showCreateHandler = () => {
     setCreate(true);
+  };
+  const deleteQuestionHandler = () => {
+    dispatch(deleteQuestion({ id: deletionData.id }))
+      .unwrap()
+      .then(() => {
+        dispatch(showToast({ message: "Question deleted!", type: "success" }));
+        setDeletion(false);
+      })
+      .catch((e) => {
+        dispatch(showToast({ message: e.errorMessage, type: "error" }));
+      });
+  };
+  const deleteButtonHandler = (params: { id: number; name: string }) => {
+    setDeletion(true);
+    setDeletionData(params);
   };
 
   return (
@@ -140,6 +162,9 @@ export default function QuizAccordion() {
                       minWidth: 0,
                     }}
                     color="error"
+                    onClick={() => {
+                      deleteButtonHandler({ id: x.id!, name: x.question! });
+                    }}
                   >
                     <DeleteForever fontSize="small" />
                   </Button>
@@ -165,6 +190,14 @@ export default function QuizAccordion() {
         handleClose={() => {
           setCreate(false);
         }}
+      />
+      <DeleteDialog
+        open={deletion}
+        data={deletionData}
+        handleClose={() => {
+          setDeletion(false);
+        }}
+        handleDelete={deleteQuestionHandler}
       />
     </>
   );

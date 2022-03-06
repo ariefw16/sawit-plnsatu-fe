@@ -12,6 +12,7 @@ import {
   fetchCheckinArticle,
   fetchCheckinAvailable,
 } from "../services/checkin.service";
+import { deleteQuestion } from "../services/quiz.service";
 import { ArticleState } from "../types/Article.type";
 
 const initialState: ArticleState = {
@@ -65,6 +66,12 @@ export const articleSlice = createSlice({
       })
       .addCase(updateQuizShownArticle.fulfilled, (state, { payload }) => {
         state.selectedArticle.quiz_shown = payload.quiz_shown;
+      })
+      .addCase(deleteQuestion.fulfilled, (state, { payload }) => {
+        const idx = state.selectedArticle.quizzes?.findIndex(
+          (x) => x.id === payload.id
+        );
+        if (idx && idx > 0) state.selectedArticle.quizzes?.splice(idx, 1);
       }),
 });
 

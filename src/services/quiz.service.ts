@@ -16,3 +16,16 @@ export const saveQuestion = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const deleteQuestion = createAsyncThunk<
+  { id: number },
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("quiz/delete", async ({ id }, { rejectWithValue }) => {
+  try {
+    const response = await axios.delete(`share-article-quiz/${id}`);
+    return { id };
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
