@@ -10,7 +10,7 @@ export const saveQuestion = createAsyncThunk<
   { rejectValue: ValidationErrors }
 >("quiz/save", async (params, { rejectWithValue }) => {
   try {
-    const response = await axios.post("", params);
+    const response = await axios.post("share-article-quiz", params);
     return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);

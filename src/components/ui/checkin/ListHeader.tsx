@@ -46,10 +46,14 @@ export default function CheckinListHeader() {
               <StarsIcon fontSize="large" color="primary" />
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                Points in February 2022
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 600 }}
+                color="primary"
+              >
+                February 2022
               </Typography>
-              <Typography variant="h5">100</Typography>
+              <Typography variant="h5">100 Pts</Typography>
             </Box>
           </Box>
         </Paper>
