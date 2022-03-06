@@ -51,6 +51,9 @@ function Login() {
           onChange={(e) => {
             setLoginData((x) => ({ ...x, username: e.target.value }));
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleLogin();
+          }}
         />
         <TextField
           type="password"
@@ -61,6 +64,9 @@ function Login() {
           value={loginData.password}
           onChange={(e) => {
             setLoginData((x) => ({ ...x, password: e.target.value }));
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleLogin();
           }}
         />
         <Button
