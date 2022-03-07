@@ -63,8 +63,9 @@ export default function UpdateQuizDialog(props: {
     });
   };
   const submitHandler = () => {
-    console.log(data);
-    dispatch(updateQuestion(data))
+    const newChoices =
+      data.choices?.map((x) => ({ ...x, quizId: quiz.id })) || [];
+    dispatch(updateQuestion({ ...data, choices: newChoices }))
       .unwrap()
       .then(() => {
         dispatch(showToast({ type: "success", message: "Question Updated!" }));
