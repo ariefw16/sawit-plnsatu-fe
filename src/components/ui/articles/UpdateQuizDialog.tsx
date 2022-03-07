@@ -1,76 +1,57 @@
-import { AddCircle, DeleteForever } from "@mui/icons-material";
+import { DeleteForever, AddCircle } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   Grid,
   TextField,
-  DialogActions,
-  Button,
-  Box,
-  Divider,
   List,
   ListItem,
   IconButton,
   Checkbox,
+  Divider,
+  Box,
+  Button,
+  DialogActions,
 } from "@mui/material";
-import React, { useState } from "react";
-import { saveQuestion } from "../../../services/quiz.service";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import React, { useEffect, useState } from "react";
+import { updateQuestion } from "../../../services/quiz.service";
+import { useAppDispatch } from "../../../store";
 import { showToast } from "../../../store/toast.store";
-import { ArticleQuizCreateType } from "../../../types/Quiz.type";
+import { ArticleQuizType } from "../../../types/Quiz.type";
 
-export default function CreateQuizDialog(props: {
+export default function UpdateQuizDialog(props: {
   open: boolean;
+  quiz: ArticleQuizType;
   handleClose: any;
 }) {
-  const { open, handleClose } = props;
+  const { open, quiz, handleClose } = props;
   const dispatch = useAppDispatch();
-  const article = useAppSelector((state) => state.article.selectedArticle);
-  const [data, setData] = useState<ArticleQuizCreateType>({
-    question: "",
-    articleId: article.id,
-    choices: [],
-  });
+  const [data, setData] = useState<ArticleQuizType>({});
   const [choice, setChoice] = useState("");
 
-  const dataChangeHandler = (quiz: ArticleQuizCreateType) => {
-    setData((x) => ({ ...x, ...quiz }));
-  };
-  const submitHandler = () => {
-    const isCorrectChoosen = data.choices?.some((x) => x.isCorrect);
-    if (isCorrectChoosen) {
-      data.articleId = article.id;
-      dispatch(saveQuestion(data))
-        .unwrap()
-        .then(() => {
-          dispatch(showToast({ message: "Question added!", type: "success" }));
-          handleClose();
-        })
-        .catch((e) => {
-          dispatch(showToast({ type: "error", message: e.errorMessage }));
-        });
-    } else
-      dispatch(
-        showToast({
-          message: "Please Choose 1 correct Answer!",
-          type: "warning",
-        })
-      );
+  useEffect(() => {
+    setData(() => Object.assign({}, quiz));
+  }, [quiz]);
+
+  const dataChangeHandler = (params: ArticleQuizType) => {
+    setData((x) => ({ ...x, ...params }));
   };
   const addChoiceHandler = () => {
     setData((x) => {
       const { choices, ...rest } = x;
-      choices?.push({ name: choice });
-      return { ...rest, choices };
+      const newChoices = Object.assign([], choices);
+      newChoices?.push({ name: choice });
+      return { ...rest, choices: newChoices };
     });
     setChoice("");
   };
   const removeChoiceHandler = (idx: number) => {
     setData((x) => {
       const { choices, ...rest } = x;
-      choices?.splice(idx, 1);
-      return { ...rest, choices };
+      const newChoices = Object.assign([], choices);
+      newChoices?.splice(idx, 1);
+      return { ...rest, choices: newChoices };
     });
   };
   const changeIsCorrectHandler = (idx: number) => {
@@ -80,6 +61,18 @@ export default function CreateQuizDialog(props: {
       newChoice![idx].isCorrect = true;
       return { ...rest, choices: newChoice };
     });
+  };
+  const submitHandler = () => {
+    console.log(data);
+    dispatch(updateQuestion(data))
+      .unwrap()
+      .then(() => {
+        dispatch(showToast({ type: "success", message: "Question Updated!" }));
+        handleClose();
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
   };
 
   return (

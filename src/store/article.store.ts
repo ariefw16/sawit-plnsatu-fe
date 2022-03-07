@@ -12,7 +12,11 @@ import {
   fetchCheckinArticle,
   fetchCheckinAvailable,
 } from "../services/checkin.service";
-import { deleteQuestion, saveQuestion } from "../services/quiz.service";
+import {
+  deleteQuestion,
+  saveQuestion,
+  updateQuestion,
+} from "../services/quiz.service";
 import { ArticleState } from "../types/Article.type";
 
 const initialState: ArticleState = {
@@ -71,10 +75,18 @@ export const articleSlice = createSlice({
         const idx = state.selectedArticle.quizzes?.findIndex(
           (x) => x.id === payload.id
         );
-        if (idx && idx > 0) state.selectedArticle.quizzes?.splice(idx, 1);
+        if (idx && idx >= 0) state.selectedArticle.quizzes?.splice(idx, 1);
       })
       .addCase(saveQuestion.fulfilled, (state, { payload }) => {
         state.selectedArticle.quizzes?.push(payload);
+      })
+      .addCase(updateQuestion.fulfilled, (state, { payload }) => {
+        const idx = state.selectedArticle.quizzes?.findIndex(
+          (x) => x.id === payload.id
+        );
+        if (idx! > -1) {
+          state.selectedArticle.quizzes?.splice(idx!, 1, payload);
+        }
       }),
 });
 

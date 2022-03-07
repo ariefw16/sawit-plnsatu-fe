@@ -10,7 +10,6 @@ import {
   Button,
   Divider,
   Grid,
-  IconButton,
   InputAdornment,
   List,
   ListItem,
@@ -27,6 +26,7 @@ import { showToast } from "../../../store/toast.store";
 import { ArticleQuizType } from "../../../types/Quiz.type";
 import DeleteDialog from "../DeleteDialog";
 import CreateQuizDialog from "./CreateQuizDialog";
+import UpdateQuizDialog from "./UpdateQuizDialog";
 
 export default function QuizAccordion() {
   const dispatch = useAppDispatch();
@@ -39,6 +39,7 @@ export default function QuizAccordion() {
     name: string;
   }>({ id: 0, name: "" });
   const [update, setUpdate] = useState(false);
+  const [updateData, setUpdateData] = useState<ArticleQuizType>({});
   const [selectedQuiz, setSelectedQuiz] = useState<ArticleQuizType>({});
 
   useEffect(() => {
@@ -117,7 +118,7 @@ export default function QuizAccordion() {
         </Grid>
         <Grid item md={8} sm={12}>
           {article.quizzes?.map((x) => (
-            <Accordion key={x.id}>
+            <Accordion key={x.id} defaultExpanded>
               <AccordionSummary
                 expandIcon={<ExpandMore />}
                 sx={{ backgroundColor: "whitesmoke" }}
@@ -149,6 +150,10 @@ export default function QuizAccordion() {
                       mx: 1,
                     }}
                     color="secondary"
+                    onClick={() => {
+                      setUpdateData(x);
+                      setUpdate(true);
+                    }}
                   >
                     <Create fontSize="small" />
                   </Button>
@@ -198,6 +203,13 @@ export default function QuizAccordion() {
           setDeletion(false);
         }}
         handleDelete={deleteQuestionHandler}
+      />
+      <UpdateQuizDialog
+        open={update}
+        handleClose={() => {
+          setUpdate(false);
+        }}
+        quiz={updateData}
       />
     </>
   );

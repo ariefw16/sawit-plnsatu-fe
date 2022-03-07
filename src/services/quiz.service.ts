@@ -29,3 +29,17 @@ export const deleteQuestion = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const updateQuestion = createAsyncThunk<
+  ArticleQuizType,
+  ArticleQuizType,
+  { rejectValue: ValidationErrors }
+>("quiz/update", async (params, { rejectWithValue }) => {
+  try {
+    const { id, ...data } = params;
+    const response = await axios.patch(`share-article-quiz/${id}`, data);
+    return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
