@@ -17,3 +17,20 @@ export interface ArticleQuizCreateType {
   articleId?: number;
   choices?: ArticleQuizChoiceType[];
 }
+
+export interface CheckinQuizCreateType {
+  quizId?: number;
+  articleId?: number;
+  questions?: CheckinQuizQuestionCreateType[];
+}
+
+export interface CheckinQuizQuestionCreateType {
+  question?: string;
+  choices?: CheckinQuizQuestionCreateType[];
+}
+
+export interface CheckinQuizChoiceCreateType {
+  name?: string;
+  choiceRelId?: number;
+  isChoosen?: boolean;
+}
