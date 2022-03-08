@@ -19,14 +19,14 @@ export interface ArticleQuizCreateType {
 }
 
 export interface CheckinQuizCreateType {
-  quizId?: number;
   articleId?: number;
   questions?: CheckinQuizQuestionCreateType[];
 }
 
 export interface CheckinQuizQuestionCreateType {
+  quizId?: number;
   question?: string;
-  choices?: CheckinQuizQuestionCreateType[];
+  choices?: CheckinQuizChoiceCreateType[];
 }
 
 export interface CheckinQuizChoiceCreateType {
