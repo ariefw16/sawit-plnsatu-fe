@@ -11,6 +11,7 @@ import {
   checkinArticle,
   fetchCheckinArticle,
   fetchCheckinAvailable,
+  submitCheckinQuiz,
 } from "../services/checkin.service";
 import {
   deleteQuestion,
@@ -87,6 +88,9 @@ export const articleSlice = createSlice({
         if (idx! > -1) {
           state.selectedArticle.quizzes?.splice(idx!, 1, payload);
         }
+      })
+      .addCase(submitCheckinQuiz.fulfilled, (state, { payload }) => {
+        console.log(payload);
       }),
 });
 

@@ -14,7 +14,7 @@ import {
   IconButton,
   Checkbox,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { saveQuestion } from "../../../services/quiz.service";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { showToast } from "../../../store/toast.store";
@@ -33,6 +33,10 @@ export default function CreateQuizDialog(props: {
     choices: [],
   });
   const [choice, setChoice] = useState("");
+
+  useEffect(() => {
+    setData({ question: "", articleId: article.id, choices: [] });
+  }, [article]);
 
   const dataChangeHandler = (quiz: ArticleQuizCreateType) => {
     setData((x) => ({ ...x, ...quiz }));

@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 export default function CheckinArticlePage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const article = useAppSelector((state) => state.article.checkinSelected);
 
   useEffect(() => {
     dispatch(fetchCheckinArticle({ id: parseInt(id!) }));
@@ -23,7 +24,7 @@ export default function CheckinArticlePage() {
         backButton={true}
       />
       <CheckinForm />
-      <QuizCheckinForm />
+      {article.checkedIn && <QuizCheckinForm />}
     </>
   );
 }

@@ -10,6 +10,8 @@ export interface ArticleQuizChoiceType {
   quizId?: number;
   name?: string;
   isCorrect?: boolean;
+  isChoosen?: boolean;
+  choiceRelId?: number;
 }
 
 export interface ArticleQuizCreateType {
@@ -33,4 +35,5 @@ export interface CheckinQuizChoiceCreateType {
   name?: string;
   choiceRelId?: number;
   isChoosen?: boolean;
+  id?: number;
 }

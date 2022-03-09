@@ -7,6 +7,7 @@ import {
   CheckinArticleType,
 } from "../types/Article.type";
 import { ValidationErrors } from "../types/CommonParams.type";
+import { CheckinQuizCreateType } from "../types/Quiz.type";
 import { handleErrorAxios } from "./common.service";
 
 export const fetchCheckinAvailable = createAsyncThunk<
@@ -47,6 +48,19 @@ export const checkinArticle = createAsyncThunk<
     const response = await axios.post("share-article-checkin", {
       articleId: id,
     });
+    return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});
+
+export const submitCheckinQuiz = createAsyncThunk<
+  any,
+  CheckinQuizCreateType,
+  { rejectValue: ValidationErrors }
+>("checkin/submitQuiz", async (params, { rejectWithValue }) => {
+  try {
+    const response = await axios.post("share-article-checkin-quiz", params);
     return response.data;
   } catch (error) {
     return handleErrorAxios(error, rejectWithValue);

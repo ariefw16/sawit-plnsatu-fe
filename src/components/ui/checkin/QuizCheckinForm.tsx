@@ -11,10 +11,13 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../../store";
+import { submitCheckinQuiz } from "../../../services/checkin.service";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { showToast } from "../../../store/toast.store";
 import { CheckinQuizCreateType } from "../../../types/Quiz.type";
 
 export default function QuizCheckinForm() {
+  const dispatch = useAppDispatch();
   const article = useAppSelector((state) => state.article.checkinSelected);
   const [data, setData] = useState<CheckinQuizCreateType>({});
 
@@ -40,7 +43,14 @@ export default function QuizCheckinForm() {
   }, [article]);
 
   const submitQuizHandler = () => {
-    console.log(data);
+    dispatch(submitCheckinQuiz(data))
+      .unwrap()
+      .then(() => {
+        dispatch(showToast({ type: "success", message: "Quiz submitted !" }));
+      })
+      .catch((e) => {
+        dispatch(showToast({ type: "error", message: e.errorMessage }));
+      });
   };
   const getChoosenChoice = (quizId: number) => {
     const quiz = data.questions?.find((x) => x.quizId === quizId);

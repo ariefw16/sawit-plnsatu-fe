@@ -68,6 +68,7 @@ export interface ArticleCheckinReturnFetch {
 
 export interface CheckinArticleType extends ArticleType {
   checkedIn?: boolean;
+  quizDone?: boolean;
   points?: number;
 }
 
