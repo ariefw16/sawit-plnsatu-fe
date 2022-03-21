@@ -8,7 +8,7 @@ import FormTitleBar from "../../components/ui/FormTitleBar";
 import { fetchScheduleByDate } from "../../services/schedule.service";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { resetSelectedSchedule } from "../../store/schedule.store";
-import { ArticleCreateType, ArticleType } from "../../types/Article.type";
+import { ArticleCreateType } from "../../types/Article.type";
 import moment from "moment";
 import { ScheduleType } from "../../types/Schedule.type";
 import { showToast } from "../../store/toast.store";
@@ -55,13 +55,15 @@ export default function ArticleCreatePage() {
   };
   const changeDateHandler = (vals?: Date) => {
     dispatch(fetchScheduleByDate({ schedule_date: vals! })).then((e) => {
-      const id = (e.payload as ScheduleType).id!;
-      setData((x) => ({
-        ...x,
-        article_date: vals,
-        name: (e.payload as ScheduleType).name || "",
-        scheduleId: id,
-      }));
+      if (e.payload) {
+        const id = (e.payload as ScheduleType).id!;
+        setData((x) => ({
+          ...x,
+          article_date: vals,
+          name: (e.payload as ScheduleType).name || "",
+          scheduleId: id,
+        }));
+      }
     });
   };
   return (

@@ -2,7 +2,7 @@ import { LocalizationProvider, DatePicker } from "@mui/lab";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { ArticleType } from "../../../types/Article.type";
 import { TabPanel } from "../TabPanel";
 import ReactQuill from "react-quill";
@@ -23,19 +23,19 @@ export default function ArticleUpdateForm(props: {
   );
   const [tabValue, setTabValue] = useState("points");
 
-  useEffect(() => {
-    dispatch(
-      fetchAvailableScheduleDate({
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
-        scheduleId: article.schedule?.id!,
-      })
-    )
-      .unwrap()
-      .catch((e) => {
-        dispatch(showToast({ type: "error", message: e.errorMessage }));
-      });
-  }, []);
+  // useEffect(() => {
+  //   dispatch(
+  //     fetchAvailableScheduleDate({
+  //       month: new Date().getMonth() + 1,
+  //       year: new Date().getFullYear(),
+  //       scheduleId: article.schedule?.id!,
+  //     })
+  //   )
+  //     .unwrap()
+  //     .catch((e) => {
+  //       dispatch(showToast({ type: "error", message: e.errorMessage }));
+  //     });
+  // }, []);
 
   const getDisableDate = (date: Date) => {
     if (availableSchedule.length < 1) return false;
@@ -113,6 +113,15 @@ export default function ArticleUpdateForm(props: {
                   fullWidth
                   value="-"
                   inputProps={{ readOnly: true }}
+                />
+              </Grid>
+              <Grid item sm={12}>
+                <TextField
+                  fullWidth
+                  type={"file"}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    handleDataChange({ docs: e.target.files![0] });
+                  }}
                 />
               </Grid>
             </Grid>

@@ -48,12 +48,12 @@ export const createArticle = createAsyncThunk<
   try {
     const params = new FormData();
     params.append("name", props.name || "");
-    params.append("body", props.body || "");
     params.append(
       "article_date",
       moment(props.article_date).format("YYYY-MM-DD")
     );
-    params.append("scheduleId", String(props.scheduleId));
+    if (props.body) params.append("body", props.body || "");
+    if (props.scheduleId) params.append("scheduleId", String(props.scheduleId));
     if (props.docs) params.append("docs", props.docs);
 
     const response = await axios.post("share-article", params);
@@ -95,7 +95,18 @@ export const updateArticle = createAsyncThunk<
   { rejectValue: ValidationErrors }
 >("article/update", async (props, { rejectWithValue }) => {
   try {
-    const { id, ...params } = props;
+    const { id, ...rest } = props;
+    const params = new FormData();
+    if (rest.name) params.append("name", rest.name || "");
+    params.append(
+      "article_date",
+      moment(rest.article_date).format("YYYY-MM-DD")
+    );
+    if (rest.body) params.append("body", rest.body || "");
+    if (rest.schedule?.id)
+      params.append("scheduleId", String(rest.schedule.id));
+    if (rest.docs) params.append("docs", rest.docs);
+
     const response = await axios.patch(`share-article/${id}`, params);
     return response.data;
   } catch (error) {

@@ -63,12 +63,13 @@ export default function ArticleDetailPage() {
   };
   const updateButtonHandler = () => {
     setIsView(false);
-    setData(Object.assign({}, article));
+    setData((x) => Object.assign({}, article));
   };
   const cancelButtonHandler = () => {
     setIsView(true);
   };
   const submitEditHandler = () => {
+    console.log(data);
     dispatch(updateArticle(data))
       .unwrap()
       .then(() => {
