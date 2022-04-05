@@ -1,6 +1,7 @@
 import { ArticleQuizType } from "./Quiz.type";
 
 export interface ArticleType {
+  [x: string]: any;
   id?: number;
   name?: string;
   article_date?: Date;
@@ -15,6 +16,7 @@ export interface ArticleType {
   checkins?: ArticleCheckinUsersType[];
   quizzes?: ArticleQuizType[];
   quiz_shown?: number;
+  hasDocs?: boolean;
 }
 
 export interface ArticleState {

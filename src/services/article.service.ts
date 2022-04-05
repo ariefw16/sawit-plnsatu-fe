@@ -128,3 +128,16 @@ export const updateQuizShownArticle = createAsyncThunk<
     return handleErrorAxios(error, rejectWithValue);
   }
 });
+
+export const getFileArticle = createAsyncThunk<
+  File,
+  { id: number },
+  { rejectValue: ValidationErrors }
+>("article/getFile", async (props, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`share-article/docs?id=${props.id}`);
+    return response.data;
+  } catch (error) {
+    return handleErrorAxios(error, rejectWithValue);
+  }
+});

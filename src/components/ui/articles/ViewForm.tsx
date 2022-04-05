@@ -1,14 +1,22 @@
 import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
-import { useState } from "react";
-import { useAppSelector } from "../../../store";
+import { useEffect, useState } from "react";
+import { Document, Page } from "react-pdf";
+import { getFileArticle } from "../../../services/article.service";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
 import ArticlePointsTable from "./ArticlePointsTable";
 import QuizAccordion from "./QuizAccordion";
 
 export default function ArticleViewForm() {
+  const dispatch = useAppDispatch();
   const article = useAppSelector((state) => state.article.selectedArticle);
   const [tabValue, setTabValue] = useState("quiz");
+  const [pageNumber, setPageNumber] = useState(1);
+
+  useEffect(() => {
+    if (article.id) dispatch(getFileArticle({ id: article.id }));
+  }, [article]);
 
   return (
     <>
@@ -21,10 +29,9 @@ export default function ArticleViewForm() {
           }}
         >
           <Box sx={{ p: 2, width: "60%", height: "600px" }}>
-            <div
-              style={{ display: "block", width: "600px" }}
-              dangerouslySetInnerHTML={{ __html: article.body! }}
-            ></div>
+            <Document file={article.docs}>
+              <Page pageNumber={pageNumber} />
+            </Document>
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ flexGrow: 1, p: 2, height: "600px", width: "35%" }}>

@@ -4,6 +4,7 @@ import {
   deleteArticle,
   fetchArticles,
   fetchSingleArticle,
+  getFileArticle,
   updateArticle,
   updateQuizShownArticle,
 } from "../services/article.service";
@@ -53,6 +54,7 @@ export const articleSlice = createSlice({
       })
       .addCase(fetchSingleArticle.fulfilled, (state, { payload }) => {
         state.selectedArticle = payload;
+        if (payload.picPath) state.selectedArticle.hasDocs = true;
       })
       .addCase(updateArticle.fulfilled, (state, { payload }) => {
         const idx = state.articles.findIndex((x) => x.id === payload.id);
@@ -91,6 +93,9 @@ export const articleSlice = createSlice({
       })
       .addCase(submitCheckinQuiz.fulfilled, (state, { payload }) => {
         console.log(payload);
+      })
+      .addCase(getFileArticle.fulfilled, (state, { payload }) => {
+        state.selectedArticle.docs = payload;
       }),
 });
 

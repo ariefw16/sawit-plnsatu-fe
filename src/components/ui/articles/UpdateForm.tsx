@@ -121,6 +121,9 @@ export default function ArticleUpdateForm(props: {
                   type={"file"}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     handleDataChange({ docs: e.target.files![0] });
+                    setTimeout(() => {
+                      console.log(article);
+                    }, 1000);
                   }}
                 />
               </Grid>
