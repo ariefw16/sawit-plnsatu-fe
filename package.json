@@ -33,6 +33,7 @@
     "@types/react-pdf": "^5.0.9",
     "@vitejs/plugin-react": "^1.0.7",
     "typescript": "^4.4.4",
-    "vite": "^2.7.2"
+    "vite": "^2.7.2",
+    "vite-plugin-shim-react-pdf": "^1.0.5"
   }
 }

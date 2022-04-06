@@ -1,23 +1,37 @@
 import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
+import axios from "axios";
 import moment from "moment";
-import { useEffect, useState } from "react";
-import { Document, Page } from "react-pdf";
-import { getFileArticle } from "../../../services/article.service";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+import { useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
 import ArticlePointsTable from "./ArticlePointsTable";
 import QuizAccordion from "./QuizAccordion";
 
 export default function ArticleViewForm() {
-  const dispatch = useAppDispatch();
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const article = useAppSelector((state) => state.article.selectedArticle);
+  const access_token = localStorage.getItem("key");
   const [tabValue, setTabValue] = useState("quiz");
+  const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  useEffect(() => {
-    if (article.id) dispatch(getFileArticle({ id: article.id }));
-  }, [article]);
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
 
+  function changePage(offset: number) {
+    setPageNumber((prevPageNumber) => prevPageNumber + offset);
+  }
+
+  function previousPage() {
+    changePage(-1);
+  }
+
+  function nextPage() {
+    changePage(1);
+  }
   return (
     <>
       <Paper variant="outlined" sx={{ mt: 4 }}>
@@ -28,8 +42,16 @@ export default function ArticleViewForm() {
             flexWrap: "wrap",
           }}
         >
-          <Box sx={{ p: 2, width: "60%", height: "600px" }}>
-            <Document file={article.docs}>
+          <Box sx={{ p: 2, width: "60%" }}>
+            <Document
+              file={{
+                url:
+                  axios.defaults.baseURL +
+                  `share-article/docs?id=${article.id}`,
+                httpHeaders: { Authorization: `Bearer ${access_token}` },
+              }}
+              onLoadSuccess={onDocumentLoadSuccess}
+            >
               <Page pageNumber={pageNumber} />
             </Document>
           </Box>
