@@ -1,4 +1,14 @@
-import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Divider,
+  Grid,
+  TextField,
+  Tabs,
+  Tab,
+  Button,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import moment from "moment";
 import { useState } from "react";
@@ -7,11 +17,12 @@ import { useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
 import ArticlePointsTable from "./ArticlePointsTable";
 import QuizAccordion from "./QuizAccordion";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function ArticleViewForm() {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const article = useAppSelector((state) => state.article.selectedArticle);
-  const access_token = localStorage.getItem("key");
   const [tabValue, setTabValue] = useState("quiz");
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -43,13 +54,41 @@ export default function ArticleViewForm() {
           }}
         >
           <Box sx={{ p: 2, width: "60%" }}>
-            <Document
-              file={{
-                url:
-                  axios.defaults.baseURL +
-                  `share-article/docs?id=${article.id}`,
-                httpHeaders: { Authorization: `Bearer ${access_token}` },
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                pb: 1,
               }}
+            >
+              <Button
+                startIcon={<ArrowBackIcon />}
+                color="secondary"
+                variant="outlined"
+                onClick={previousPage}
+                disabled={pageNumber <= 1}
+              >
+                Previous
+              </Button>
+              <Typography sx={{ pt: 1 }} variant="caption">
+                Page {pageNumber} of {numPages}
+              </Typography>
+              <Button
+                endIcon={<ArrowForwardIcon />}
+                color="secondary"
+                variant="outlined"
+                onClick={nextPage}
+                disabled={pageNumber >= numPages!}
+              >
+                Next
+              </Button>
+            </Box>
+            <Divider />
+            <Document
+              file={
+                axios.defaults.baseURL + `share-article/docs?id=${article.id}`
+              }
               onLoadSuccess={onDocumentLoadSuccess}
             >
               <Page pageNumber={pageNumber} />
