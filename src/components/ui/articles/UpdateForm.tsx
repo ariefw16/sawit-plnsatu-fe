@@ -1,6 +1,16 @@
 import { LocalizationProvider, DatePicker } from "@mui/lab";
 import AdapterMoment from "@mui/lab/AdapterMoment";
-import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
+import {
+  Paper,
+  Box,
+  Divider,
+  Grid,
+  TextField,
+  Tabs,
+  Tab,
+  Button,
+  Typography,
+} from "@mui/material";
 import moment from "moment";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ArticleType } from "../../../types/Article.type";
@@ -11,17 +21,23 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { fetchAvailableScheduleDate } from "../../../services/schedule.service";
 import { showToast } from "../../../store/toast.store";
 import ArticlePointsTable from "./ArticlePointsTable";
+import { Document, Page, pdfjs } from "react-pdf";
+import { ArrowForward, ArrowBack } from "@mui/icons-material";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
   handleDataChange: any;
 }) {
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
   const { article, handleDataChange } = props;
   const dispatch = useAppDispatch();
   const availableSchedule = useAppSelector(
     (state) => state.schedule.availableSchedule
   );
   const [tabValue, setTabValue] = useState("points");
+  const [numPages, setNumPages] = useState<number | null>(0);
+  const [pageNumber, setPageNumber] = useState(1);
 
   // useEffect(() => {
   //   dispatch(
@@ -36,6 +52,14 @@ export default function ArticleUpdateForm(props: {
   //       dispatch(showToast({ type: "error", message: e.errorMessage }));
   //     });
   // }, []);
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
+    setNumPages(numPages);
+    setPageNumber(1);
+  }
+
+  function changePage(offset: number) {
+    setPageNumber((prevPageNumber) => prevPageNumber + offset);
+  }
 
   const getDisableDate = (date: Date) => {
     if (availableSchedule.length < 1) return false;
@@ -55,13 +79,45 @@ export default function ArticleUpdateForm(props: {
             flexWrap: "wrap",
           }}
         >
-          <Box sx={{ p: 2, width: "60%", height: "600px" }}>
-            <ReactQuill
-              value={article.body || ""}
-              onChange={(e) => {
-                handleDataChange({ body: e });
+          <Box sx={{ p: 2, width: "60%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                pb: 1,
               }}
-            />
+            >
+              <Button
+                startIcon={<ArrowBack />}
+                color="secondary"
+                variant="outlined"
+                onClick={() => {
+                  changePage(-1);
+                }}
+                disabled={pageNumber <= 1}
+              >
+                Previous
+              </Button>
+              <Typography sx={{ pt: 1 }} variant="caption">
+                Page {pageNumber} of {numPages}
+              </Typography>
+              <Button
+                endIcon={<ArrowForward />}
+                color="secondary"
+                variant="outlined"
+                onClick={() => {
+                  changePage(1);
+                }}
+                disabled={pageNumber >= numPages!}
+              >
+                Next
+              </Button>
+            </Box>
+            <Divider />
+            <Document file={article.docs} onLoadSuccess={onDocumentLoadSuccess}>
+              <Page pageNumber={pageNumber} />
+            </Document>
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ flexGrow: 1, p: 2, height: "600px", width: "35%" }}>
@@ -121,9 +177,6 @@ export default function ArticleUpdateForm(props: {
                   type={"file"}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     handleDataChange({ docs: e.target.files![0] });
-                    setTimeout(() => {
-                      console.log(article);
-                    }, 1000);
                   }}
                 />
               </Grid>
