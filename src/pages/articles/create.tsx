@@ -13,8 +13,7 @@ import moment from "moment";
 import { ScheduleType } from "../../types/Schedule.type";
 import { showToast } from "../../store/toast.store";
 import { createArticle } from "../../services/article.service";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import PDFViewer from "../../components/ui/articles/PDFViewer";
 
 export default function ArticleCreatePage() {
   const { date } = useParams();
@@ -80,72 +79,75 @@ export default function ArticleCreatePage() {
       />
       <Grid container columnSpacing={2}>
         <Grid item md={4} sm={12}>
-          <Paper sx={{ p: 3, mt: 4 }} variant="outlined">
-            <Box>
-              <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DatePicker
-                  label="Tanggal Sharing"
-                  value={data?.article_date}
-                  onChange={(newValue) => {
-                    changeDateHandler(newValue!);
-                  }}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
-                />
-              </LocalizationProvider>
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <TextField
-                variant="filled"
-                inputProps={{ readOnly: true }}
-                value={selectedSchedule.name || ""}
-                fullWidth
-                label="Theme / Topic"
-                onChange={() => {}}
-              />
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <TextField
-                variant="filled"
-                inputProps={{ readOnly: true }}
-                value={selectedSchedule.unit?.name || ""}
-                fullWidth
-                label="Unit Scheduled"
-                onChange={() => {}}
-              />
-            </Box>
-          </Paper>
+          <Grid container rowSpacing={2}>
+            <Grid item sm={12}>
+              <Paper sx={{ p: 3, mt: 4 }} variant="outlined">
+                <Box>
+                  <LocalizationProvider dateAdapter={AdapterMoment}>
+                    <DatePicker
+                      label="Tanggal Sharing"
+                      value={data?.article_date}
+                      onChange={(newValue) => {
+                        changeDateHandler(newValue!);
+                      }}
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <TextField
+                    variant="filled"
+                    inputProps={{ readOnly: true }}
+                    value={selectedSchedule.name || ""}
+                    fullWidth
+                    label="Theme / Topic"
+                    onChange={() => {}}
+                  />
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <TextField
+                    variant="filled"
+                    inputProps={{ readOnly: true }}
+                    value={selectedSchedule.unit?.name || ""}
+                    fullWidth
+                    label="Unit Scheduled"
+                    onChange={() => {}}
+                  />
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item sm={12}>
+              <Paper sx={{ p: 3 }} variant="outlined">
+                <Grid container columnSpacing={1} rowSpacing={1}>
+                  <Grid item sm={12}>
+                    <TextField
+                      fullWidth
+                      label="Article Title"
+                      value={data.name || ""}
+                      onChange={(e) => {
+                        setData((x) => ({ ...x, name: e.target.value }));
+                      }}
+                    />
+                  </Grid>
+                  <Grid item sm={12}>
+                    <TextField
+                      fullWidth
+                      type={"file"}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        setData((x) => ({ ...x, docs: e.target.files![0] }));
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item md={8} sm={12}>
-          <Paper sx={{ p: 3, mt: 4 }} variant="outlined">
-            <Grid container columnSpacing={1} rowSpacing={1}>
-              <Grid item sm={12}>
-                <TextField
-                  fullWidth
-                  label="Article Title"
-                  value={data.name || ""}
-                  onChange={(e) => {
-                    setData((x) => ({ ...x, name: e.target.value }));
-                  }}
-                />
-              </Grid>
-              <Grid item sm={12}>
-                <ReactQuill
-                  value={data.body || ""}
-                  onChange={(e) => {
-                    setData((x) => ({ ...x, body: e }));
-                  }}
-                />
-              </Grid>
-              <Grid item sm={12}>
-                <TextField
-                  fullWidth
-                  type={"file"}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setData((x) => ({ ...x, docs: e.target.files![0] }));
-                  }}
-                />
-              </Grid>
-            </Grid>
+          <Paper variant="outlined" sx={{ p: 2, mt: 4 }}>
+            <PDFViewer docs={data.docs} />
           </Paper>
         </Grid>
       </Grid>
