@@ -19,30 +19,13 @@ import ArticlePointsTable from "./ArticlePointsTable";
 import QuizAccordion from "./QuizAccordion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import PDFViewer from "./PDFViewer";
 
 export default function ArticleViewForm() {
   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const article = useAppSelector((state) => state.article.selectedArticle);
   const [tabValue, setTabValue] = useState("quiz");
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-    setPageNumber(1);
-  }
-
-  function changePage(offset: number) {
-    setPageNumber((prevPageNumber) => prevPageNumber + offset);
-  }
-
-  function previousPage() {
-    changePage(-1);
-  }
-
-  function nextPage() {
-    changePage(1);
-  }
   return (
     <>
       <Paper variant="outlined" sx={{ mt: 4 }}>
@@ -54,45 +37,11 @@ export default function ArticleViewForm() {
           }}
         >
           <Box sx={{ p: 2, width: "60%" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                pb: 1,
-              }}
-            >
-              <Button
-                startIcon={<ArrowBackIcon />}
-                color="secondary"
-                variant="outlined"
-                onClick={previousPage}
-                disabled={pageNumber <= 1}
-              >
-                Previous
-              </Button>
-              <Typography sx={{ pt: 1 }} variant="caption">
-                Page {pageNumber} of {numPages}
-              </Typography>
-              <Button
-                endIcon={<ArrowForwardIcon />}
-                color="secondary"
-                variant="outlined"
-                onClick={nextPage}
-                disabled={pageNumber >= numPages!}
-              >
-                Next
-              </Button>
-            </Box>
-            <Divider />
-            <Document
-              file={
+            <PDFViewer
+              docs={
                 axios.defaults.baseURL + `share-article/docs?id=${article.id}`
               }
-              onLoadSuccess={onDocumentLoadSuccess}
-            >
-              <Page pageNumber={pageNumber} />
-            </Document>
+            />
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ flexGrow: 1, p: 2, height: "600px", width: "35%" }}>

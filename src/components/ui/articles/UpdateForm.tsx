@@ -23,6 +23,7 @@ import { showToast } from "../../../store/toast.store";
 import ArticlePointsTable from "./ArticlePointsTable";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ArrowForward, ArrowBack } from "@mui/icons-material";
+import PDFViewer from "./PDFViewer";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
@@ -80,44 +81,7 @@ export default function ArticleUpdateForm(props: {
           }}
         >
           <Box sx={{ p: 2, width: "60%" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                pb: 1,
-              }}
-            >
-              <Button
-                startIcon={<ArrowBack />}
-                color="secondary"
-                variant="outlined"
-                onClick={() => {
-                  changePage(-1);
-                }}
-                disabled={pageNumber <= 1}
-              >
-                Previous
-              </Button>
-              <Typography sx={{ pt: 1 }} variant="caption">
-                Page {pageNumber} of {numPages}
-              </Typography>
-              <Button
-                endIcon={<ArrowForward />}
-                color="secondary"
-                variant="outlined"
-                onClick={() => {
-                  changePage(1);
-                }}
-                disabled={pageNumber >= numPages!}
-              >
-                Next
-              </Button>
-            </Box>
-            <Divider />
-            <Document file={article.docs} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page pageNumber={pageNumber} />
-            </Document>
+            <PDFViewer docs={article.docs} />
           </Box>
           <Divider orientation="vertical" flexItem />
           <Box sx={{ flexGrow: 1, p: 2, height: "600px", width: "35%" }}>
