@@ -8,6 +8,7 @@ import { TabPanel } from "../TabPanel";
 import { useAppSelector } from "../../../store";
 import ArticlePointsTable from "./ArticlePointsTable";
 import PDFViewer from "./PDFViewer";
+import QuizAccordion from "./QuizAccordion";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
@@ -17,7 +18,7 @@ export default function ArticleUpdateForm(props: {
   const availableSchedule = useAppSelector(
     (state) => state.schedule.availableSchedule
   );
-  const [tabValue, setTabValue] = useState("points");
+  const [tabValue, setTabValue] = useState("quiz");
 
   const getDisableDate = (date: Date) => {
     if (availableSchedule.length < 1) return false;
@@ -112,6 +113,7 @@ export default function ArticleUpdateForm(props: {
             setTabValue(vals);
           }}
         >
+          <Tab label="Quiz" value="quiz" />
           <Tab label="Points" value="points" />
           <Tab label="Recent Activity" value="activities" />
         </Tabs>
@@ -120,6 +122,9 @@ export default function ArticleUpdateForm(props: {
         </TabPanel>
         <TabPanel selector={tabValue} id="activities">
           Recent Activities
+        </TabPanel>
+        <TabPanel selector={tabValue} id="quiz">
+          <QuizAccordion />
         </TabPanel>
       </Paper>
     </>

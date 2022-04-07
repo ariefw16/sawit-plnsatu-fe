@@ -19,7 +19,7 @@ import {
   saveQuestion,
   updateQuestion,
 } from "../services/quiz.service";
-import { ArticleState } from "../types/Article.type";
+import { ArticleState, ArticleType } from "../types/Article.type";
 
 const initialState: ArticleState = {
   articles: [],
@@ -57,9 +57,13 @@ export const articleSlice = createSlice({
         if (payload.picPath) state.selectedArticle.hasDocs = true;
       })
       .addCase(updateArticle.fulfilled, (state, { payload }) => {
-        const idx = state.articles.findIndex((x) => x.id === payload.id);
-        state.selectedArticle = payload;
-        state.articles[idx] = payload;
+        // const idx = state.articles.findIndex((x) => x.id === payload.id);
+        const prevData = Object.assign(
+          state.selectedArticle as ArticleType,
+          payload
+        );
+        state.selectedArticle = prevData;
+        // state.articles[idx] = payload;
       })
       .addCase(fetchCheckinAvailable.fulfilled, (state, { payload }) => {
         state.checkinArticles = payload.articles!;

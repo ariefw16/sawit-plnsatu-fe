@@ -67,7 +67,7 @@ export default function ArticleViewForm() {
                   label="Creator"
                   variant="filled"
                   fullWidth
-                  value="-"
+                  value={article.createdBy?.name || ""}
                   inputProps={{ readOnly: true }}
                 />
               </Grid>
