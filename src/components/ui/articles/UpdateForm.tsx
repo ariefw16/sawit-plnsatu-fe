@@ -1,66 +1,23 @@
 import { LocalizationProvider, DatePicker } from "@mui/lab";
 import AdapterMoment from "@mui/lab/AdapterMoment";
-import {
-  Paper,
-  Box,
-  Divider,
-  Grid,
-  TextField,
-  Tabs,
-  Tab,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import moment from "moment";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ArticleType } from "../../../types/Article.type";
 import { TabPanel } from "../TabPanel";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { useAppDispatch, useAppSelector } from "../../../store";
-import { fetchAvailableScheduleDate } from "../../../services/schedule.service";
-import { showToast } from "../../../store/toast.store";
+import { useAppSelector } from "../../../store";
 import ArticlePointsTable from "./ArticlePointsTable";
-import { Document, Page, pdfjs } from "react-pdf";
-import { ArrowForward, ArrowBack } from "@mui/icons-material";
 import PDFViewer from "./PDFViewer";
 
 export default function ArticleUpdateForm(props: {
   article: ArticleType;
   handleDataChange: any;
 }) {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
   const { article, handleDataChange } = props;
-  const dispatch = useAppDispatch();
   const availableSchedule = useAppSelector(
     (state) => state.schedule.availableSchedule
   );
   const [tabValue, setTabValue] = useState("points");
-  const [numPages, setNumPages] = useState<number | null>(0);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     fetchAvailableScheduleDate({
-  //       month: new Date().getMonth() + 1,
-  //       year: new Date().getFullYear(),
-  //       scheduleId: article.schedule?.id!,
-  //     })
-  //   )
-  //     .unwrap()
-  //     .catch((e) => {
-  //       dispatch(showToast({ type: "error", message: e.errorMessage }));
-  //     });
-  // }, []);
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-    setPageNumber(1);
-  }
-
-  function changePage(offset: number) {
-    setPageNumber((prevPageNumber) => prevPageNumber + offset);
-  }
 
   const getDisableDate = (date: Date) => {
     if (availableSchedule.length < 1) return false;

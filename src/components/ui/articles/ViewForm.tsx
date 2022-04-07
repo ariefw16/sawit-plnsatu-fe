@@ -1,28 +1,14 @@
-import {
-  Paper,
-  Box,
-  Divider,
-  Grid,
-  TextField,
-  Tabs,
-  Tab,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Paper, Box, Divider, Grid, TextField, Tabs, Tab } from "@mui/material";
 import axios from "axios";
 import moment from "moment";
 import { useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
 import { useAppSelector } from "../../../store";
 import { TabPanel } from "../TabPanel";
 import ArticlePointsTable from "./ArticlePointsTable";
 import QuizAccordion from "./QuizAccordion";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PDFViewer from "./PDFViewer";
 
 export default function ArticleViewForm() {
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   const article = useAppSelector((state) => state.article.selectedArticle);
   const [tabValue, setTabValue] = useState("quiz");
 
