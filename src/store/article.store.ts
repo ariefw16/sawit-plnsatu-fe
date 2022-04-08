@@ -71,6 +71,7 @@ export const articleSlice = createSlice({
       })
       .addCase(fetchCheckinArticle.fulfilled, (state, { payload }) => {
         state.checkinSelected = payload;
+        console.log(payload);
       })
       .addCase(checkinArticle.fulfilled, (state, { payload }) => {
         state.checkinSelected.checkedIn = true;
@@ -97,7 +98,8 @@ export const articleSlice = createSlice({
         }
       })
       .addCase(submitCheckinQuiz.fulfilled, (state, { payload }) => {
-        console.log(payload);
+        state.checkinSelected.quizzes = payload;
+        state.checkinSelected.quizDone = true;
       })
       .addCase(getFileArticle.fulfilled, (state, { payload }) => {
         state.selectedArticle.docs = payload;
