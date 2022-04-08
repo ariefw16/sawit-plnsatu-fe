@@ -74,6 +74,7 @@ export const articleSlice = createSlice({
       })
       .addCase(checkinArticle.fulfilled, (state, { payload }) => {
         state.checkinSelected.checkedIn = true;
+        state.checkinSelected.points = payload.points;
       })
       .addCase(updateQuizShownArticle.fulfilled, (state, { payload }) => {
         state.selectedArticle.quiz_shown = payload.quiz_shown;

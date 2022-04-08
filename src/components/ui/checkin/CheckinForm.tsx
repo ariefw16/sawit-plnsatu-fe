@@ -16,6 +16,8 @@ import SendToMobileIcon from "@mui/icons-material/SendToMobile";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { checkinArticle } from "../../../services/checkin.service";
 import { showToast } from "../../../store/toast.store";
+import PDFViewer from "../articles/PDFViewer";
+import axios from "axios";
 
 export default function CheckinForm() {
   const article = useAppSelector((state) => state.article.checkinSelected);
@@ -55,16 +57,16 @@ export default function CheckinForm() {
             sx={{
               p: 2,
               width: "60%",
-              height: "600px",
               display: "flex",
               flexDirection: "column",
             }}
           >
-            <div
-              style={{ display: "block", width: "600px" }}
-              dangerouslySetInnerHTML={{ __html: article.body! }}
-            ></div>
-            <Box sx={{ flexGrow: 1 }} />
+            <PDFViewer
+              docs={
+                axios.defaults.baseURL + `share-article/docs?id=${article.id}`
+              }
+            />
+            <Divider sx={{ my: 2 }} />
             <Grid container>
               <Grid item sm={8}>
                 {checkedIn ? (
@@ -139,7 +141,7 @@ export default function CheckinForm() {
                   label="Creator"
                   variant="filled"
                   fullWidth
-                  value="-"
+                  value={article.createdBy?.name || ""}
                   inputProps={{ readOnly: true }}
                 />
               </Grid>
